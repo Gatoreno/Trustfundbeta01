@@ -1,0 +1,611 @@
+{{#if user.admin}}
+
+<input type="text" class="hidden" id="ui" value="{{user.id}}">
+
+{{#each projects}}
+
+
+
+
+<div class="animated fadeIn delay-1s">
+
+    <h3>Proyecto : {{title}} </h3>
+    <small style="color:gray">/ creado {{timeago created_at}}</small>
+    <br><br>
+    <div class="card p3" style="border:1px solid gray">
+        <div class="card-body">
+            <p class="pull-right"><img width="300" src="/uploads/{{img}}" alt=""></p>
+            <p><label for="">Investigador:</label> {{name_investigator}}</p>
+            <p><label for="">Mail:</label> {{mail_investigator}}</p>
+            <p><label for="">CVU:</label> {{cvu}}</p>
+
+        </div>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <table class="table table-hover ">
+            <thead>
+                <tr>
+                    <th>...</th>
+                    <th>...</th>
+                </tr>
+            </thead>
+            <tbody>
+                <form action="/projects/update-info-project" method="POST">
+                    <input type="text" class="hidden" name="id" value="{{id}}">
+                    <tr>
+                        <td>Mail de contacto</td>
+                        <td><input class="pull-right" name="mail" type="mail" value="{{mail}}"></td>
+
+                    </tr>
+                    <tr>
+                        <td>Telefono</td>
+                        <td><input class="pull-right" name="phone" type="text" value="{{phone}}"></td>
+
+                    </tr>
+                    <tr>
+                        <td>Pagina web / url</td>
+                        <td><input class="pull-right" name="url" type="text" value="{{url}}"></td>
+
+                    </tr>
+
+                    <tr>
+                        <td>Url de video</td>
+                        <td><input class="pull-right" name="urlyt" type="text" value="{{urlyt}}"></td>
+
+                    </tr>
+
+                    </tr>
+
+                    <tr>
+                        <td>Url de video</td>
+                        <td><input class="btn btn-default pull-right" type="submit" value="Actualizar"></td>
+
+                    </tr>
+                </form>
+            </tbody>
+        </table>
+    </div>
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+        <table class="table table-hover ">
+            <thead>
+                <tr>
+                    <th>...</th>
+                    <th>...</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                <tr>
+                    <form action="/projects/update-pdf-project" method="POST">
+
+
+                        <td>
+                            <input type="text" class="hidden" name="id" value="{{id}}">
+                            {{!<img height="120px" width="120px" class="img-responsive"src="/imgs/pdflogo.jpg" alt=""> }}
+                            <a id="" href="">
+                                <font size="4"><i class="fas fa-file-pdf"></i></font>
+                            </a>
+
+
+                    </form>
+                    </td>
+                    <td>
+                        <form action="/projects/update-img-project" method="POST">
+                            <input class="btn" enctype="multipart/form-data" type="file" name="fx"><br>
+                            <input class="btn btn-default pull-right" type="submit" value="Actualizar pdf">
+                        </form>
+                    </td>
+
+
+                </tr>
+                <tr>
+                    <form action="/projects/update-img-project" method="POST">
+
+
+                        <td>
+                            <input type="text" class="hidden" name="id" value="{{id}}">
+                            <a href="" id="">
+                                <font size="4"> <i class="fas fa-file-image"></i></font>
+                            </a>
+
+                        </td>
+                        <td><input class="btn" enctype="multipart/form-data" type="file" name="fx">
+                            <br>
+                            <input class="btn btn-default pull-right" type="submit" value="Actualizar img">
+                        </td>
+
+                    </form>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="row">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Proyecto</a></li>
+                <li><a data-toggle="tab" href="#menu1metas">Metas</a></li>
+                <li><a data-toggle="tab" href="#menu2noticias">Noticias</a></li>
+            </ul>
+
+            <div class="tab-content ">
+                <div id="home" class="tab-pane fade in active p3">
+                    <h3>Gestor de proyecto</h3>
+
+
+
+                    <div class="card p3" style="border:1px solid gray">
+                        <div class="card-header">
+                            <h4>Datos de Investigador</h4>
+                        </div>
+                        <div class="card-body">
+                            <p><label for="">Investigador:</label> {{name_investigator}}</p>
+                            <p><label for="">Mail:</label> {{mail_investigator}}</p>
+                            <p><label for="">CVU:</label> {{cvu}}</p>
+
+                        </div>
+                    </div>
+
+                    <div class="card p3" style="border:1px solid gray">
+                        <div class="card-header">
+                            <h4>Docuemntación</h4>
+                        </div>
+                        <div class="card-body">
+
+                            <p>
+                                <a id="pdf_1" href="" class="">
+                                    <font size="12"><i class="fas fa-file-pdf"></i></font>
+                                </a>
+                            </p>
+                            <script>
+                                $('#pdf_1').click(() => {
+                                    window.open("/uploads/{{onepayer}}");
+                                });
+                            </script>
+                        </div>
+                    </div>
+
+
+
+
+                </div>
+                <div id="menu1metas" class="tab-pane fade p3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item active"><a href="" data-toggle="modal"
+                                    data-target="#exampleModal">Agregar
+                                    Meta</a></li>
+                        </ol>
+                    </nav>
+
+                    {{#if goals}}
+                    <div class="col-lg-2 col-md-2 col-sm-3">
+                        <div align="center">
+                            <div class="alert alert-danger" style="">
+                                <label for="">Metas por alcanzar </label><br><label for="">
+                                    {{missgoals.missgoals}}</label>
+                            </div>
+                            <div class="alert alert-success" style="">
+                                <label for="">Metas por alcanzadas </label><br><label for="">
+                                    {{successgoals.successgoals}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-10 col-md-10 col-sm-9">
+
+                        <div class="top2 table-wrapper-scroll-y">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">Nombre </th>
+                                        <th scope="col">Inicio</th>
+                                        <th scope="col">Cierre</th>
+                                        <th scope="col">Descripción</th>
+                                        <th scope="col">Estatus</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+                                    {{#each goals}}
+                                    <tr>
+                                        <th>{{title}}</th>
+                                        <td>{{formatDate init "short"}}</td>
+                                        <td>{{formatDate end "short"}}</td>
+                                        <td>{{descrip}}</td>
+                                        <td>
+
+                                            {{#switch status}}
+                                            {{#case "1"}}
+                                            <div class="alert alert-danger" align="center" role="alert">
+                                                <label>En espera</plabel>
+                                            </div>
+                                            {{/case}}
+                                            {{#case "2"}}
+                                            <div class="alert alert-sucess" align="center" role="alert">
+                                                <label>Alcanzado</label>
+                                            </div> {{/case}}
+                                            {{#case "3"}}
+                                            <div class="alert alert-info" align="center" role="alert">
+                                                <label>Alcanzado</label>
+                                            </div>
+
+                                            {{/case}}
+                                            {{/switch}}
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-default" href="" type="text" value="Update">Update</a>
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-danger" href="" type="text" value="Eliminar">Eliminar</a>
+                                        </td>
+
+                                    </tr>
+                                    {{/each}}
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    {{else}} <p>Este poryecto no està terminado, aùn no tiene metas, agrega metas a este proyecto</p>
+
+
+
+                    {{/if}}
+
+
+
+
+                </div>
+                <div id="menu2noticias" class="tab-pane fade p3">
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item active"><a href="" data-toggle="modal"
+                                    data-target="#exampleModal2">Agregar
+                                    Noticia</a></li>
+                        </ol>
+                    </nav>
+
+
+
+
+                    <div class="table-wrapper-scroll-y">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Nombre </th>
+                                    <th scope="col">Fecha inicial</th>
+
+                                </tr>
+                            </thead>
+                            <tbody id="newsT">
+
+                                <tr>
+                                    <td>...</td>
+                                </tr>
+
+
+                                <script>
+
+                                    function getNews() {
+
+                                        $.ajax({
+                                            type: 'GET',
+                                            url: '/get-admins',
+                                            dataType: 'json',
+                                            success: (data) => {
+
+                                                data.forEach((item) => {
+                                                    const row = `<tr>
+                                                                    <td><img src="${ item.img}"></td>
+                                                                    <td>${ item.name}</td>
+                                                                    <td><button>Eliminar</button></td>
+                                                                </tr>`;
+                                                    $('#newsT').append(row);
+                                                });
+                                            }
+
+                                        });
+                                        //$("#ownerT").load();
+
+                                    };
+
+
+                                    getNews();
+                                </script>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Nueva Meta - Proyecto <b>{{title}}</b></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <form action="/links/add/goal/" method="post">
+
+                            <div class="modal-body">
+                                <input type="text" class="hide" name="id_proyecto" value="{{id}}">
+                                <input type="text" class="hide" name="id_user" value="{{user.id_user}}">
+                                <label for="" name="">Título </label>
+                                <br>
+
+                                <input type="text" name="title" class="form-item" required><br><br>
+
+                                <br>
+                                <input class="form-group" type="date" name="init" required><br>
+                                <input type="date" class="form-group" name="end" required><br>
+
+
+                                <label for="">Descripción</label><br>
+                                <textarea name="descrip" size="500" id="" width="100%" cols="30" rows="3"></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Crear</button>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- Modal News -->
+            <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+                aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Nueva Notica - Proyecto <b>{{title}}</b></h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <form action="/news/add-New" method="post" enctype="multipart/form-data">
+                                <div class="form-group">
+
+                                    <input type="text" class="hidden" id="ucnews" name="id_usercreated" value="">
+
+                                    <script>
+                                        const x = document.getElementById("ui").value;
+                                        var uncnews = document.getElementById("ucnews");
+                                        uncnews.value = x;
+
+                                    </script>
+
+                                    <input type="text" class="hidden" name="id_proyecto" value="{{id}}">
+
+                                    <label for="exampleInputEmail1">Titulo de la noticia</label>
+                                    <input type="text" name="title" class="form-control" id=""
+                                        aria-describedby="emailHelp" placeholder="Proyecto ha avanzado su primer 10%">
+                                    <small id="" class="form-text text-muted">Este texto aparecerá como cabezaera de tu
+                                        noticia.</small>
+                                    <br>
+                                    <img id="PreviewImageT" class="" width="150" height="200" src=""
+                                        alt="Imagen Titular" style="height:100px;" />
+
+                                    <br>
+                                    <br>
+                                    <label for="">Inserte una imagen de cabecera</label>
+
+                                    <input name="fx" onchange="readURLT(this);" type="file"
+                                        enctype="multipart/form-data" required />
+
+                                </div>
+                                <div class="form-group">
+                                    <br>
+                                    <small id="" class="form-text text-muted">Primer Texto (solo 500
+                                        caracteres).</small>
+                                    <textarea id="field" name="text1" class="form-control" onkeyup="countChar(this)"
+                                        required></textarea>
+                                    <div class="charNum pull-right" id="charNum"></div>
+                                </div>
+                                <div class="form-group">
+                                    <br>
+                                    <small id="" class="form-text text-muted">Segundo Texto (solo 500
+                                        caracteres).</small>
+                                    <textarea id="field" name="text2" class="form-control"
+                                        onkeyup="countChar2(this)"></textarea>
+                                    <div class="charNum pull-right" id="charNum2"></div>
+                                </div>
+                                <div class="form-group">
+                                    <br>
+                                    <small id="" class="form-text text-muted">Tercer Texto (solo 500
+                                        caracteres).</small>
+                                    <textarea id="field" name="text3" class="form-control"
+                                        onkeyup="countChar3(this)"></textarea>
+                                    <div class="charNum pull-right" id="charNum3"></div>
+                                </div>
+
+                                <div class="form-group">
+                                    <img id="PreviewImage" class="" width="150" height="200" src="" alt="Imagen 1"
+                                        style="height:100px;" />
+
+                                    <br>
+                                    <label for="">Inserte una imagen</label>
+
+                                    <input name="fx" onchange="readURL(this);" type="file"
+                                        enctype="multipart/form-data" />
+
+
+                                </div>
+
+
+                                <div class="form-group">
+                                    <img id="PreviewImage2" class="" width="150" height="200" src="" alt="Imagen 2"
+                                        style="height:100px;" />
+
+                                    <br>
+                                    <label for="">Inserte una imagen</label>
+
+                                    <input name="fx" onchange="readURL2(this);" type="file"
+                                        enctype="multipart/form-data" />
+
+                                </div>
+
+                                <div class="form-group">
+                                    <img id="PreviewImage3" class="" width="150" height="200" src="" alt="Imagen 2"
+                                        style="height:100px;" />
+
+                                    <br>
+                                    <label for="">Inserte una imagen</label>
+
+                                    <input name="fx" onchange="readURL3(this);" type="file"
+                                        enctype="multipart/form-data" />
+
+                                </div>
+                                <script>
+                                    function readURL(input) {
+                                        if (input.files && input.files[0]) {//Check if input has files.
+                                            var reader = new FileReader(); //Initialize FileReader.
+
+                                            reader.onload = function (e) {
+                                                $('#PreviewImage').attr('src', e.target.result);
+                                                $("#PreviewImage").resizable({ aspectRatio: true, maxHeight: 300 });
+                                            };
+                                            reader.readAsDataURL(input.files[0]);
+                                        }
+                                        else {
+                                            $('#PreviewImage').attr('src', "#");
+                                        }
+                                    }
+
+                                    function readURL2(input) {
+                                        if (input.files && input.files[0]) {//Check if input has files.
+                                            var reader = new FileReader(); //Initialize FileReader.
+
+                                            reader.onload = function (e) {
+                                                $('#PreviewImage2').attr('src', e.target.result);
+                                                $("#PreviewImage2").resizable({ aspectRatio: true, maxHeight: 300 });
+                                            };
+                                            reader.readAsDataURL(input.files[0]);
+                                        }
+                                        else {
+                                            $('#PreviewImage2').attr('src', "#");
+                                        }
+                                    }
+
+
+                                    function readURL3(input) {
+                                        if (input.files && input.files[0]) {//Check if input has files.
+                                            var reader = new FileReader(); //Initialize FileReader.
+
+                                            reader.onload = function (e) {
+                                                $('#PreviewImage3').attr('src', e.target.result);
+                                                $("#PreviewImage3").resizable({ aspectRatio: true, maxHeight: 300 });
+                                            };
+                                            reader.readAsDataURL(input.files[0]);
+                                        }
+                                        else {
+                                            $('#PreviewImage3').attr('src', "#");
+                                        }
+                                    }
+                                </script>
+
+
+
+
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary">Crear</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <script src="http://code.jquery.com/jquery-1.5.js"></script>
+            <script>
+
+                function readURLT(input) {
+                    if (input.files && input.files[0]) {//Check if input has files.
+                        var reader = new FileReader(); //Initialize FileReader.
+
+                        reader.onload = function (e) {
+                            $('#PreviewImageT').attr('src', e.target.result);
+                            $("#PreviewImageT").resizable({ aspectRatio: true, maxHeight: 300 });
+                        };
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                    else {
+                        $('#PreviewImageT').attr('src', "#");
+                    }
+                }
+                function countChar(val) {
+                    var len = val.value.length;
+                    if (len >= 500) {
+                        val.value = val.value.substring(0, 500);
+                        if (len == 500) {
+                            $('#charNum').text('máximo alcanzado');
+                        }
+                    }
+                    else {
+                        $('#charNum').text(500 - len + ' solo restan');
+                    }
+                };
+                function countChar2(val) {
+                    var len = val.value.length;
+                    if (len >= 500) {
+                        val.value = val.value.substring(0, 500);
+                        if (len == 500) {
+                            $('#charNum2').text('máximo alcanzado');
+                        }
+                    }
+                    else {
+                        $('#charNum2').text(500 - len + ' solo restan');
+                    }
+                };
+
+                function countChar3(val) {
+                    var len = val.value.length;
+                    if (len >= 500) {
+                        val.value = val.value.substring(0, 500);
+                        if (len == 500) {
+                            $('#charNum3').text('máximo alcanzado');
+                        }
+                    }
+                    else {
+                        $('#charNum3').text(500 - len + ' solo restan');
+                    }
+                };
+            </script>
+        </div>
+    </div>
+</div>
+
+
+
+
+{{!Admin user end}}
+
+
+{{/each}}
+
+{{else}}
+
+<h1>No esta permitido que estés aquí</h1>
+
+{{/if}}

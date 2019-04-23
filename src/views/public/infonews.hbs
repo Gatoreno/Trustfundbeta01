@@ -1,0 +1,31 @@
+<div class="row">
+    <div class="container">
+        <div class="col-lg-1 "></div>
+        <div class="col-lg-10 col-md-12 col-sm-12 col-xs-12">
+            {{#each news}}
+
+            <div class="card p3" style="border:1px solid gray">
+                <div class="card-body" align="center">
+                    <p>
+                        <h3>{{title}}</h3>
+                    </p>
+                    <p></p>
+                    <p><img src="/uploads/{{imgh}}" width="400" alt=""></p>
+
+                </div>
+            </div>
+
+            {{title}}</p>
+
+            <p>{{text1}}</p>
+            <p align="center"><img src="/uploads/{{img1}}" width="400" alt=""></p>
+            <p>{{text2}}</p>
+            <p align="center"><img src="/uploads/{{img2}}" width="400" alt=""></p>
+            <p>{{text3}}</p>
+            <p align="center"><img src="/uploads/{{img3}}" width="400" alt=""></p>
+
+            {{/each}}
+        </div>
+        <div class="col-lg-1"></div>
+    </div>
+</div>

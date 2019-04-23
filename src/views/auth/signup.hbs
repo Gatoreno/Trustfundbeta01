@@ -1,0 +1,60 @@
+<div class="container p-4 top2">
+
+    <div class="row">
+        <div class="col-md-2 col-lg-3 col-xs-2 col-sm-2 col-xl-2"></div>
+        <div class="col-md-8 col-lg-6 col-xs-8 col-sm-8 col-xl-8">
+            <div align="center">
+                <img src="/img/logo512.png" class="card-img-top  rounded-circle w-50" width="160" alt="">
+            </div>
+            <br>
+            <div class="card ">
+
+
+                <br>
+                <a type="button" href="/signin" class="btn btn-danger">Si ya cuentas con una cuneta da click aquí!</a>
+                <br>
+                <br>
+
+                <label for="">Formulario de registro</label>
+                <br>
+                <form action="/auth/signup" method="post">
+                    <div class="form-group">
+
+                        <input type="text" class="hide" name="Id_usercreated" value="0">
+                        <label for="exampleInputEmail1">Username</label>
+                        <input type="text" name="name" class="form-control" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" placeholder="myusername" autofocus>
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                            else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputEmail1">Email address</label>
+                        <input type="email" name="mail" class="form-control" id="exampleInputEmail1"
+                            aria-describedby="emailHelp" placeholder="Enter email" autofocus>
+                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
+                            else.</small>
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Día de nacimiento</label>
+                        <input type="date" name="datenac" class="form-control" id="exampleInputPassword1"
+                            placeholder="Password" autofocus>
+
+                    </div>
+                    <div class="form-group">
+                        <label for="exampleInputPassword1">Password</label>
+                        <input type="password" name="pass" class="form-control" id="exampleInputPassword1"
+                            placeholder="Password" autofocus>
+                    </div>
+
+
+
+                    <div class="form-group row p5">
+                        <button type="submit" class="btn btn-danger pull-right">Crear cuenta como donador</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-md-2 col-lg-3 col-xs-2 col-sm-2 col-xl-2"></div>
+
+    </div>
+</div>

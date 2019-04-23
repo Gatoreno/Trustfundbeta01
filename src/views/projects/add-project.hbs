@@ -1,0 +1,273 @@
+<div class="container p-4">
+    <div class="row">
+        <div class="col-md-6 mx-auto ">
+
+            <div class="card " style="width: 100%;">
+                <div class="card-header">
+                    <p>Nuevo Proyecto Generado por administrador /
+                        <label for="">{{user.name}}</label></p>
+                </div>
+                <div class="card-body">
+                    <form action="/projects/add-project" enctype="multipart/form-data" method="POST">
+                        <div class="form-group">
+                            <input type="text" class="hide" name="Id_usercreated" value="{{user.id_user}}">
+
+                            <label for="">Nombre Del Proyecto</label><br>
+                            <input style="width: 50%;" type="text" name="title" autofocus><br>
+
+                            <label for="">Nombre del autor</label><br>
+                            <input style="width: 50%;" type="text" name="fullname" autofocus><br>
+
+                            <label for="">Mail del autor</label><br>
+                            <input style="width: 50%;" type="mail" name="mail" autofocus><br>
+                            <label for="">Telefono del autor</label><br>
+                            <input style="width: 50%;" type="phone" name="phone" autofocus><br>
+                            <label for="">Nombre de la universidad</label><br>
+                            <input style="width: 50%;" type="text" name="univer" autofocus><br>
+
+                            <label for="">Mail del Investigador</label><br>
+                            <input style="width: 50%;" type="mail" name="mail_investigator" autofocus><br>
+
+
+
+                            <label for="">Nombre del Investigador</label><br>
+                            <input style="width: 50%;" type="text" name="name_investigator" autofocus><br>
+
+                            <label for="">Num del Investigador</label><br>
+                            <input style="width: 50%;" type="text" name="cvu" autofocus><br>
+
+                            <br>
+                            <div class="form-group">
+                                <label for="">Area</label><br>
+                                <select class="form-control" style="width: 50%;" name="area" id="">
+                                    <option value="1">Físico matemáticas y ciencias de la tierra</option>
+                                    <option value="2">Biología y química</option>
+                                    <option value="3">Medicina y ciencias de la salud</option>
+                                    <option value="4">Humanidades y ciencias de la conducta</option>
+                                    <option value="5">Ciencias sociales y economía</option>
+                                    <option value="6">Biotecnología y ciencias agropecuarias</option>
+                                    <option value="7">Ciencias de la ingeniería</option>
+                                    <option value="8">Investigación multidisciplinaria</option>
+
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="">Estado</label><br>
+                                <select class="form-control" style="width: 50%;"  name="estado" id="estados">Estado</select>
+
+
+                            </div>
+                            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+                                type="text/javascript">
+                                    
+                                </script>
+
+                                <script type="text/javascript">
+                                $(document).ready(function () {
+                                        const temp = [{
+                                            "id": 1,
+                                            "name": "Aguascalientes"
+                                        },
+                                        {
+                                            "id": 2,
+                                            "name": "Baja California"
+                                        },
+                                        {
+                                            "id": 3,
+                                            "name": "Baja California Sur"
+                                        },
+                                        {
+                                            "id": 4,
+                                            "name": "Campeche"
+                                        },
+                                        {
+                                            "id": 5,
+                                            "name": "Coahuila"
+                                        },
+                                        {
+                                            "id": 6,
+                                            "name": "Colima"
+                                        },
+                                        {
+                                            "id": 7,
+                                            "name": "Chiapas"
+                                        },
+                                        {
+                                            "id": 8,
+                                            "name": "Chihuahua"
+                                        },
+                                        {
+                                            "id": 9,
+                                            "name": "Distrito Federal"
+                                        },
+                                        {
+                                            "id": 10,
+                                            "name": "Durango"
+                                        },
+                                        {
+                                            "id": 11,
+                                            "name": "Guanajuato"
+                                        },
+                                        {
+                                            "id": 12,
+                                            "name": "Guerrero"
+                                        },
+                                        {
+                                            "id": 13,
+                                            "name": "Hidalgo"
+                                        },
+                                        {
+                                            "id": 14,
+                                            "name": "Jalisco"
+                                        },
+                                        {
+                                            "id": 15,
+                                            "name": "México"
+                                        },
+                                        {
+                                            "id": 16,
+                                            "name": "Michoacán"
+                                        },
+                                        {
+                                            "id": 17,
+                                            "name": "Morelos"
+                                        },
+                                        {
+                                            "id": 18,
+                                            "name": "Nayarit"
+                                        },
+                                        {
+                                            "id": 19,
+                                            "name": "Nuevo León"
+                                        },
+                                        {
+                                            "id": 20,
+                                            "name": "Oaxaca"
+                                        },
+                                        {
+                                            "id": 21,
+                                            "name": "Puebla"
+                                        },
+                                        {
+                                            "id": 22,
+                                            "name": "Querétaro"
+                                        },
+                                        {
+                                            "id": 23,
+                                            "name": "Quintana Roo"
+                                        },
+                                        {
+                                            "id": 24,
+                                            "name": "San Luis Potosí"
+                                        },
+                                        {
+                                            "id": 25,
+                                            "name": "Sinaloa"
+                                        },
+                                        {
+                                            "id": 26,
+                                            "name": "Sonora"
+                                        },
+                                        {
+                                            "id": 27,
+                                            "name": "Tabasco"
+                                        },
+                                        {
+                                            "id": 28,
+                                            "name": "Tamaulipas"
+                                        },
+                                        {
+                                            "id": 29,
+                                            "name": "Tlaxcala"
+                                        },
+                                        {
+                                            "id": 30,
+                                            "name": "Veracruz"
+                                        },
+                                        {
+                                            "id": 31,
+                                            "name": "Yucatán"
+                                        },
+                                        {
+                                            "id": 32,
+                                            "name": "Zacatecas"
+                                        }
+                                        ];
+                                        var $select = $('#estados');
+
+                                        //alert(options);
+                                        $.each(temp, function (id, name) {
+                                            $select.append('<option value=' + name.id + '>' + name.name + '</option>');
+                                        });
+                                    });
+
+                                </script>
+
+
+                        </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-6 mx-auto ">
+
+            <div class="card " style="width: 100%;">
+                <div class="card-header">
+                    <p>Media</p>
+                </div>
+                <div class="card-body">
+
+                    <div class="form-group">
+
+                        <label for="">URL - Página web</label><br>
+                        <input style="width: 50%;" name="url" autofocus><br>
+
+                        <label for="">Enlace video de youtube</label><br>
+                        <input style="width: 50%;" name="urlyt" autofocus><br>
+
+
+
+                        <label for="">Logo de proyecto o universidad</label><br>
+                        <input style="width: 50%;" enctype="multipart/form-data" type="file" name="fx" autofocus><br>
+
+                        <label for="">One Paper - PDF</label><br>
+                        <input style="width: 50%;" enctype="multipart/form-data" {{! thnk's multer :3 }} type="file"
+                            name="fx" required autofocus><br>
+
+                        <script>
+                            const input = document.querySelector('input[type="file"]');
+                            input.addEventListener('change', (e) => {
+                                console.log(input.files);
+
+                                const reader = new FileReader();
+                            }, false);
+                        </script>
+
+                        <br>
+                        <label for="">Owner del Proyecto</label><br>
+                        <select name="id_owner" class="form-control" id="" required>
+
+                            {{#each owners}}
+                            <option value="{{id}} ">{{name}} {{lastnameP}} {{lastnameM}} - {{username}}</option>
+                            {{/each}}
+
+                        </select>
+                        <br>
+
+                        <label for="">Descripción</label><br>
+                        <textarea style="width: 100%;" name="descrip" placeholder="Descripción de proyecto">
+                                    </textarea>
+                        <br>
+                        <br>
+                        <div class="card-footer">
+                            <input type="submit" value="Generar nuevo proyecto" class="btn btn-secondary   pull-right">
+                        </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>

@@ -1,0 +1,477 @@
+{{#if user}}
+
+{{#if user.status}}
+{{!-- usuario sin información conclusa ---}}
+{{#if user.user}}
+
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+
+            {{!<nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li><a data-toggle="tab" href="#menu1_">Redes sociales</a></li>
+                    <li><a data-toggle="tab" href="#menu2_">Trustcoin</a></li>
+                    <li><a data-toggle="tab" href="#menu3_">Mis proyectos</a></li>
+                </ol>
+            </nav>
+            }}
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#menu0_">Info Personal</a></li>
+                <li><a data-toggle="tab" href="#menu1_">Redes sociales</a></li>
+                <li><a data-toggle="tab" href="#menu2_">Trustcoins</a></li>
+                <li><a data-toggle="tab" href="#menu3_">Mis proyectos</a></li>
+
+            </ul>
+        </div>
+
+        <div class="col-lg-3 col-sm-12 col-md-3 col-xs-12">
+            <div class="card hovercard">
+                <div class="cardheader">
+
+                </div>
+                <div class="avatar">
+                    <img class="top10" style=' width:100px;height:100px;' src='/uploads/{{user.img}}'>
+
+                </div>
+                <div class="info">
+                    <br>
+
+
+
+                    <div class="desc">Desde: {{timeago user.created_at}}</div>
+                    <div class="desc">Nombre de usuario: {{user.username}}</div>
+                    <div class="desc">Nombre: {{user.name}} {{user.lastnameP}} {{user.lastnameM}}</div>
+
+
+                    <div class="bottom top2">
+                        <font class="p3" size="5"><i class="fab fa-facebook "></i></font>
+                        <font class="p3" size="5"><i class="fab fa-instagram"></i></font>
+                        <font class="p3" size="5"><i class="fab fa-google-plus"></i></font>
+
+                    </div>
+
+                </div>
+                <div class="bottom top2 hidden">
+                    <a class="btn btn-primary btn-twitter btn-sm" href="">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a class="btn btn-danger btn-sm" rel="publisher" href="">
+                        <i class="fab fa-google-plus"></i>
+
+
+                    </a>
+                    <a class="btn  btn-sm white" style="background-color: #E1306C; color: #ffffff;" el="publisher"
+                        href="https://plus.google.com/shahnuralam">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-sm-12 col-md-9 col-xs-12">
+            <div class="tab-content ">
+
+
+                {{!-- Pestañas --}}
+                <div id="menu0_" class="tab-pane fade in p3 active">
+
+                    <p>
+                        <h4><label for="">Información Personal</label></h4>
+                    </p>
+                    <p><label for="">Teléfono:</label>{{user.phone}}</p>
+                    <p><label for="">Mail:</label>{{user.mail}}</p>
+                    <p><label for="">Rol:</label>usuario.</p>
+                    <div align="center"><a href="" class="btn btn-default">Actualizar Información Personal</a></div>
+
+                    {{! termina menu 0}}
+
+                </div>
+                <div id="menu1_" class="tab-pane fade p3">
+
+                    <p>1</p>
+
+                    {{! termina menu 1}}
+
+
+
+                    <div align="center"><a href="" class="btn btn-default">Actualizar Información Personal</a></div>
+
+
+                </div>
+                <div id="menu2_" class="tab-pane fade p3">
+
+
+                    <p>2</p>
+
+                    <div align="center"><a href="" class="btn btn-default">Actualizar Información Personal</a></div>
+
+                    {{! termina menu 2}}
+                </div>
+                <div id="menu3_" class="tab-pane fade p3">
+                    <p>3</p>
+                    <div align="center"><a href="" class="btn btn-default">Actualizar Información Personal</a></div>
+
+                    {{! termina menu 3}}
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+
+        {{!end row}}
+    </div>
+</div>
+
+
+
+{{else}}
+{{/if}}
+
+{{#if user.admin}}
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+
+            {{!<nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li><a data-toggle="tab" href="#menu1_">Redes sociales</a></li>
+                    <li><a data-toggle="tab" href="#menu2_">Trustcoin</a></li>
+                    <li><a data-toggle="tab" href="#menu3_">Mis proyectos</a></li>
+                </ol>
+            </nav>
+            }}
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#menu0_">Info Personal</a></li>
+                <li><a data-toggle="tab" href="#menu1_">Redes sociales</a></li>
+                <li><a data-toggle="tab" href="#menu2_">Trustcoins</a></li>
+                <li><a data-toggle="tab" href="#menu3_">Mis proyectos</a></li>
+
+            </ul>
+        </div>
+
+        <div class="col-lg-3 col-sm-12 col-md-3 col-xs-12">
+            <div class="card hovercard">
+                <div class="cardheader">
+
+                </div>
+                <div class="avatar">
+                    <img class="top10" style=' width:100px;height:100px;' src='/uploads/{{user.img}}'>
+
+                </div>
+                <div class="info">
+                    <br>
+                    <div class="desc">Desde: {{timeago user.created_at}}</div>
+                    <div class="desc">Nombre de usuario: {{user.username}}</div>
+                    <div class="desc">Nombre: {{user.name}} {{user.lastnameP}} {{user.lastnameM}}</div>
+
+                </div>
+                <div class="bottom top2">
+                    <a class="btn btn-primary btn-twitter btn-sm" href="https://twitter.com/webmaniac">
+                        <i class="fa fa-twitter"></i>
+                    </a>
+                    <a class="btn btn-danger btn-sm" rel="publisher" href="https://plus.google.com/+ahmshahnuralam">
+                        <i class="fa fa-google-plus"></i>
+                    </a>
+                    <a class="btn btn-primary btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
+                        <i class="fa fa-facebook"></i>
+                    </a>
+                    <a class="btn btn-warning btn-sm" rel="publisher" href="https://plus.google.com/shahnuralam">
+                        <i class="fa fa-behance"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-9 col-sm-12 col-md-9 col-xs-12">
+            <div class="tab-content ">
+
+
+                {{!-- Pestañas --}}
+                <div id="menu0_" class="tab-pane fade in p3 active">
+
+                    <p>
+                        <h4><label for="">Información Personal</label></h4>
+                    </p>
+                    <p><label for="">Teléfono:</label>{{user.phone}}</p>
+                    <p><label for="">Mail:</label>{{user.mail}}</p>
+                    <p><label for="">Rol:</label>usuario.</p>
+                    <div align="center">
+                        <a href="" class="btn btn-default ">Actualizar Información Personal</a>
+                    </div>
+
+                    {{! termina menu 0}}
+
+                </div>
+                <div id="menu1_" class="tab-pane fade p3">
+
+                    <p>1</p>
+
+                    {{! termina menu 1}}
+
+                </div>
+                <div id="menu2_" class="tab-pane fade p3">
+
+
+                    <p>2</p>
+
+
+                    {{! termina menu 2}}
+                </div>
+                <div id="menu3_" class="tab-pane fade p3">
+                    <p>3</p>
+
+                    {{! termina menu 3}}
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+
+        {{!end row}}
+    </div>
+</div>
+
+
+
+
+{{!-- End admin---}}
+{{else}}
+{{/if}}
+{{else}}
+<div class="container">
+    <div align="center">
+        <h2>Información de usuario pendeinte</h2>
+        <!-- Trigger the modal with a button -->
+        <button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal">Concluir
+            registro</button>
+
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Datos de usuario : <label for="">{{user.username}}</label></h4>
+                </div>
+                <div class="modal-body">
+                    <form action="auth/update-info-user-form" enctype="multipart/form-data" method="POST">
+
+                        <input type='file' onchange="readURL(this);" enctype="multipart/form-data" type="file" name="fx"
+                            autofocus />
+                        <img id="blah" style="width: 150px;" class="img-responsive" src="http://placehold.it/150"
+                            alt="your image" />
+                        <script>
+                            function readURL(input) {
+                                if (input.files && input.files[0]) {
+                                    var reader = new FileReader();
+
+                                    reader.onload = function (e) {
+                                        $('#blah')
+                                            .attr('src', e.target.result);
+                                    };
+
+                                    reader.readAsDataURL(input.files[0]);
+                                }
+                            }
+                        </script>
+                        <br>
+                        <label for="">Genero</label><br>
+                        <select name="gender" id="">
+                            <option value="0">Prefiero no especificar</option>
+                            <option value="1">Hombre</option>
+                            <option value="2">Mujer</option>
+                        </select><br>
+                        <label for="">Nombre</label><br>
+                        <input type="text" name="name" placeholder="Nombre"><br>
+                        <label for="">Apellido Paterno</label><br>
+                        <input type="text" name="lastnameP" placeholder="Apellido Paterno"><br>
+                        <label for="">Apellido Materno</label><br>
+                        <input type="text" name="lastnameM" placeholder="Apellido Materno"><br>
+                        <label for="">Teléfono</label><br>
+                        <input type="text" name="phone" placeholder="telefono"><br>
+                        <label for="">Calle</label><br>
+                        <input type="text" name="calle" placeholder="calle"><br>
+                        <label for="">Colonia</label><br>
+                        <input type="text" name="colonia" placeholder="colonia"><br>
+                        <label for="">Código postal</label><br>
+                        <input type="text" name="cp" placeholder="código postal"><br>
+
+
+                        <label for="">Estado</label><br>
+                        <select name="estados" id="estados"></select>
+
+                        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"
+                            type="text/javascript"></script>
+                        <script>
+                            $(document).ready(function () {
+                                const temp = [{
+                                    "id": 1,
+                                    "name": "Aguascalientes"
+                                },
+                                {
+                                    "id": 2,
+                                    "name": "Baja California"
+                                },
+                                {
+                                    "id": 3,
+                                    "name": "Baja California Sur"
+                                },
+                                {
+                                    "id": 4,
+                                    "name": "Campeche"
+                                },
+                                {
+                                    "id": 5,
+                                    "name": "Coahuila"
+                                },
+                                {
+                                    "id": 6,
+                                    "name": "Colima"
+                                },
+                                {
+                                    "id": 7,
+                                    "name": "Chiapas"
+                                },
+                                {
+                                    "id": 8,
+                                    "name": "Chihuahua"
+                                },
+                                {
+                                    "id": 9,
+                                    "name": "Distrito Federal"
+                                },
+                                {
+                                    "id": 10,
+                                    "name": "Durango"
+                                },
+                                {
+                                    "id": 11,
+                                    "name": "Guanajuato"
+                                },
+                                {
+                                    "id": 12,
+                                    "name": "Guerrero"
+                                },
+                                {
+                                    "id": 13,
+                                    "name": "Hidalgo"
+                                },
+                                {
+                                    "id": 14,
+                                    "name": "Jalisco"
+                                },
+                                {
+                                    "id": 15,
+                                    "name": "México"
+                                },
+                                {
+                                    "id": 16,
+                                    "name": "Michoacán"
+                                },
+                                {
+                                    "id": 17,
+                                    "name": "Morelos"
+                                },
+                                {
+                                    "id": 18,
+                                    "name": "Nayarit"
+                                },
+                                {
+                                    "id": 19,
+                                    "name": "Nuevo León"
+                                },
+                                {
+                                    "id": 20,
+                                    "name": "Oaxaca"
+                                },
+                                {
+                                    "id": 21,
+                                    "name": "Puebla"
+                                },
+                                {
+                                    "id": 22,
+                                    "name": "Querétaro"
+                                },
+                                {
+                                    "id": 23,
+                                    "name": "Quintana Roo"
+                                },
+                                {
+                                    "id": 24,
+                                    "name": "San Luis Potosí"
+                                },
+                                {
+                                    "id": 25,
+                                    "name": "Sinaloa"
+                                },
+                                {
+                                    "id": 26,
+                                    "name": "Sonora"
+                                },
+                                {
+                                    "id": 27,
+                                    "name": "Tabasco"
+                                },
+                                {
+                                    "id": 28,
+                                    "name": "Tamaulipas"
+                                },
+                                {
+                                    "id": 29,
+                                    "name": "Tlaxcala"
+                                },
+                                {
+                                    "id": 30,
+                                    "name": "Veracruz"
+                                },
+                                {
+                                    "id": 31,
+                                    "name": "Yucatán"
+                                },
+                                {
+                                    "id": 32,
+                                    "name": "Zacatecas"
+                                }
+                                ];
+                                var $select = $('#estados');
+
+                                //alert(options);
+                                $.each(temp, function (id, name) {
+                                    $select.append('<option value=' + name.name + '>' + name.name + '</option>');
+                                });
+                            }); 
+                        </script>
+
+                        <input type="text" value="{{user.id}}" name="id" class="hidden">
+
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" value="Actaulizar" class="btn btn-default">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+{{/if}}
+{{else}}
+
+{{/if}}

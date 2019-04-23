@@ -1,0 +1,163 @@
+{{#if user}}
+
+
+
+{{#each links}}
+
+<script src="http://code.jquery.com/jquery-1.5.js"></script>
+
+<div id="user_view" class="animated fadeIn delay-1s">
+
+    <h3>Proyecto : {{title}} {{user.name}}</h3>
+    <small style="color:gray">/ creado {{timeago created_at}}</small>
+
+
+
+
+    <br><br>
+    <div class="card p3" style="border:1px solid gray">
+        <div class="card-body">
+            <p><label for="">Investigador:</label> {{name_investigator}}</p>
+            <p><label for="">Mail:</label> {{mail_investigator}}</p>
+            <p><label for="">CVU:</label> {{cvu}}</p>
+
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-md-3 col-lg-3"></div>
+            <div class="col-xs-12 col-sm-12  col-md-9 col-lg-9 top2" align="center">
+
+                <div class="embed-responsive embed-responsive-16by9" id="myCode">
+
+
+                    <iframe ¡ width="560" height="315" src="{{urlyt}}" frameborder="0"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen></iframe>'
+
+                </div>
+            </div>
+            <div class="col-md-3 col-lg-3"></div>
+
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <table class="table table-hover ">
+                    <thead>
+                        <tr>
+                            <th>...</th>
+                            <th>...</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Mail de contacto</td>
+                            <td><input class="pull-right" name="button" type="button" value="{{mail}}"></td>
+
+                        </tr>
+                        <tr>
+                            <td>Telefono</td>
+                            <td><input class="pull-right" name="phone" type="text" value="{{phone}}"></td>
+
+                        </tr>
+                        <tr>
+                            <td>Pagina web / url</td>
+                            <td>
+                                <a class="pull-right" href="{{url}}">{{url}}</a>
+                            </td>
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                <table class="table table-hover ">
+                    <thead>
+                        <tr>
+                            <th>...</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+                        <tr>
+                            <td>
+                                <input type="text" class="hidden" name="id" value="{{id}}">
+                                {{!<img height="120px" width="120px" class="img-responsive"src="/imgs/pdflogo.jpg" alt=""> }}
+
+                                <small id="" class="form-text text-muted pull-right">Documentación de proyecto</small>
+
+                                <br>
+                                <a id="pdf" href="" class="pull-right">
+                                    <font size="12"><i class="fas fa-file-pdf"></i></font>
+                                </a>
+
+                                <script>
+                                    $('#pdf').click(() => {
+                                        window.open("/uploads/{{onepayer}}");
+                                    });
+                                </script>
+                            </td>
+
+
+
+                        </tr>
+                        <tr>
+                            <td>
+
+                                <form action="/projects/buy-tc" method="POST">
+
+                                    <button class="btn btn-default pull-right hidden">Apoyar este proyecto</button>
+                                    <input type="text" class="hidden" name="project_id" value="{{id}}">
+                                     <input type="text" class="hidden" name="user_id" id="user_id">
+                                    <script src="https://checkout.stripe.com/checkout.js" class="stripe-button "
+                                        data-key="pk_test_gd1aqhALDsHt6Ib7aZ5fT1re" data-amount="2300"
+                                        data-name="TrustFund" data-description="Widget"
+                                        
+                                        data-image="/img/logo512.png"
+                                        data-locale="auto">
+                                        </script>
+                                </form>
+                               
+                            </td>
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+{{/each}}
+
+<script>
+    //alert({{user.id}});
+    document.getElementById("user_id").value = "{{user.id}}"; 
+</script>
+
+{{else}}
+
+No puedes Apoyar projectos sin registrarte
+
+{{/if}}
+
+
+{{!-- Admin area --}}
+
+
+
+
+
+
+

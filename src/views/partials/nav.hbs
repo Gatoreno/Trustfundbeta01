@@ -1,0 +1,75 @@
+<nav class="navbar navbar-inverse navbar-expland-lg navbar-dark bg-dark">
+
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand navbar-toggler" data-toggle="collapse" data-target="#navbarTogglerDemo01"
+                aria-controls="navbarTogglerDemo01" aria-expanded="false" aria-label="Toggle navigation">InTrustCoin</a>
+        </div>
+
+
+        <div class="container-fluid collapse navbar-collapse" id="navbarTogglerDemo01">
+
+            <ul class="nav navbar-nav">
+
+                {{#if user.admin}}
+                <li class=""><a href="/dashboard/">Dashboard</a></li>
+                {{else}}
+                {{/if}}
+                <li class=""><a href="http://localhost:4000/">Inicio</a></li>
+
+                <li><a href="/projects/get-projects">Proyectos</a></li>
+                <li><a href="#">Donantes</a></li>
+
+
+            </ul>
+            <div class="container-fluid">
+                <ul class="nav navbar-nav  pull-right">
+
+
+                    <li id="registro" class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            Ingresar
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <ul class="nav">
+                                <li class=""><a href="/auth/signin">Iniciar sesión</a></li>
+
+                                <li class="nav-item"><a href="/auth/signup">Registro</a></li>
+
+                            </ul>
+                        </div>
+                    </li>
+                    {{#if user}}
+
+
+
+
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown"
+                            aria-haspopup="true" aria-expanded="false">
+                            <img class="img-circle " width="15" height="15" src='/uploads/{{user.img}}'
+                                alt="profile">
+
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                            <ul class="nav">
+
+                                <li class="nav-item"><a href="/profile">Perfil</a></li>
+                                <li class="nav-item"><a href="/logout">Cerrar sesión</a></li>
+
+                            </ul>
+                        </div>
+                    </li>
+                    <script>
+                        var divOne = document.getElementById('registro');
+                        divOne.style.display = 'none';
+                    </script>
+                    {{/if}}
+
+
+                </ul>
+            </div>
+        </div>
+
+</nav>
