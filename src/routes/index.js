@@ -68,14 +68,14 @@ router.get('/pag-news',(req,res)=>{
 //public info
 router.get('/get-projects',(req,res)=>{
     const {id} = req.params;
-    const somed = [];
-    const query = pool.query('SELECT * FROM SOMED_ where id_usercreated = ?',[id]);
+    const proj = [];
+    const query = pool.query('SELECT * FROM PROJECTS_ ');
     query.then((data)=>{
         data.forEach((data) => {
-            somed.push(data);
+            proj.push(data);
           });
           //console.log(admins)
-          res.json(somed);
+          res.json(proj);
     }).catch((err)=>{
         console.log(err);
     });
@@ -118,6 +118,22 @@ router.get('/get-admins',(req,res)=>{
 router.get('/get-owners',(req,res)=>{
     const admins = [];
     const query = pool.query('SELECT * FROM USERS_ where owner');
+    query.then((data)=>{
+        data.forEach((data) => {
+            admins.push(data);
+          });
+          //console.log(admins)
+          res.json(admins);
+    }).catch((err)=>{
+        console.log(err);
+    });
+
+});
+
+
+router.get('/get-news',(req,res)=>{
+    const admins = [];
+    const query = pool.query('SELECT * FROM NEWS_ ');
     query.then((data)=>{
         data.forEach((data) => {
             admins.push(data);

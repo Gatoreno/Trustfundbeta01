@@ -6,6 +6,7 @@ const router = express.Router();
 const passport = require('passport');
 const pool = require('../db');
 const helpers = require('../lib/helpers');
+const jwt = require('jsonwebtoken');
 
 
 const {
@@ -35,6 +36,55 @@ router.post('/signin', isNotLoggedIn, (req, res, next) => {
         failureFlash: true
     })(req, res, next);
 });
+
+
+router.get('/reset-password',  (req, res) => {
+    /* ensureToken,
+    jwt.verify(req.token, 'seceto', (err, data) => {
+         if (err) {
+             res.redirect('/reset-pass', 403, req.flash('message','Intenta de nuevo.'));
+         } else {
+             res.json({
+                 text: 'protected',
+                 data: data //iat 
+             });
+         }
+     });*/
+ 
+     res.render('auth/pass-reset');  
+ 
+ });
+ 
+
+router.post('/reset-pass-mail', (req, res) => {
+
+
+    let mail = req.body.mail;
+
+    const checkm = pool.query('SELECT * FROM USERS_ where mail = ?', [mail]);
+    checkm.then((resx) => {
+        if (resx.length > 0) {
+            console.log(resx);
+            //console.log(resx.mail);
+
+            const token = jwt.sign({
+                mail
+            }, 'seceto', {
+                expiresIn: '3600s'
+            });
+
+            //console.log(token);
+            //Send liga
+        } else {
+            console.log('err' + resx);
+            res.redirect('/reset-pass', 403, req.flash('message', 'No hay usuario con ese mail.'));
+        }
+    });
+
+});
+
+//router.get();
+
 
 router.post('/update-info-admin', (req, res) => {
     console.log(req.body);
@@ -160,7 +210,7 @@ router.post('/signup-subadmin', async (req, res) => {
     } else if (role == 2) {
         newUser.owner = 1
     } else {
-        newUser.user = 1
+        newUser.user = null
     }
 
 
@@ -184,6 +234,8 @@ router.post('/signup-subadmin', async (req, res) => {
 
 
 });
+
+router.get('/edit-user', );
 
 
 

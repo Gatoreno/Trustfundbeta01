@@ -6,6 +6,8 @@ const pool = require('../db');
 
 
 
+
+
 passport.use('local.signin', new LStrategy({
     usernameField: 'name',
     passwordField: 'pass',

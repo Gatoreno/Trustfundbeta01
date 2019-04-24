@@ -15,6 +15,7 @@ const flash = require('connect-flash');
 const session = require('express-session'); 
 const mysqlStore = require('express-mysql-session');
 const passport = require('passport');
+const favicon = require('express-favicon');
 
 
 const app = express();
@@ -55,6 +56,8 @@ app.use(multer({
 }).any('fx'));
 
 
+
+
 // flash middle-ware
 app.use(flash());
 
@@ -83,6 +86,8 @@ app.use('/costumers', require('./routes/costumers'));
 
 // Publics
 app.use(express.static(path.join(__dirname, '../public/')));
+
+app.use(favicon(path.join(__dirname,'../public/','ca64e9572384260dcc6b9b2d76bb8fe5','favicon.ico')));
 
 
   app.set('port', process.env.PORT || 4000); //puerto 

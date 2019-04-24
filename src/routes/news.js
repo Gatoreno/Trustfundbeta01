@@ -35,10 +35,10 @@ router.post('/add-New', (req, res) => {
 
     const x = '';
     const news = {
-        title,
-        text1,
-        text2,
-        text3,
+        title:title,
+        text1:text1,
+        text2:text2,
+        text3:text3,
         img1: nimg1,
         img2: nimg2,
         img3: nimg3,
@@ -48,7 +48,7 @@ router.post('/add-New', (req, res) => {
 
     };
 
-    const insert = pool.query('INSERT INTO NEWS_ set = ?', [news]);
+    const insert = pool.query('INSERT INTO NEWS_ set ?', [news]);
 
 
     insert.then((data) => {

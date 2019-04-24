@@ -1,8 +1,12 @@
+require('dotenv').config()
+'use strict';
+
 const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
-
+const nodemailer = require('nodemailer');
+const xoauth2 = require('xoauth2')
 const {
     isLoggedIn,
     isNotLoggedIn
@@ -25,7 +29,83 @@ router.post('/api/login', (req, res) => {
     });
 });
 
-//links
+router.get('/contact', (req, res) => {
+
+    res.render('public/contact');
+
+});
+
+router.post('/contact', (req, res) => {
+    //console.log(process.env.SENDGRID_API_KEY);
+  const {name,mail,message} =req.body;
+
+    //console.log(token);
+
+    const sgMail = require('@sendgrid/mail');
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+        to: 'supporto@trustfund.com.mx',
+        from: mail,
+        subject: 'Reiniciar contraseña TrustFund',
+        text: 'Gracias por tu confianza.',
+        html: '<div class="card" style="width:400px">'+
+        '<div class="card-body">'+
+          '<h4 class="card-title">Mensaje de:'+name+'</h4>'+
+          '<p class="card-text">'+message+'</p>'+
+          '<p class="card-text">mail:'+mail+'</p>'+
+          ''+
+        '</div>'+
+     '</div>',
+    };
+    sgMail.send(msg).then(() => {
+        res.render('public/mensajenviado');
+    });
+
+});
+
+
+//reset password
+
+
+router.get('/reset-pass', (req, res) => {
+    res.render('public/reset-pass');
+
+});
+
+router.post('/reset-pass', (req, res) => {
+    //console.log(process.env.SENDGRID_API_KEY);
+    const mail = 'mai@gmail.com';
+    const token = jwt.sign({
+        mail
+    }, 'seceto', {
+        expiresIn: '3600s'
+    });
+
+    //console.log(token);
+
+    const sgMail = require('@sendgrid/mail');
+    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    const msg = {
+        to: 'pushpoped@gmail.com',
+        from: 'manuel.o@trustfund.com.mx',
+        subject: 'Reiniciar contraseña TrustFund',
+        text: 'Gracias por tu confianza.',
+        html: '<div class="card" style="width:400px">'+
+        '<img class="card-img-top" src="" alt="Card image" style="width:100%">'+
+        '<div class="card-body">'+
+          '<h4 class="card-title">Reinicia tu contraseña</h4>'+
+          '<p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>'+
+          '<a href="'+token+'" class="">Restablecer contraseña.</a>'+
+        '</div>'+
+     '</div>',
+    };
+    sgMail.send(msg).then(() => {
+        res.json('sended');
+    });
+
+});
+
+
 
 router.get('/api/protected', ensureToken, (req, res) => {
     jwt.verify(req.token, 'seceto', (err, data) => {
@@ -84,9 +164,7 @@ router.get('/project-support/:id', (req, res) => {
 
 
 router.get('/user-tc/:id', (req, res) => {
-    const {
-        id
-    } = req.params;
+    const {id} = req.params;
 
 
     //console.log(id)
