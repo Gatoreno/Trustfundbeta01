@@ -20,7 +20,7 @@ router.post('/api/login', (req, res) => {
     const user = id;
     const token = jwt.sign({
         user
-    }, 'seceto', {
+    }, process.env.SECRETO, {
         expiresIn: '3600s'
     });
 
@@ -77,7 +77,7 @@ router.post('/reset-pass', (req, res) => {
     const mail = 'mai@gmail.com';
     const token = jwt.sign({
         mail
-    }, 'seceto', {
+    }, process.env.SECRETO, {
         expiresIn: '3600s'
     });
 
