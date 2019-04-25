@@ -4,9 +4,9 @@ require('dotenv').config()
 
 module.exports = {
     database: {
-        host: PROCESS.ENV.DB_HOST,
-        user: PROCESS.ENV.DB_USER,
-        password: PROCESS.ENV.DB_PASS,
-        database: PROCESS.ENV.DB_T
+        host: process.env.DB_HOST,
+        user: process.env.DB_USER,
+        password: process.env.DB_PASS,
+        database: process.env.DB_T
     }
 }
