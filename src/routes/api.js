@@ -5,16 +5,19 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
-const nodemailer = require('nodemailer');
-const xoauth2 = require('xoauth2')
+
+
 const {
     isLoggedIn,
     isNotLoggedIn
 } = require('../lib/auth');
 
+router.get('/get-logo/',(req,res)=>{
+    res.status(200).sendFile('public/img/logo512.png');
+});
 
 router.post('/api/login', (req, res) => {
-    const {
+    const {     
         id
     } = req.body;
     const user = id;
@@ -42,9 +45,10 @@ router.post('/contact', (req, res) => {
     //console.log(token);
 
     const sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+    //sgMail.setApiKey(process.env.SENDGRID_API_KEY);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
+    sgMail.setApiKey('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');
     const msg = {
-        to: 'supporto@trustfund.com.mx',
+        to: 'support@trustfund.com.mx',
         from: mail,
         subject: 'Reiniciar contraseña TrustFund',
         text: 'Gracias por tu confianza.',

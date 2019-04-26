@@ -4,9 +4,9 @@ require('dotenv').config()
 
 module.exports = {
     database: {
-        host: process.env.DB_HOST,
-        user: process.env.DB_USER,
-        password: process.env.DB_PASS,
-        database: process.env.DB_T
+        host: 'us-cdbr-iron-east-02.cleardb.net',
+        user: 'ba12bfa65e1841',
+        password: '838e61db',
+        database: 'heroku_74e041970c49746'
     }
 }
