@@ -76,7 +76,7 @@ router.post('/add-project',  (req, res) => {
     const qu =  pool.query('INSERT INTO PROJECTS_ set ?', [proj]);
     qu.then(() => {
         req.flash('success', 'Proyecto generado');
-        res.redirect('projects/projects');
+        res.redirect('/dashboard/');
 
     }).catch((err) => {
         console.log(err)
