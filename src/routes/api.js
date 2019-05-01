@@ -12,12 +12,14 @@ const {
     isNotLoggedIn
 } = require('../lib/auth');
 
-router.get('/get-logo/',(req,res)=>{
+router.get('/get-logo/', (req, res) => {
     res.status(200).sendFile('public/img/logo512.png');
 });
 
+
+
 router.post('/api/login', (req, res) => {
-    const {     
+    const {
         id
     } = req.body;
     const user = id;
@@ -32,6 +34,29 @@ router.post('/api/login', (req, res) => {
     });
 });
 
+
+router.get('/get-user-edit/:id', isLoggedIn, (req, res) => {
+    const {
+        id
+    } = req.params;
+
+    const query = pool.query('SELECT * FROM USERS_ where id = ?', [id]);
+    const user = [];
+
+    query.then((data) => {
+        data.forEach((data) => {
+            user.push(data);
+
+            
+
+        });
+
+        res.render('auth/edit-user',{user});
+
+
+    });
+});
+
 router.get('/contact', (req, res) => {
 
     res.render('public/contact');
@@ -40,7 +65,11 @@ router.get('/contact', (req, res) => {
 
 router.post('/contact', (req, res) => {
     //console.log(process.env.SENDGRID_API_KEY);
-  const {name,mail,message} =req.body;
+    const {
+        name,
+        mail,
+        message
+    } = req.body;
 
     //console.log(token);
 
@@ -52,14 +81,14 @@ router.post('/contact', (req, res) => {
         from: mail,
         subject: 'Reiniciar contraseña TrustFund',
         text: 'Gracias por tu confianza.',
-        html: '<div class="card" style="width:400px">'+
-        '<div class="card-body">'+
-          '<h4 class="card-title">Mensaje de:'+name+'</h4>'+
-          '<p class="card-text">'+message+'</p>'+
-          '<p class="card-text">mail:'+mail+'</p>'+
-          ''+
-        '</div>'+
-     '</div>',
+        html: '<div class="card" style="width:400px">' +
+            '<div class="card-body">' +
+            '<h4 class="card-title">Mensaje de:' + name + '</h4>' +
+            '<p class="card-text">' + message + '</p>' +
+            '<p class="card-text">mail:' + mail + '</p>' +
+            '' +
+            '</div>' +
+            '</div>',
     };
     sgMail.send(msg).then(() => {
         res.render('public/mensajenviado');
@@ -94,14 +123,14 @@ router.post('/reset-pass', (req, res) => {
         from: 'manuel.o@trustfund.com.mx',
         subject: 'Reiniciar contraseña TrustFund',
         text: 'Gracias por tu confianza.',
-        html: '<div class="card" style="width:400px">'+
-        '<img class="card-img-top" src="" alt="Card image" style="width:100%">'+
-        '<div class="card-body">'+
-          '<h4 class="card-title">Reinicia tu contraseña</h4>'+
-          '<p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>'+
-          '<a href="'+token+'" class="">Restablecer contraseña.</a>'+
-        '</div>'+
-     '</div>',
+        html: '<div class="card" style="width:400px">' +
+            '<img class="card-img-top" src="" alt="Card image" style="width:100%">' +
+            '<div class="card-body">' +
+            '<h4 class="card-title">Reinicia tu contraseña</h4>' +
+            '<p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>' +
+            '<a href="' + token + '" class="">Restablecer contraseña.</a>' +
+            '</div>' +
+            '</div>',
     };
     sgMail.send(msg).then(() => {
         res.json('sended');
@@ -168,7 +197,9 @@ router.get('/project-support/:id', (req, res) => {
 
 
 router.get('/user-tc/:id', (req, res) => {
-    const {id} = req.params;
+    const {
+        id
+    } = req.params;
 
 
     //console.log(id)

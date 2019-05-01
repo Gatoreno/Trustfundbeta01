@@ -1,9 +1,14 @@
 <div class="container p-4 top2">
 
+
     <div class="row">
         <div class="col-md-2 col-lg-3 col-xs-2 col-sm-2 col-xl-2"></div>
         <div class="col-md-8 col-lg-6 col-xs-8 col-sm-8 col-xl-8">
             <div align="center">
+                <br>
+                <a type="button" href="/auth/signin" class="">Si ya tienes con una cuneta da click
+                    aquí!</a>
+                <br>
                 <img src="/img/logo512.png" class="card-img-top  rounded-circle w-50" width="160" alt="">
             </div>
             <br>
@@ -11,7 +16,11 @@
 
 
                 <br>
-                <a type="button" href="/signin" class="btn btn-danger">Si ya cuentas con una cuneta da click aquí!</a>
+                <div align="center">
+                    <a class="btn btn-danger" href="/auth/googleT">Google <i class="fab fa-google-plus"></i></a>
+                    <a class="btn btn-primary" href="/auth/googleT">Facebook <i class="fab fa-facebook"></i></a>
+
+                </div>
                 <br>
                 <br>
 
@@ -21,40 +30,47 @@
                     <div class="form-group">
 
                         <input type="text" class="hide" name="Id_usercreated" value="0">
-                        <label for="exampleInputEmail1">Username</label>
-                        <input type="text" name="name" class="form-control" id="exampleInputEmail1"
+                        <label for="">Username</label>
+                        <input type="text" name="name" class="form-control" id=""
                             aria-describedby="emailHelp" placeholder="myusername" autofocus>
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                            else.</small>
+                        <small id="emailHelp" class="form-text text-muted">No olvides tu nombre de usuario, con el
+                            accedes a la plataforma</small>
                     </div>
                     <div class="form-group">
-                        <label for="exampleInputEmail1">Email address</label>
-                        <input type="email" name="mail" class="form-control" id="exampleInputEmail1"
+                        <label for="">Email address</label>
+                        <input type="email" name="mail" class="form-control" id=""
                             aria-describedby="emailHelp" placeholder="Enter email" autofocus>
-                        <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone
-                            else.</small>
+                        <small id="emailHelp" class="form-text text-muted">Asegurate que sea un mail que uses.</small>
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Día de nacimiento</label>
-                        <input type="date" name="datenac" class="form-control" id="exampleInputPassword1"
+                        <input type="date" name="datenac" class="form-control" id=""
                             placeholder="Password" autofocus>
 
                     </div>
                     <div class="form-group">
                         <label for="exampleInputPassword1">Password</label>
-                        <input type="password" name="pass" class="form-control" id="exampleInputPassword1"
+                        <input type="password" name="pass" class="form-control" id=""
                             placeholder="Password" autofocus>
+                        <small id="emailHelp" class="form-text text-muted">Asegurate que tu contraseña tenga un minimo
+                            de 8 dígitos.</small>
+
                     </div>
+  
 
 
-
-                    <div class="form-group row p5">
+                    <div class="form-group row p3">
                         <button type="submit" class="btn btn-danger pull-right">Crear cuenta como donador</button>
                     </div>
                 </form>
+                    
             </div>
         </div>
         <div class="col-md-2 col-lg-3 col-xs-2 col-sm-2 col-xl-2"></div>
 
     </div>
+
+
+
 </div>
+

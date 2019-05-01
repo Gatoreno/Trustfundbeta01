@@ -15,6 +15,20 @@ const {
 } = require('../lib/auth');
 
 
+router.get('/goT',(req,res)=>{
+    res.render('auth/goT');
+});
+
+router.get('/googleT/cb', passport.authenticate('googleToken'),(req,res)=>{
+   // const {cb}=req.params;
+    const user = req.user;
+    console.log(user);
+    res.redirect('/profile');
+});
+
+router.get('/googleT', passport.authenticate('googleToken', {
+    scope:['profile','email']
+}));
 router.get('/signup', isNotLoggedIn, (req, res) => {
     res.render('auth/signup');
 });

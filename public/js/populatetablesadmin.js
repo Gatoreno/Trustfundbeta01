@@ -12,7 +12,7 @@ function getowners(){
                 const row = `<tr>
                     <td><img src="${ item.img }"></td>
                     <td>${ item.name }</td>
-                    <td><button>Eliminar</button></td>
+                    <td><a href="/get-user/${ item.id}"><button>Editar</button></a></td>
                 </tr>`;
                 $('#ownerT').append( row );
             });
@@ -78,7 +78,7 @@ function getadmins(){
                 const row = `<tr>
                     <td><img src="${ item.img }"></td>
                     <td>${ item.name }</td>
-                    <td><button>Eliminar</button></td>
+                    <td><a href="/get-user-edit/${ item.id}"><button>Editar</button></a></td>
                 </tr>`;
                 $('#usersT').append( row );
             });
