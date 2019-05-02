@@ -235,6 +235,16 @@ router.get('/projects-json', async (req, res) => {
   });
 
 
+  router.get('/users-json', async (req, res) => {
+
+    const news = await pool.query('SELECT * FROM UERS_ where user = 1 ');
+    //console.log(projects);
+    res.json({news});
+
+  
+  });
+
+
 router.get('/false-news/', (req, res) => {
     const {
         id
