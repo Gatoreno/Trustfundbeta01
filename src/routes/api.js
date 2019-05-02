@@ -237,7 +237,7 @@ router.get('/projects-json', async (req, res) => {
 
   router.get('/users-json', async (req, res) => {
 
-    const news = await pool.query('SELECT * FROM UERS_ where user = 1 ');
+    const news = await pool.query('SELECT * FROM USERS_ where user = 1 ');
     //console.log(projects);
     res.json({news});
 
