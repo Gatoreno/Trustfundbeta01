@@ -215,6 +215,25 @@ router.get('/user-tc/:id', (req, res) => {
     });
 });
 
+router.get('/projects-json', async (req, res) => {
+
+    const projects = await pool.query('SELECT * FROM PROJECTS_ ');
+    //console.log(projects);
+    res.json({projects});
+
+  
+  });
+
+
+  router.get('/news-json', async (req, res) => {
+
+    const news = await pool.query('SELECT * FROM NEWS_ ');
+    //console.log(projects);
+    res.json({news});
+
+  
+  });
+
 
 router.get('/false-news/', (req, res) => {
     const {
