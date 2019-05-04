@@ -109,7 +109,40 @@ passport.use('googleToken', new GoogleplustokenStrategy({
 
 //
 
+//movil app
 
+passport.use('app.signin', new LStrategy({
+    usernameField: 'username',
+    passwordField: 'pass',
+    passReqToCallback: true
+}, async (req, username, pass, done) => {
+    //console.log(req.body);
+   //console.log(username, pass);
+
+
+
+    const qu = pool.query('SELECT * FROM  USERS_ where username = ?', [username]);
+    qu.then(async (res) => {
+       // console.log(res.length);
+
+        if (res.length > 0) {
+            const user = res[0];
+            //console.log(user);
+            const validpass = await helpers.matchPass(pass, user.pass);
+
+            if (validpass) {
+                done(null, user);
+            } else {
+                done(null, false);
+            }
+
+        } else {
+            done(null, false);
+        }
+    }).catch((err) => {
+        console.log(err);
+    });
+}));
 
 //local web
 

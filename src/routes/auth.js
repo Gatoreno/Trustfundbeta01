@@ -15,19 +15,19 @@ const {
 } = require('../lib/auth');
 
 
-router.get('/goT',(req,res)=>{
+router.get('/goT', (req, res) => {
     res.render('auth/goT');
 });
 
-router.get('/googleT/cb', passport.authenticate('googleToken'),(req,res)=>{
-   // const {cb}=req.params;
+router.get('/googleT/cb', passport.authenticate('googleToken'), (req, res) => {
+    // const {cb}=req.params;
     const user = req.user;
     console.log(user);
     res.redirect('/profile');
 });
 
 router.get('/googleT', passport.authenticate('googleToken', {
-    scope:['profile','email']
+    scope: ['profile', 'email']
 }));
 router.get('/signup', isNotLoggedIn, (req, res) => {
     res.render('auth/signup');
@@ -36,6 +36,23 @@ router.get('/signup', isNotLoggedIn, (req, res) => {
 router.get('/signin', isNotLoggedIn, (req, res) => {
     res.render('auth/signin');
 });
+
+
+//Json mobil app
+
+router.post('/signin-app',
+    passport.authenticate('app.signin'),
+    function (req, res) {
+        // If this function gets called, authentication was successful.
+        // `req.user` contains the authenticated user.
+        // Then you can send your json as response.
+        res.json({
+            user:  req.user
+        });
+    });
+
+
+//
 
 router.post('/signup', passport.authenticate('local.signup', {
     successRedirect: '/profile',
@@ -52,7 +69,7 @@ router.post('/signin', isNotLoggedIn, (req, res, next) => {
 });
 
 
-router.get('/reset-password',  (req, res) => {
+router.get('/reset-password', (req, res) => {
     /* ensureToken,
     jwt.verify(req.token, 'seceto', (err, data) => {
          if (err) {
@@ -64,11 +81,11 @@ router.get('/reset-password',  (req, res) => {
              });
          }
      });*/
- 
-     res.render('auth/pass-reset');  
- 
- });
- 
+
+    res.render('auth/pass-reset');
+
+});
+
 
 router.post('/reset-pass-mail', (req, res) => {
 

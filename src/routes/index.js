@@ -9,17 +9,12 @@ const {
 } = require('../lib/auth');
 
 router.get('/', (req,res) => {
-    /*
-    const owners = await pool.query('SELECT * FROM USERS_');
-    console.log(owners);
-    res.json( {
-        owners: owners
-    });*/
+
 
     res.render('public/main');
 
     
-})
+});
 
 
 
