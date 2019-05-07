@@ -242,6 +242,12 @@ router.get('/false-news/', (req, res) => {
 
 
 
+//STRIPE
+ 
+router.post('st-test1',(req,res)=>{
+    res.send('llegamos aquí');
+});
 
+//
 
 module.exports = router;

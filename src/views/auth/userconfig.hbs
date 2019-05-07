@@ -1,1 +1,15 @@
 <h3>User config</h3>
+
+
+<script>
+    var stripe = Stripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
+var elements = stripe.elements();
+
+var card = elements.create('card');
+card.mount('#card-element');
+
+var promise = stripe.createToken(card);
+promise.then(function(result) {
+  // result.token is the card token.
+});
+</script>
