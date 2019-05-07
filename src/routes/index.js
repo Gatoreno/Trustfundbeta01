@@ -23,6 +23,11 @@ router.get('/profile',isLoggedIn,(req,res)=>{
 });
 
 
+router.get('/userconfig',isLoggedIn,(req,res)=>{
+    res.render('auth/userconfig');
+});
+
+
 router.get('/dashboard',isLoggedIn,(req,res)=>{
     res.render('dashboard/dashboard');
 });
