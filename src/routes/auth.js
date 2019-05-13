@@ -133,8 +133,8 @@ router.post('/update-info-admin', (req, res) => {
         id
     } = req.body;
 
-    const img = req.files[0];
-    const imgfn = img.filename;
+    const img = req.files;
+    const imgfn = img.location;
 
     userad = {
         name: name,
@@ -163,8 +163,8 @@ router.post('/update-info-admin', (req, res) => {
 
 
 router.post('/update-info-user-form', (req, res) => {
-    console.log(req.body);
-    console.log(req.files);
+    //console.log(req.body);
+    //console.log(req.files);
 
     const {
         name,
@@ -179,8 +179,8 @@ router.post('/update-info-user-form', (req, res) => {
     } = req.body;
 
     const img = req.files[0];
-    const imgfn = img.filename;
-
+    const imgfn = img.location;
+    console.log(imgfn);
 
     const userd = {
         name: name,
@@ -195,6 +195,8 @@ router.post('/update-info-user-form', (req, res) => {
         img: imgfn,
         user: true
     };
+    
+    
     queryk = pool.query('UPDATE USERS_ set ? where id = ? ', [userd, id]);
 
     queryk.then(() => {

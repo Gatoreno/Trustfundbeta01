@@ -8,6 +8,7 @@ const stripe = require('stripe')(process.env.STSK);
 const pool = require('../db');
 
 require('../lib/handlebars');
+
 const {
     isLoggedIn,
     isNotLoggedIn
@@ -33,11 +34,11 @@ router.post('/add-project',  (req, res) => {
     const pdf = req.files[1];
     const img = req.files[0];
 
-    const pdfn = pdf.filename;
-    const imgn = img.filename;
+    const pdfn = pdf.location;
+    const imgn = img.location;
 
-    console.log(pdfn);
-    console.log(imgn);
+    //console.log(req.files , pdfn,imgn)
+
     const {
         title,
         fullname,
@@ -73,6 +74,10 @@ router.post('/add-project',  (req, res) => {
         Id_usercreated: 0,
         id_owner: id_owner
     };
+
+    
+
+    
     const qu =  pool.query('INSERT INTO PROJECTS_ set ?', [proj]);
     qu.then(() => {
         req.flash('success', 'Proyecto generado');
