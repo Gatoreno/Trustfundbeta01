@@ -162,10 +162,17 @@
                 <div class="cardheader">
 
                 </div>
+
+                {{#if user.img}}
                 <div class="avatar">
                     <img class="top10" style=' width:100px;height:100px;' src='/uploads/{{user.img}}'>
 
                 </div>
+                {{else}}
+
+                form de imagen
+
+                {{/if}}
                 <div class="info">
                     <br>
                     <div class="desc">Desde: {{timeago user.created_at}}</div>
