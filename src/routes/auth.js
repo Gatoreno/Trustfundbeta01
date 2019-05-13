@@ -266,7 +266,7 @@ router.post('/signup-subadmin', async (req, res) => {
 
 });
 
-router.get('/edit-user', );
+router.get('/edit-user', () =>{});
 
 
 

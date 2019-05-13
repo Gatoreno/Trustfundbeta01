@@ -92,7 +92,7 @@
                 <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                     <h3>Administración</h3>
                     <div class="top2 table-wrapper-scroll-y">
-                                               <table class="table table-hover">
+                        <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th scope="col">Img</th>
@@ -117,7 +117,7 @@
                     <div class="top2 table-wrapper-scroll-y">
 
 
-                           <table class="table table-hover">
+                        <table class="table table-hover">
                             <thead>
                                 <tr>
                                     <th scope="col">Img</th>
@@ -131,7 +131,7 @@
 
                             </tbody>
                         </table>
-                   
+
                     </div>
 
                 </div>
@@ -198,7 +198,16 @@
             </div>
             <div id="menu2" class="tab-pane fade p3">
                 <h3>Noticias</h3>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item">
+                            <a href="" data-toggle="modal" data-target="#exampleModalNews">Agregar Proyecto</a>
+                        </li>
+
+                    </ol>
+                </nav>
                 <div class="top2 table-wrapper-scroll-y">
+
                     <table class="table table-hover">
                         <thead>
                             <tr>
@@ -210,7 +219,7 @@
                             </tr>
                         </thead>
                         <tbody id="newsT">
-{{!--
+                            {{!--
                             {{#each json.news}}
                             <tr>
 
@@ -252,21 +261,21 @@
                     </ol>
                 </nav>
 
-                                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th scope="col">Titulo</th>
-                                <th scope="col">Proyecto</th>
-                                <th scope="col">Editar</th>
-                                <th>Acción</th>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th scope="col">Titulo</th>
+                            <th scope="col">Proyecto</th>
+                            <th scope="col">Editar</th>
+                            <th>Acción</th>
 
-                            </tr>
-                        </thead>
-                        <tbody id="projectsT">
+                        </tr>
+                    </thead>
+                    <tbody id="projectsT">
 
-                        </tbody>
-                    </table>
-{{!--
+                    </tbody>
+                </table>
+                {{!--
                 {{#each json.links}}
                 <div class="col-12 col-sm-6  col-md-4 col-lg-3">
 
@@ -352,17 +361,232 @@
     </div>
 
 
-<a href=""></a>
+    <a href=""></a>
 </div>
 
-   <script src="https://code.jquery.com/jquery-3.3.1.js"
-			  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-			  crossorigin="anonymous"></script>
+<!-- Modal News -->
+<div class="modal fade" id="exampleModalNews" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Nueva noticia</h5>
+
+
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form action="/news/add-New" method="post" enctype="multipart/form-data">
+                    <div class="form-group">
+
+                        <h5 class="modal-title" id="exampleModalLabel">Elige un proyecto</h5>
+
+                        <select name="id_proyecto" id="projectS">
+
+                        </select>
+                        <input type="text" class="hidden" id="ucnews" name="id_usercreated" value="{{user.id}}">
+
+                      
+
+
+                        <br>
+                        <label for="exampleInputEmail1">Titulo de la noticia</label>
+                        <input type="text" name="title" class="form-control" id="" aria-describedby="emailHelp"
+                            placeholder="Proyecto ha avanzado su primer 10%">
+                        <small id="" class="form-text text-muted">Este texto aparecerá como cabezaera de tu
+                            noticia.</small>
+                        <br>
+                        <img id="PreviewImageT" class="" width="150" height="200" src="" alt="Imagen Titular"
+                            style="height:100px;" />
+
+                        <br>
+                        <br>
+                        <label for="">Inserte una imagen de cabecera</label>
+
+                        <input name="fx" onchange="readURLT(this);" type="file" enctype="multipart/form-data"
+                            required />
+
+                    </div>
+                    <div class="form-group">
+                        <br>
+                        <small id="" class="form-text text-muted">Primer Texto (solo 500
+                            caracteres).</small>
+                        <textarea id="field" name="text1" class="form-control" onkeyup="countChar(this)"
+                            required></textarea>
+                        <div class="charNum pull-right" id="charNum"></div>
+                    </div>
+                    <div class="form-group">
+                        <br>
+                        <small id="" class="form-text text-muted">Segundo Texto (solo 500
+                            caracteres).</small>
+                        <textarea id="field" name="text2" class="form-control" onkeyup="countChar2(this)"></textarea>
+                        <div class="charNum pull-right" id="charNum2"></div>
+                    </div>
+                    <div class="form-group">
+                        <br>
+                        <small id="" class="form-text text-muted">Tercer Texto (solo 500
+                            caracteres).</small>
+                        <textarea id="field" name="text3" class="form-control" onkeyup="countChar3(this)"></textarea>
+                        <div class="charNum pull-right" id="charNum3"></div>
+                    </div>
+
+                    <div class="form-group">
+                        <img id="PreviewImage" class="" width="150" height="200" src="" alt="Imagen 1"
+                            style="height:100px;" required />
+
+                        <br>
+                        <label for="">Inserte una imagen</label>
+
+                        <input name="fx" onchange="readURL(this);" type="file" enctype="multipart/form-data" required />
+
+
+                    </div>
+
+
+                    <div class="form-group">
+                        <img id="PreviewImage2" class="" width="150" height="200" src="" alt="Imagen 2"
+                            style="height:100px;" required />
+
+                        <br>
+                        <label for="">Inserte una imagen</label>
+
+                        <input name="fx" onchange="readURL2(this);" type="file" enctype="multipart/form-data" />
+
+                    </div>
+
+                    <div class="form-group">
+                        <img id="PreviewImage3" class="" width="150" height="200" src="" alt="Imagen 3"
+                            style="height:100px;" />
+
+                        <br>
+                        <label for="">Inserte una imagen</label>
+
+                        <input name="fx" onchange="readURL3(this);" type="file" enctype="multipart/form-data" />
+
+                    </div>
+                    <script>
+                        function readURL(input) {
+                            if (input.files && input.files[0]) {//Check if input has files.
+                                var reader = new FileReader(); //Initialize FileReader.
+
+                                reader.onload = function (e) {
+                                    $('#PreviewImage').attr('src', e.target.result);
+                                    $("#PreviewImage").resizable({ aspectRatio: true, maxHeight: 300 });
+                                };
+                                reader.readAsDataURL(input.files[0]);
+                            }
+                            else {
+                                $('#PreviewImage').attr('src', "#");
+                            }
+                        }
+
+                        function readURL2(input) {
+                            if (input.files && input.files[0]) {//Check if input has files.
+                                var reader = new FileReader(); //Initialize FileReader.
+
+                                reader.onload = function (e) {
+                                    $('#PreviewImage2').attr('src', e.target.result);
+                                    $("#PreviewImage2").resizable({ aspectRatio: true, maxHeight: 300 });
+                                };
+                                reader.readAsDataURL(input.files[0]);
+                            }
+                            else {
+                                $('#PreviewImage2').attr('src', "#");
+                            }
+                        }
+
+
+                        function readURL3(input) {
+                            if (input.files && input.files[0]) {//Check if input has files.
+                                var reader = new FileReader(); //Initialize FileReader.
+
+                                reader.onload = function (e) {
+                                    $('#PreviewImage3').attr('src', e.target.result);
+                                    $("#PreviewImage3").resizable({ aspectRatio: true, maxHeight: 300 });
+                                };
+                                reader.readAsDataURL(input.files[0]);
+                            }
+                            else {
+                                $('#PreviewImage3').attr('src', "#");
+                            }
+                        }
+                    </script>
+
+
+
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Crear</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="http://code.jquery.com/jquery-1.5.js"></script>
+<script>
+
+    function readURLT(input) {
+        if (input.files && input.files[0]) {//Check if input has files.
+            var reader = new FileReader(); //Initialize FileReader.
+
+            reader.onload = function (e) {
+                $('#PreviewImageT').attr('src', e.target.result);
+                $("#PreviewImageT").resizable({ aspectRatio: true, maxHeight: 300 });
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+        else {
+            $('#PreviewImageT').attr('src', "#");
+        }
+    }
+    function countChar(val) {
+        var len = val.value.length;
+        if (len >= 500) {
+            val.value = val.value.substring(0, 500);
+            if (len == 500) {
+                $('#charNum').text('máximo alcanzado');
+            }
+        }
+        else {
+            $('#charNum').text(500 - len + ' solo restan');
+        }
+    };
+    function countChar2(val) {
+        var len = val.value.length;
+        if (len >= 500) {
+            val.value = val.value.substring(0, 500);
+            if (len == 500) {
+                $('#charNum2').text('máximo alcanzado');
+            }
+        }
+        else {
+            $('#charNum2').text(500 - len + ' solo restan');
+        }
+    };
+
+    function countChar3(val) {
+        var len = val.value.length;
+        if (len >= 500) {
+            val.value = val.value.substring(0, 500);
+            if (len == 500) {
+                $('#charNum3').text('máximo alcanzado');
+            }
+        }
+        else {
+            $('#charNum3').text(500 - len + ' solo restan');
+        }
+    };
+</script>
+
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
 <script src="/js/populatetablesadmin.js"></script>
 
 
 {{else}}
 {{/if}}
-
-
-

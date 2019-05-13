@@ -66,6 +66,22 @@ function getNews(){
 
     });
 };
+function getprojectsIT(){
+    $.ajax({
+        type: 'GET',
+        url: '/projects-json',
+        dataType: 'json',
+        success: (data) => {
+            console.log(data);
+            var $select = $('#projectS');
+            $.each(data.projects, function (id,proj) {
+                
+                $select.append('<option value=' + proj.id + '>' + proj.title + '</option>');
+            });       
+        }
+
+    });
+}
 function getadmins(){
     
     $.ajax({
@@ -89,4 +105,4 @@ function getadmins(){
 
 };
 
-getowners(),getadmins(),getprojects(),getNews();
+getowners(),getadmins(),getprojects(),getNews(),getprojectsIT();

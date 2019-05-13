@@ -1,15 +1,40 @@
 <h3>User config</h3>
+<script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
 
 
-<script>
-    var stripe = Stripe('pk_test_TYooMQauvdEDq54NiTphI7jx');
-var elements = stripe.elements();
-
-var card = elements.create('card');
-card.mount('#card-element');
-
-var promise = stripe.createToken(card);
-promise.then(function(result) {
-  // result.token is the card token.
-});
-</script>
+<form action="#" method="POST" id="payment-form">
+    <input type="hidden" name="token_id" id="token_id">
+    <input type="hidden" name="use_card_points" id="use_card_points" value="false">
+    <div class="pymnt-itm card active">
+        <h2>Credit or debit card</h2>
+        <div class="pymnt-cntnt">
+            <div class="card-expl">
+                <div class="credit"><h4>Credit card</h4></div>
+                <div class="debit"><h4>Debit card</h4></div>
+            </div>
+            <div class="sctn-row">
+                <div class="sctn-col l">
+                    <label>Nombre del titular</label><input type="text" name="holder" placeholder="Como aparece en la tarjeta" autocomplete="off" data-openpay-card="holder_name">
+                </div>
+                <div class="sctn-col">
+                    <label>Número de tarjeta</label><input type="text" name="card" autocomplete="off" data-openpay-card="card_number"></div>
+                </div>
+                <div class="sctn-row">
+                    <div class="sctn-col l">
+                        <label>Fecha de expiración</label>
+                        <div class="sctn-col half l"><input type="text" name="month" placeholder="Mes" data-openpay-card="expiration_month"></div>
+                        <div class="sctn-col half l"><input type="text" name="year" placeholder="Año" data-openpay-card="expiration_year"></div>
+                    </div>
+                    <div class="sctn-col cvv"><label>Código de seguridad</label>
+                        <div class="sctn-col half l"><input type="text" name="cvv" placeholder="3 dígitos" autocomplete="off" data-openpay-card="cvv2"></div>
+                    </div>
+                </div>
+                <div class="openpay"><div class="logo">Transacciones realizadas vía:</div>
+                <div class="shield">Tus pagos se realizan de forma segura con encriptación de 256 bits</div>
+            </div>
+            <div class="sctn-row">
+                    <a class="button rght" id="pay-button">Pagar</a>
+            </div>
+        </div>
+    </div>
+</form>

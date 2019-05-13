@@ -168,6 +168,11 @@ router.post('/reset-pass', (req, res) => {
 });
 
 
+router.post('/sendmailg',(req,res)=> {
+    
+});
+
+
 router.get('/projects-json', async (req, res) => {
 
     const projects = await pool.query('SELECT * FROM PROJECTS_ ');
@@ -178,7 +183,7 @@ router.get('/projects-json', async (req, res) => {
   });
 
 
-  router.get('/news-json', async (req, res) => {
+router.get('/news-json', async (req, res) => {
 
     const news = await pool.query('SELECT * FROM NEWS_ ');
     //console.log(projects);
@@ -188,7 +193,7 @@ router.get('/projects-json', async (req, res) => {
   });
 
 
-  router.get('/users-json', async (req, res) => {
+router.get('/users-json', async (req, res) => {
 
     const news = await pool.query('SELECT * FROM USERS_ where user = 1 ');
     //console.log(projects);
@@ -196,6 +201,17 @@ router.get('/projects-json', async (req, res) => {
 
   
   });
+
+  router.get('/projects-json', async (req, res) => {
+
+    const projects = await pool.query('SELECT * FROM PROJECTS_ ');
+    //console.log(projects);
+    res.json(projects);
+
+  
+  });
+
+
 
 
 router.get('/false-news/', (req, res) => {
@@ -242,9 +258,10 @@ router.get('/false-news/', (req, res) => {
 
 
 
+
 //STRIPE
  
-router.post('st-test1',(req,res)=>{
+router.get('st-test1',(req,res)=>{
     res.send('llegamos aquí');
 });
 

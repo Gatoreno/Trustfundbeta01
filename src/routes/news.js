@@ -10,7 +10,7 @@ require('../lib/handlebars');
 
 
 router.post('/add-New', (req, res) => {
-    const {
+   const {
         title,
         text1,
         text2,
@@ -20,20 +20,22 @@ router.post('/add-New', (req, res) => {
     } = req.body;
 
     const img1 = req.files[1];
-    const nimg1 = img1.filename;
+    const nimg1 = img1.location;
 
     const img2 = req.files[2];
-    const nimg2 = img2.filename;
+    const nimg2 = img2.location;
 
     const img3 = req.files[3];
-    const nimg3 = img3.filename;
+    const nimg3 = img3.location;
 
     const imgt = req.files[0];
-    const nimgt = imgt.filename;
+    const nimgt = imgt.location;
 
-    console.log(title, text1, text2, text3, nimg1, nimg2, nimg3, id_proyecto, id_usercreated);
+   // console.log(req.params);
+   // console.log(req.files   );
 
-    const x = '';
+    //res.json({'imageUrl': req.files})
+   
     const news = {
         title:title,
         text1:text1,
@@ -43,12 +45,15 @@ router.post('/add-New', (req, res) => {
         img2: nimg2,
         img3: nimg3,
         imgh: nimgt,
-        id_proyecto,
-        id_usercreated
+        id_proyecto:id_proyecto,
+        id_usercreated:id_usercreated
 
     };
 
+    console.log(news);
+
     const insert = pool.query('INSERT INTO NEWS_ set ?', [news]);
+
 
 
     insert.then((data) => {

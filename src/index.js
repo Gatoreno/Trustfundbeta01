@@ -16,13 +16,43 @@ const session = require('express-session');
 const mysqlStore = require('express-mysql-session');
 const passport = require('passport');
 const favicon = require('express-favicon');
+const multerS3 = require('multer-s3');
+const aws = require('aws-sdk');
+const multer = require('multer');
 
 
 const app = express();
 require('./lib/passport');
 const {database} = require('./keys');
 
-const multer = require('multer');
+
+aws.config.update({
+  secretAccessKey: '+DjRHGAqke5wPu4AX8uheDz/Thy9coBgfOdR1u1N',
+  accessKeyId: 'AKIAYCDWDTGU7RVVBGVU',
+  region: 'us-east-1'
+});
+
+
+var s3 = new aws.S3();
+
+//aws s3 trustfundendtoend
+
+
+var uploads3 = multer({
+  storage: multerS3({
+      s3: s3,
+      bucket: 'trustfundendtoend',
+      key: function (req, file, cb) {
+          console.log(file);
+          let customFileName = crypto.randomBytes(18).toString('hex');
+          fileExtension = file.originalname.split('.')[1]; // get file extension from original file name
+          cb(null, customFileName + '.' + fileExtension);      }
+  })
+});
+
+
+//local storage
+/*const multer = require('multer');
 
 const storage = multer.diskStorage({
   destination: 'public/uploads',
@@ -32,6 +62,11 @@ const storage = multer.diskStorage({
     cb(null, customFileName + '.' + fileExtension);
   }
 });
+*/
+
+
+
+
 app.enable('trust proxy');
 
 // Middleware
@@ -51,8 +86,19 @@ app.use(express.json());
 app.use(passport.initialize()); 
 app.use(passport.session());
 app.use(multer({
-  storage: storage,
-  dest: 'public/uploads'
+  storage: multerS3({
+    s3: s3,
+    bucket: 'trustfundendtoend',
+     acl: 'public-read',
+    metadata: function (req, file, cb) {
+      cb(null, {fieldName: file.fieldname});
+    },
+    key: function (req, file, cb) {
+        console.log(file);
+        let customFileName = crypto.randomBytes(18).toString('hex');
+        fileExtension = file.originalname.split('.')[1]; // get file extension from original file name
+        cb(null, customFileName + '.' + fileExtension);      }
+})
 }).any('fx'));
 
 
@@ -78,6 +124,7 @@ app.use((req,res,next) => {
 //ROUTES
 app.use(require('./routes/'));
 app.use(require('./routes/api'));
+app.use(require('./routes/opp'));
 app.use('/auth',require('./routes/auth'));
 app.use('/projects',require('./routes/projects'));
 app.use('/news',require('./routes/news'));
@@ -106,6 +153,7 @@ app.set('view engine', '.hbs');
 
 
   
+
   // Start server
   
   app.listen(app.get('port'), () => {
