@@ -126,6 +126,8 @@ app.use(require('./routes/'));
 app.use(require('./routes/api'));
 app.use(require('./routes/opp'));
 app.use('/auth',require('./routes/auth'));
+app.use('/tc',require('./routes/tc'));
+
 app.use('/projects',require('./routes/projects'));
 app.use('/news',require('./routes/news'));
 app.use('/costumers', require('./routes/costumers'));

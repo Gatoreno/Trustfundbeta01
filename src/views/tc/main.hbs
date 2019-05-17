@@ -1,0 +1,226 @@
+{{#if user}}
+<script src="http://code.jquery.com/jquery-1.5.js"></script>
+    
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div align="center">
+                <img src="/img/logo512.png" class="card-img-top  rounded-circle w-50" width="100" alt="">
+
+                <br>
+                <h3>TrustCoin</h3>
+                <small>
+                    El TrustCoin es la unidad que se adquiere para apoyar proyectos, por cada número de tc adquirida vas recibiendo medallas
+                </small>
+<br><br>
+
+
+            </div>
+
+
+        </div>
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">TC</a></li>
+            <li><a data-toggle="tab" href="#menu2">Unidades</a></li>
+            <li><a data-toggle="tab" href="#menu1">Planes</a></li>
+
+        </ul>
+
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+                <div class="col-lg-12">
+                    <h4>Información importante</h4>
+                    <p>Uso de la plataforma.</p>
+
+                    <p>La forma de apoyar <a href="/projects/get-projects">proyectos</a> y generar ganacias es a través de los TrustCoins, hay dos formas de adquirirlos.</p>
+                </div>
+            </div>
+            <div id="menu1" class="tab-pane fade">
+                <div class="col-lg-12">
+                    <div>
+                        <h2>Planes</h2>
+                    </div>
+<div class="col">
+                    <div align="center" id="plans">
+
+                    </div>
+                </div>
+
+
+<script>
+    // -- /get-owners
+    function getplans() {
+
+        $.ajax({
+            type: 'GET',
+            url: '/plan-list',
+            dataType: 'json',
+            success: (data) => {
+                console.log(data)
+                data.forEach((item) => {
+
+                    const row = `<div class="col-lg-4">
+                    <a></a>
+
+                    
+
+
+
+                <div class="jumbotron"> <h2 class="">${ item.name}</h2>
+                    <p class="lead">
+                        ${ item.amount}
+                    </p>
+                    <hr class="my-4">
+                    <a class="btn btn-primary btn-lg" href="/suscribe/${ item.id}" role="button">Saber más</a>
+                </div>
+
+
+                </div>`;
+                    $('#plans').append(row);
+                });
+            }
+
+        });
+        //$("#ownerT").load();
+
+    };
+
+    getplans();
+</script>
+
+                </div>
+                <div class="col">
+                    <div align="center" id="plans">
+
+                    </div>
+                </div>
+            </div>
+            <div id="menu2" class="tab-pane fade">
+                <div class="col-lg-12">
+                    <h3>Mis unidades Unidades</h3>
+                    {{user.name}}
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+{{else}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <div align="center">
+                <img src="/img/logo512.png" class="card-img-top  rounded-circle w-50" width="100" alt="">
+
+                <br>
+                <h3>TrustCoin</h3>
+                <small>
+                    El TrustCoin es la unidad que se adquiere para apoyar proyectos, por cada número de tc adquirida vas recibiendo medallas
+                </small>
+<br><br>
+
+
+            </div>
+
+
+        </div>
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#home">TC</a></li>
+            <li><a data-toggle="tab" href="#menu2">Unidades</a></li>
+            <li><a data-toggle="tab" href="#menu1">Planes</a></li>
+
+        </ul>
+
+        <div class="tab-content">
+            <div id="home" class="tab-pane fade in active">
+                <div class="col-lg-12">
+                    <h4>Información importante</h4>
+                    <p>Uso de la plataforma.</p>
+
+                    <p>La forma de apoyar <a href="/projects/get-projects">proyectos</a> y generar ganacias es a través de los TrustCoins, hay dos formas de adquirirlos.</p>
+                </div>
+            </div>
+            <div id="menu1" class="tab-pane fade">
+                <div class="col-lg-12">
+                    <div>
+                        <h2>Planes</h2>
+                    </div>
+
+
+
+
+                </div>
+                <div class="col">
+                    <div align="center" id="plans">
+
+                    </div>
+                </div>
+            </div>
+            <div id="menu2" class="tab-pane fade">
+                <div class="col-lg-12">
+                    <h3>Unidades</h3>
+                    <p>Uso de la plataforma.</p>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+
+
+<script src="http://code.jquery.com/jquery-1.5.js"></script>
+
+
+
+<script>
+    // -- /get-owners
+    function getplans() {
+
+        $.ajax({
+            type: 'GET',
+            url: '/plan-list',
+            dataType: 'json',
+            success: (data) => {
+                console.log(data)
+                data.forEach((item) => {
+
+                    const row = `<div class="col-lg-4">
+                    <a></a>
+
+                    
+
+
+
+                <div class="jumbotron"> <h2 class="">${ item.name}</h2>
+                    <p class="lead">
+                        ${ item.amount}
+                    </p>
+                    <hr class="my-4">
+                    <a class="btn btn-primary btn-lg" href="/plan/${ item.id}" role="button">Saber más</a>
+                </div>
+
+
+                </div>`;
+                    $('#plans').append(row);
+                });
+            }
+
+        });
+        //$("#ownerT").load();
+
+    };
+
+    getplans();
+</script>
+
+{{/if}}

@@ -8,6 +8,12 @@ const pool = require('../db');
 const helpers = require('../lib/helpers');
 const jwt = require('jsonwebtoken');
 
+var Openpay = require('openpay');
+//instantiation
+var openpay = new Openpay(
+    'mypdgqijxla2a9w0kdp0',
+    'sk_3f7296c0f84144ba940b2372b34b619a');
+
 
 const {
     isLoggedIn,
@@ -162,6 +168,30 @@ router.post('/update-info-admin', (req, res) => {
 });
 
 
+router.post('/updateavatar',(req,res)=>{
+    console.log(req.files);
+    const imgl = req.files[0];
+    const imgL = imgl.location;
+
+
+    const {id} = req.body;
+
+    const userd = {
+        status: 1,
+        img: imgL,
+        admin: true
+    }
+    const query = pool.query('UPDATE USERS_ set ? where id = ? ', [userd, id]);
+
+    query.then(() => {
+        res.render('public/sucessUpdate');
+    }).catch((err) => {
+        console.log(err);
+    });
+
+});
+
+
 router.post('/update-info-user-form', (req, res) => {
     //console.log(req.body);
     //console.log(req.files);
@@ -224,6 +254,7 @@ router.post('/signup-subadmin', async (req, res) => {
         name
     } = req.body;
 
+    
     const newUser = {
         username: userName,
         name: name,

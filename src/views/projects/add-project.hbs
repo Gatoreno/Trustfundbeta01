@@ -13,30 +13,46 @@
                             <input type="text" class="hide" name="Id_usercreated" value="{{user.id_user}}">
 
                             <label for="">Nombre Del Proyecto</label><br>
-                            <input style="width: 50%;" type="text" name="title" autofocus><br>
+                            <input class="form-control" style="width: 50%;" type="text" name="title" autofocus><br>
 
                             <label for="">Nombre del autor</label><br>
-                            <input style="width: 50%;" type="text" name="fullname" autofocus><br>
+                            <input class="form-control" style="width: 50%;" type="text" name="fullname" autofocus><br>
 
                             <label for="">Mail del autor</label><br>
-                            <input style="width: 50%;" type="mail" name="mail" autofocus><br>
+                            <input class="form-control" style="width: 50%;" type="mail" name="mail" autofocus><br>
                             <label for="">Telefono del autor</label><br>
-                            <input style="width: 50%;" type="phone" name="phone" autofocus><br>
+                            <input class="form-control" style="width: 50%;" type="phone" name="phone" autofocus><br>
                             <label for="">Nombre de la universidad</label><br>
-                            <input style="width: 50%;" type="text" name="univer" autofocus><br>
+                            <input class="form-control" style="width: 50%;" type="text" name="univer" autofocus><br>
 
                             <label for="">Mail del Investigador</label><br>
-                            <input style="width: 50%;" type="mail" name="mail_investigator" autofocus><br>
+                            <input class="form-control" style="width: 50%;" type="mail" name="mail_investigator" autofocus><br>
 
 
 
                             <label for="">Nombre del Investigador</label><br>
-                            <input style="width: 50%;" type="text" name="name_investigator" autofocus><br>
+                            <input class="form-control" style="width: 50%;" type="text" name="name_investigator" autofocus><br>
 
                             <label for="">Num del Investigador</label><br>
-                            <input style="width: 50%;" type="text" name="cvu" autofocus><br>
+                            <input class="form-control" style="width: 50%;" type="text" name="cvu" autofocus><br>
 
-                            <br>
+                          
+
+                        </div>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="col-md-6 mx-auto ">
+
+            <div class="card " style="width: 100%;">
+                <div class="card-header">
+                    <h4>Media</h4>
+                </div>
+                <div class="card-body">
+
+                    <div class="form-group">
                             <div class="form-group">
                                 <label for="">Area</label><br>
                                 <select class="form-control" style="width: 50%;" name="area" id="">
@@ -202,35 +218,20 @@
                                 </script>
 
 
-                        </div>
-                </div>
-
-            </div>
-
-        </div>
-        <div class="col-md-6 mx-auto ">
-
-            <div class="card " style="width: 100%;">
-                <div class="card-header">
-                    <p>Media</p>
-                </div>
-                <div class="card-body">
-
-                    <div class="form-group">
 
                         <label for="">URL - Página web</label><br>
-                        <input style="width: 50%;" name="url" autofocus><br>
+                        <input class="form-control" style="width: 50%;" name="url" autofocus><br>
 
                         <label for="">Enlace video de youtube</label><br>
-                        <input style="width: 50%;" name="urlyt" autofocus><br>
+                        <input class="form-control" style="width: 50%;" name="urlyt" autofocus><br>
 
 
 
                         <label for="">Logo de proyecto o universidad</label><br>
-                        <input style="width: 50%;" enctype="multipart/form-data" type="file" name="fx" autofocus><br>
+                        <input class="form-control" style="width: 50%;" enctype="multipart/form-data" type="file" name="fx" autofocus><br>
 
                         <label for="">One Paper - PDF</label><br>
-                        <input style="width: 50%;" enctype="multipart/form-data" {{! thnk's multer :3 }} type="file"
+                        <input class="form-control" style="width: 50%;" enctype="multipart/form-data" {{! thnk's multer :3 }} type="file"
                             name="fx" required autofocus><br>
 
                         <script>
@@ -254,12 +255,12 @@
                         <br>
 
                         <label for="">Descripción</label><br>
-                        <textarea style="width: 100%;" name="descrip" placeholder="Descripción de proyecto">
+                        <textarea style="width: 100%;" name="descrip" class="form-control" placeholder="Descripción de proyecto">
                                     </textarea>
                         <br>
                         <br>
                         <div class="card-footer">
-                            <input type="submit" value="Generar nuevo proyecto" class="btn btn-secondary   pull-right">
+                            <input  type="submit" value="Generar nuevo proyecto" class="btn btn-secondary  pull-right">
                         </div>
                     </div>
                     </form>

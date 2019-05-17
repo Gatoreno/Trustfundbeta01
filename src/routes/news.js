@@ -96,7 +96,7 @@ router.post('/update-imgs', (req, res) => {
         id
     } = req.body;
 
-
+/*
     const qu = ('SELECT * FROM USERS_ where id = ?', [id]);
 
     qu.then((data) => {
@@ -109,7 +109,7 @@ router.post('/update-imgs', (req, res) => {
     }).catch((err) => {
         console.log(err);
     });
-
+*/
 
     const f1 = req.files[0];
     const f2 = req.files[1];
@@ -117,9 +117,9 @@ router.post('/update-imgs', (req, res) => {
 
 
     const files = {
-        img1: f1.filename,
-        img2: f2.filename,
-        img3: f3.filename
+        img1: f1.location,
+        img2: f2.location,
+        img3: f3.location
     };
 
     const queryk = pool.query('UPDATE NEWS_ set ? where id = ? ', [files, id]);

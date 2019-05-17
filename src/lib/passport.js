@@ -222,6 +222,12 @@ passport.use('local.signup', new LStrategy({
 }));
 
 
+
+
+
+
+
+
 passport.use('local.signup-subadmin', new LStrategy({
     usernameField: 'name',
     passwordField: 'pass',

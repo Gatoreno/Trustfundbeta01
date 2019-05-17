@@ -1,0 +1,90 @@
+{{#if plan}}
+
+
+<input id="lapso" class="hidden" value="{{plan.repeat_unit}}" />
+<input id="amount" type="text" class="hidden" value="{{plan.amount}}" />
+<input type="text" class="hidden" value="{{plan.currency}}" id="currency" />
+<input type="text" id="cada" class="hidden" value="{{plan.repeat_every}}">
+
+
+<div class="jumbotron">
+    <h2 class="">{{plan.name}}</h2>
+    <p class="lead">
+        Costo - {{ plan.amount}}
+    </p>
+    <p>
+        Esta suscripción tienen un lapso de {{plan.repeat_every}} <label id="lp" for=""></label>
+    </p>
+    <p>
+        Su costo de inversión es de <label id="lcost" for=""> </label> para el final de su suscripción
+    </p>
+
+
+    <p class="hidden"> 
+        {{plan.id}}
+
+        {{plan.amount}}
+
+        {{timeago plan.creation_date}}
+
+        {{plan.repeat_every}}
+
+        {{plan.repeat_unit}}
+
+        {{plan.retry_times}}
+
+
+        {{plan.status_after_retry}}
+
+        {{plan.currency}}</p>
+    <small class="pull-right">Vigente desde {{timeago plan.creation_date}}</small>
+    <br>
+    <hr class="my-4">
+    <a class="btn btn-primary btn-lg pull-right" href="/suscribe/{{plan.id}}" role="button">Suscribirse</a>
+
+    <br>
+</div>
+
+<script>
+    function config() {
+        var lapso = document.getElementById('lapso');
+        var lp = document.getElementById('lp');
+        var currency = document.getElementById('currency');
+        let amount = document.getElementById('amount');
+        //var cost = pasreInt(amount.value) * parseInt(lapso.value);
+        var cada = document.getElementById('cada');
+        amount = parseFloat(amount.value).toFixed(2);
+        let lapsodecimal = parseFloat(cada.value).toFixed(2);
+
+
+        var lcost = document.getElementById('lcost');
+        var rcost = lapsodecimal * amount;
+
+        switch (lapso.value) {
+            case 'week':
+                lp.innerHTML = "semanas";
+                break;
+            case 'mounth':
+                lp.innerHTML = "meses";
+                break;
+            case 'anual':
+                lp.innerHTML = "años";
+                break;
+        }
+        var ccost = "$ " + rcost + " " + currency.value
+        lcost.innerHTML = ccost;
+    }
+    config();
+</script>
+
+{{else}}
+<div class="col-lg-12 ">
+    <div class="card text-center">
+        <div class="card-body">
+            <p>Parace que ha habido un error, por favor reportelo a <a href="">support@trustfund.com.mx</a> </p>
+        </div>
+    </div>
+</div>
+</div>
+
+{{/if}}

@@ -33,13 +33,15 @@
 
         <div class="tab-content ">
             <div id="home" class="tab-pane fade in active p3">
-                <nav aria-label="breadcrumb">
+   
+
+             <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
                         <li class="breadcrumb-item"><a href="#">Home</a></li>
-                        <li class="breadcrumb-item"><a href="#">Perfil</a></li>
                         <li class="breadcrumb-item active" aria-current="page">Actualizar datos</li>
                     </ol>
                 </nav>
+
                 <div class="card hovercard">
                     <div class="cardheader">
 
@@ -51,10 +53,10 @@
                     </div>
                     <div class="info">
                         <div class="title">
-                            <a target="_blank" href="https://scripteden.com/">Script Eden</a>
+                            <a target="_blank" href="/Procfile">{{user.name}}</a>
                         </div>
-                        <div class="desc">{{user.name}}</div>
-                        <div class="desc">Curious developer {{user.id_user}}</div>
+                        <div class="desc">{{user.mail}}</div>
+                        <div class="desc">Curious developer {{timeago user.created_at}}</div>
                         <div class="desc">Tech geek {{user.pass}}</div>
                     </div>
                     <div class="bottom top2">
@@ -81,10 +83,7 @@
 
                 <nav aria-label="breadcrumb">
                     <ol class="breadcrumb">
-                        <li class="breadcrumb-item"><a href="#" data-toggle="modal"
-                                data-target="#myModalsubAdmin">Agregar sub-Admin</a></li>
-                        <li class="breadcrumb-item"><a href="#">Ver Lista </a></li>
-                        <li class="breadcrumb-item active" aria-current="page"></li>
+                        <li class="breadcrumb-item"><a href="#" data-toggle="modal" data-target="#myModalsubAdmin">Agregar sub-Admin</a></li>
                     </ol>
                 </nav>
 

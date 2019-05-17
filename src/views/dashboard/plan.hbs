@@ -1,0 +1,127 @@
+{{#if user.admin}}
+
+
+{{#if plan}}
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="jumbotron">
+                <h2 class="">{{plan.name}}</h2>
+                <b>Divisa:</b>{{plan.amount}} {{plan.currency}}
+
+
+            </div>
+
+
+            <div class="card bg-dark text-white">
+                <div class="card-body">
+                    <form action="" method="POST">
+                        <input class="btn btn-default pull-right" type="submit" value="Modificar Plan">
+
+                        <br>
+                        <label for="">Monto</label><br>
+                        <input type="text" name="amount" class="form-control" value="{{plan.amount}}"><br>
+
+                        <p> <label for="">Fecha de creación</label> {{plan.creation_date}} /
+                            {{timeago plan.creation_date}}</p>
+                        <label for="">Número de repeticiones</label><br>
+                        <input type="text" name="repeat_every" class="form-control" value="{{plan.repeat_every}}">
+                        <label for="">Lapso de tiempo</label><br>
+                        <input type="text" name="" class="form-control " value="{{plan.repeat_unit}}" disabled>
+
+
+                        <select name="repeat_unit" id="">
+                            <option value="week">Semanal</option>
+                            <option value="month">Mensual</option>
+                            <option value="year">Anual</option>
+                        </select><br>
+                        <label for="">Intentos de cobro</label><br>
+                        <input type="text" name="retry_times" class="form-control" value="{{plan.retry_times}}">
+                        <label for="">Status después de intentar</label><br>
+                        <input type="text" name="" class="form-control" value="{{plan.status_after_retry}}">
+                        <label for="">Días de prueba gratis</label>
+                        <input class="form-control" type="text" value="{{plan.trial_days}}">
+
+
+                        <hr class="my-4">
+
+                    </form>
+                    <form action=""></form>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-lg-4">
+                            <a class="btn btn-danger form-control" href="" data-toggle="modal" data-target="#myModal">Eliminar Plan</a>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- The Modal -->
+<div class="modal" id="myModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">ELIMINAR PLAN {{plan.name}}</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <form action="/plan-delete" method="post">
+
+                
+                <input type="text" class="" name="id" value="{{plan.id}}">
+                <input type="text" name="id_user" value="{{user.id}}">
+
+                <h5>Usted esta apunto de eliminar este plan</h5>
+                <h6>¿seguro que deseas hacer esto?</h6>
+
+                <input name="pass" type="password" placeholder="contraseña" required>
+
+                <input type="submit" value="Eliminar" class="btn btn-danger">
+                
+                </form>
+            </div>
+
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{{else}}
+<div class="col-lg-12 ">
+    <div class="card text-center">
+        <div class="card-body">
+            <p>Parace que ha habido un error, por favor reportelo a <a href="">support@trustfund.com.mx</a> </p>
+        </div>
+    </div>
+</div>
+</div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+
+{{/if}}
+
+
+
+
+
+{{else}}
+<h1> Usted no debería estar aquí</h1>
+{{/if}}

@@ -1,39 +1,133 @@
 {{#if user.admin}}
 
 
+<div class="container">
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Clientes</a></li>
+                <li><a data-toggle="tab" href="#menu1">Planes</a></li>
+                <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+            </ul>
 
-<table class="table table-hover">
-    <thead>
-        <tr>
-            <th>Idetificador </th>
-            <th>Fecha</th>
-            <th>Mail</th>
-            <th>Balance</th>
-        </tr>
-    </thead>
-    <tbody>
-        {{#each customers}}
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+   <h3>Clientes</h3>
+                        <small>Estos datos son proveidos por <a href="">OpenPay.com</a></small>
 
-        <tr>
-            <td>
-                {{id}}
 
-            </td>
-             <td>
-                {{created}}
-            </td>
-            <td>{{email}}
-            </td>
-            <td>{{account_balance}}
-            </td>
-           
-        </tr>
 
-        {{/each}}
+                    <div class="col-lg-12">
+                     
+                        <h3></h3>
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Idetificador </th>
+                                    <th>Fecha</th>
+                                    <th>Mail</th>
+                                    <th>Balance</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientsT">
 
-    </tbody>
-</table>
+                            </tbody>
+                        </table>
+                    </div>
+                    <br>
+                </div>
+                <div id="menu1" class="tab-pane fade">
+                    <h3>Planes</h3>
 
+                    <br>
+                    <h5>
+                        Crear plan
+                    </h5>
+
+                    <form action="/plan-create" method="POST">
+                        <input class="btn btn-default pull-right" value="Crear plan" type="submit">
+                        <br>
+                        <br>
+                        <input type="text" class="form-control" name="name" placeholder="MensualEJemplo" required>
+                        <input type="text" class="form-control" name="amount" placeholder="Cantidad - 150.00" required>
+                        <input type="text" class="form-control" name="status_after_retry" placeholder="UNPAID/CANCELLED"
+                            required>
+                        <input type="text" class="form-control" name="retry_times" placeholder="Reintento de cobro - 1 / 2 / 10" required>
+                        <select  class="form-control" name="repeat_unit" id="" required>
+                            <option value="week">
+                                semenal
+                            </option>
+                            <option value="month">
+                                mensual
+                            </option>
+                            <option value="year">
+                                anual
+                            </option>
+                        </select>
+                            <input type="text" class="form-control" name="trial_days"
+                                placeholder="Días de prueba - Se recomineda 0" required>                        
+                            <input type="text" class="form-control" name="repeat_every"
+                                placeholder="Repetir por lapso de tiempo semanal = 1 / mensual = 2" required>
+
+                    </form>
+                    <br>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Idetificador </th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Ver mas</th>
+                            </tr>
+                        </thead>
+                        <tbody id="plansT">
+
+                        </tbody>
+                    </table>
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    <h3>Menu 2</h3>
+                    <p>Some content in menu 2.</p>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
+<script src="/js/populatetablesadmin.js"></script>
+
+
+
+<script>
+    function getplans() {
+        $.ajax({
+            type: 'GET',
+            url: '/plan-list',
+            dataType: 'json',
+            success: (data) => {
+
+                data.forEach((item) => {
+                    const row = `<tr>
+                    <td>${item.name}</td>
+                    <td>${item.creation_date}</td>
+                    <td>${item.status}</td>
+                    <td><a href="/plan-edit/${item.id}">ver mas<a></td>
+                </tr>`;
+                    $('#plansT').append(row);
+                });
+            }
+
+        });
+    }
+
+
+    getplans();
+</script>
 
 {{else}}
 

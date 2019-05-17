@@ -1,4 +1,42 @@
 
+    // -- /get-owners
+    function getplans() {
+
+        $.ajax({
+            type: 'GET',
+            url: '/plan-list',
+            dataType: 'json',
+            success: (data) => {
+                console.log(data)
+                data.forEach((item) => {
+
+                    const row = `<div class="col-lg-4">
+                    <a>${ item.id}</a>
+                  
+                    <a>${ item.amount}</a>
+                    
+
+
+
+                <div class="jumbotron"> <h2 class="">${ item.name}</h2>
+                    <p class="lead">
+                        ${ item.amount}
+                    </p>
+                    <hr class="my-4">
+                    <a class="btn btn-primary btn-lg" href="#" role="button">Saber más</a>
+                </div>
+
+
+                </div>`;
+                    $('#plans').append(row);
+                });
+            }
+
+        });
+        //$("#ownerT").load();
+
+    };
+
 // -- /get-owners
 function getowners(){
     
@@ -10,7 +48,7 @@ function getowners(){
 
             data.forEach( ( item ) => {
                 const row = `<tr>
-                    <td><img src="${ item.img }"></td>
+                    <td><img width="96px" height="65px"  src="${ item.img }"></td>
                     <td>${ item.name }</td>
                     <td><a href="/get-user/${ item.id}"><button>Editar</button></a></td>
                 </tr>`;
@@ -92,7 +130,7 @@ function getadmins(){
 
             data.forEach( ( item ) => {
                 const row = `<tr>
-                    <td><img src="${ item.img }"></td>
+                    <td><img width="96px" height="65px" src="${ item.img }"></td>
                     <td>${ item.name }</td>
                     <td><a href="/get-user-edit/${ item.id}"><button>Editar</button></a></td>
                 </tr>`;
@@ -104,5 +142,24 @@ function getadmins(){
     //$("#ownerT").load();
 
 };
+function getclients(){
+    $.ajax({
+        type: 'GET',
+        url: '/clients-list',
+        dataType: 'json',
+        success: (data) => {
 
-getowners(),getadmins(),getprojects(),getNews(),getprojectsIT();
+            data.forEach( ( item ) => {
+                const row = `<tr>
+                    <td>${ item.name }</td>
+                    <td>${ item.creation_date }</td>
+                    <td>${ item.email}</td>
+                    <td><a href="${ item.id}">ver mas<a></td>
+                </tr>`;
+                $('#clientsT').append( row );
+            });
+        }
+
+    });
+}
+getowners(),getadmins(),getclients(),getprojects(),getNews(),getprojectsIT();

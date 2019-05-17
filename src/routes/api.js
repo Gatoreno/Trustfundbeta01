@@ -5,6 +5,11 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
+const nodemailer = require("nodemailer");
+
+
+
+
 
 
 const {
@@ -12,9 +17,23 @@ const {
     isNotLoggedIn
 } = require('../lib/auth');
 
-router.get('/get-logo/', (req, res) => {
-    res.status(200).sendFile('public/img/logo512.png');
+router.post('/api/login', (req, res) => {
+    const {
+        id
+    } = req.body;
+    const user = id;
+    const token = jwt.sign({
+        user
+    }, 'process.env.SECRETO', {
+        expiresIn: '3600s'
+    });
+
+    res.json({
+        token
+    });
 });
+
+
 
 //Ensure
 router.get('/api/protected', ensureToken, (req, res) => {
@@ -45,22 +64,116 @@ function ensureToken(req, res, next) {
     }
 }
 
+router.get('/get-reset-pass',  (req, res) => {
+            res.render('auth/get-reset-pass');
+});
+
+router.post('/get-reset-pass', (req, res) => {
+
+    //check if user existe
+
+    const mailuser = req.body.mail;
+    const qu = pool.query('SELECT * from USERS_ where mail = ?', [mailuser]);
 
 
-router.post('/api/login', (req, res) => {
-    const {
-        id
-    } = req.body;
-    const user = id;
-    const token = jwt.sign({
-        user
-    }, process.env.SECRETO, {
-        expiresIn: '3600s'
+    qu.then((resx) => {
+        if (resx.length > 0) {
+            const user_ = res[0];
+
+           //creando token con mail
+            const user = mailuser;
+            const token = jwt.sign({
+                user
+            }, 'process.env.SECRETO', {
+                expiresIn: '3600s'
+            });
+            //mail de recuperación
+            let transporter = nodemailer.createTransport({
+                service: "gmail",
+                port: 25,
+                secure: false, // true for 465, false for other ports
+                auth: {
+                    type: 'oauth2',
+                    user: 'manuel.o@trustfund.com.mx',
+                    clientId: '804329507754-hibhcnfn4j6vja59ua8vovea5b2r5lr5.apps.googleusercontent.com',
+                    clientSecret: 'XG5O2BWvT_FeolZFmc5_Fq2W',
+                    refreshToken: '1/hF2D-9doalNaTWMpGXsXIRttLifkotder8G5CWsV-I1NMxTk1TW8pEOvdl7rbHjK',
+                }
+            });
+            const xname = 'TRUSTFUND';
+
+            req.headers = {
+                'Content-Type':'application/x-www-form-urlencoded',
+                    'authorization':'Bearer'
+                }
+        
+            //host =    req.header('host');    
+            console.log();
+
+            // send mail with defined transport object
+            let mail = transporter.sendMail({
+                from: '"TrustFundWeb 👻 user: ' + xname + ' <' + mailuser + '>', // sender address
+                to: "pushpoped@gmail.com", // list of receivers
+                subject: "Reinicio de contraseña ✔", // Subject line
+                text: 'Reinicio de contraseña',
+                html: '<div class="card" style="width:400px">' +
+                    '<div class="card-body">' +
+                    '<h4 class="card-title">Mensaje de:' + xname + '</h4>' +
+                    '<p class="card-text">Este espacio es para recuperar tu contraseña</p>' +
+                    '<a href="http://'+req.headers.host+'/reset-pass-confirm/'+ token + '">Click Aqui</a>' +
+                    '<p class="card-text">' + mailuser + '</p>' +
+                    '' +
+                    '</div>' +
+                    '</div>',
+            });
+            
+            mail.then(() => {
+                
+                res.render('public/mensajenviado');
+
+            }).catch((err) => {
+                console.log(err);
+            });
+        }else{
+            req.flash('message', 'No existe usuario con ese mail');
+            res.redirect('/reset-pass');
+        }
+    }).catch((err) => {
+        console.log(err);
     });
 
-    res.json({
-        token
+
+});
+
+router.get('/reset-pass-confirm/:token',isNotLoggedIn,ensureToken ,(req, res) => {
+  
+    //console.log(req.params);
+
+  
+    const {token} = req.params;
+    //console.log(token);
+    jwt.verify(token, 'process.env.SECRETO', (err, data) => {
+        if (err) {
+            res.sendStatus(403);
+        } else {
+        const sc = {tok: token}
+            //console.log(data)
+            res.render('auth/reset-pass',{sc});
+        }
     });
+
+
+});
+
+
+router.get('/getget',(req,res)=>{
+    req.headers = {
+        'Content-Type':'application/x-www-form-urlencoded',
+            'authorization':'Bearer'
+        }
+
+    const host =req.header('host');    
+    console.log(host);
 });
 
 
@@ -76,11 +189,13 @@ router.get('/get-user-edit/:id', isLoggedIn, (req, res) => {
         data.forEach((data) => {
             user.push(data);
 
-            
+
 
         });
 
-        res.render('auth/edit-user',{user});
+        res.render('auth/edit-user', {
+            user
+        });
 
 
     });
@@ -100,28 +215,51 @@ router.post('/contact', (req, res) => {
         message
     } = req.body;
 
-    //console.log(token);
 
-    const sgMail = require('@sendgrid/mail');
-    //sgMail.setApiKey(process.env.SENDGRID_API_KEY);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
-    sgMail.setApiKey('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');
-    const msg = {
-        to: 'support@trustfund.com.mx',
-        from: mail,
-        subject: 'Reiniciar contraseña TrustFund',
-        text: 'Gracias por tu confianza.',
+
+    //mail 
+    let transporter = nodemailer.createTransport({
+        service: "gmail",
+        port: 25,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            type: 'oauth2',
+            user: 'manuel.o@trustfund.com.mx',
+            clientId: '804329507754-hibhcnfn4j6vja59ua8vovea5b2r5lr5.apps.googleusercontent.com',
+            clientSecret: 'XG5O2BWvT_FeolZFmc5_Fq2W',
+            refreshToken: '1/hF2D-9doalNaTWMpGXsXIRttLifkotder8G5CWsV-I1NMxTk1TW8pEOvdl7rbHjK',
+        }
+    });
+    const xname = 'TRUSTFUND';
+
+    // send mail with defined transport object
+    let mailer = transporter.sendMail({
+        from: '"TrustFundWeb 👻 user: ' + xname + ' <' + mailuser + '>', // sender address
+        to: "support@trsutfund.com.mx", // list of receivers
+        subject: "Mensaje de Contacto ✔", // Subject line
+        text: 'Mensaje de Contacto',
         html: '<div class="card" style="width:400px">' +
             '<div class="card-body">' +
-            '<h4 class="card-title">Mensaje de:' + name + '</h4>' +
-            '<p class="card-text">' + message + '</p>' +
-            '<p class="card-text">mail:' + mail + '</p>' +
+            '<h4 class="card-title">Mensaje de:' + xname + '</h4>' +
+            '<p class="card-text">'+message+'</p>' +
+            '<p class="card-text">' + mailuser + '</p>' +
             '' +
             '</div>' +
             '</div>',
-    };
-    sgMail.send(msg).then(() => {
-        res.render('public/mensajenviado');
     });
+    
+    
+    
+    
+    mailer.then((success) => {
+        console.log(success)
+        res.render('public/mensajenviado');
+    
+    }).catch((err) => {
+        console.log(err);
+    });
+   
+       
 
 });
 
@@ -134,42 +272,9 @@ router.get('/reset-pass', (req, res) => {
 
 });
 
-router.post('/reset-pass', (req, res) => {
-    //console.log(process.env.SENDGRID_API_KEY);
-    const mail = 'mai@gmail.com';
-    const token = jwt.sign({
-        mail
-    }, process.env.SECRETO, {
-        expiresIn: '3600s'
-    });
 
-    //console.log(token);
+router.post('/sendmailg', (req, res) => {
 
-    const sgMail = require('@sendgrid/mail');
-    sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-    const msg = {
-        to: 'pushpoped@gmail.com',
-        from: 'manuel.o@trustfund.com.mx',
-        subject: 'Reiniciar contraseña TrustFund',
-        text: 'Gracias por tu confianza.',
-        html: '<div class="card" style="width:400px">' +
-            '<img class="card-img-top" src="" alt="Card image" style="width:100%">' +
-            '<div class="card-body">' +
-            '<h4 class="card-title">Reinicia tu contraseña</h4>' +
-            '<p class="card-text">Some example text some example text. John Doe is an architect and engineer</p>' +
-            '<a href="' + token + '" class="">Restablecer contraseña.</a>' +
-            '</div>' +
-            '</div>',
-    };
-    sgMail.send(msg).then(() => {
-        res.json('sended');
-    });
-
-});
-
-
-router.post('/sendmailg',(req,res)=> {
-    
 });
 
 
@@ -177,39 +282,45 @@ router.get('/projects-json', async (req, res) => {
 
     const projects = await pool.query('SELECT * FROM PROJECTS_ ');
     //console.log(projects);
-    res.json({projects});
+    res.json({
+        projects
+    });
 
-  
-  });
+
+});
 
 
 router.get('/news-json', async (req, res) => {
 
     const news = await pool.query('SELECT * FROM NEWS_ ');
     //console.log(projects);
-    res.json({news});
+    res.json({
+        news
+    });
 
-  
-  });
+
+});
 
 
 router.get('/users-json', async (req, res) => {
 
     const news = await pool.query('SELECT * FROM USERS_ where user = 1 ');
     //console.log(projects);
-    res.json({news});
+    res.json({
+        news
+    });
 
-  
-  });
 
-  router.get('/projects-json', async (req, res) => {
+});
+
+router.get('/projects-json', async (req, res) => {
 
     const projects = await pool.query('SELECT * FROM PROJECTS_ ');
     //console.log(projects);
     res.json(projects);
 
-  
-  });
+
+});
 
 
 
@@ -260,8 +371,8 @@ router.get('/false-news/', (req, res) => {
 
 
 //STRIPE
- 
-router.get('st-test1',(req,res)=>{
+
+router.get('st-test1', (req, res) => {
     res.send('llegamos aquí');
 });
 

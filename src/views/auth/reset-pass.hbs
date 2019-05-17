@@ -1,0 +1,45 @@
+<h3>yeah reset pass</h3>
+
+<div id="panel" class="panel panel-danger hidden">
+    <div class="panel-heading" id="ph">Error - Contraseñas no coiniciden</div>
+</div>
+<div id="panelT" class="panel panel-success hidden">
+    <div class="panel-heading" id="ph">Correcto - Contraseñas coiniciden</div>
+</div>
+<form action="">
+    <input type="password" id="pas">
+
+    <input type="password" id="pas1" onchange="checkpass()">
+    <input type="submit" value="Guardar">
+</form>
+
+<script>
+
+
+    function checkpass() {
+        var p1 = document.getElementById("pas").value;
+        var p2 = document.getElementById("pas1").value;
+        var panel = document.getElementById("panel");
+        
+        panel.classList.add("hidden");
+
+        if (p1 !== p2) {
+            
+            document.getElementById('pas1').value = '';
+            document.getElementById('pas').value = '';
+
+            var panel = document.getElementById("panel");
+            panel.classList.remove("hidden");
+
+
+           
+        }else{
+             panel.classList.add("hidden");
+             var panelT = document.getElementById("panelT");
+             panelT.classList.remove("hidden");
+        }
+
+    };
+
+
+</script>
