@@ -5,6 +5,7 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../db');
 const helpers = require('../lib/helpers');
+const axios = require('axios');
 
 
 const {
@@ -27,7 +28,7 @@ router.post('/client-create', (req, res) => {
 
 
     const {
-        id,
+        
         name,
         mail
     } = req.body;
@@ -39,14 +40,14 @@ router.post('/client-create', (req, res) => {
     };
 
     //const client = 
-    openpay.customers.create(customerRequest, (error, body) => {
+    openpay.customers.create(customerRequest, (error, customer) => {
         console.log(error);
-        console.log(body);
+        console.log(customer);
 
 
         const wallet = {
-            id: body.id,
-            id_usercreated: id,
+             
+            id_usercreated: 0,
             lastupdate: Date.now()
         };
         const qu =
@@ -59,7 +60,7 @@ router.post('/client-create', (req, res) => {
             console.log(err);
         });
 
-        res.json(body);
+        res.json(customer);
 
     });
 });
@@ -232,16 +233,87 @@ router.get('/plan/:id', (req, res) => {
 
 });
 
-router.get('/suscribe/:id', isLoggedIn, (req, res) => {
+router.get('/subscribe/:id', isLoggedIn, (req, res) => {
     const id = req.params.id;
     console.log(id);
 
     openpay.plans.get(id, function (error, plan) {
         // ...
 
-        res.render('tc/suscribe', {
+        res.render('tc/subscribe', {
             plan
         });
+    });
+
+});
+
+router.post('/create-subscribtion', (req, res) => {
+
+    const {
+        id_user,
+        id_plan
+    } = req.body;
+    console.log(id_user, id_plan)
+
+    const qu = pool.query('select * from users_ where id = ?', [id_user]);
+
+    qu.then((data) => {
+        if (data.length > 0) {
+            const user = data[0];
+            //console.log(data[0]);
+
+            const userid = user.id;
+            const clientid = user.id_client;
+            
+            if (clientid == null) {
+
+                const usermail = user.mail;
+                const username = user.name;
+                function getClientFromServer(username,usermail) {
+                    return axios.post("https://trustfundapp.herokuapp.com/client-create",
+
+                        {
+                            name: username,
+                            mail: usermail
+                        }
+
+
+                    ).then(function (res) {
+                        console.log(res.data);
+                        return res.data;
+                        //console.log(datax.access_token);
+
+                    }).catch((er) => {
+                        console.log(er);
+                    });
+                    console.log(tok);
+                    //console.log(reqtoken);
+                    // res.render('links/bbvat',{reqbbva: reqbbva});
+                }
+
+
+                getClientFromServer(username,usermail).then(data => {
+                    console.log(data);
+                   /* const customer_id = data.id;
+                    
+                      const query =  pool.query('UPDATE users_ SET id_client = ? WHERE id = ?', [customer_id, userid]);
+                      query.then(()=>{
+                          res.redirect('/subscribe/'+id_plan, 200, req.flash('message', 'Ya puedes subscribirte.'));
+                      });*/
+                });
+
+
+
+
+
+            } else {
+                console.log('waiting');
+            }
+
+        } else {
+            res.redirect('/auth/signin', 200, req.flash('message', 'No hay usuario con ese mail.'));
+        }
+
     });
 
 });
@@ -301,6 +373,10 @@ router.post('/charge-tc-unit', (req, res) => {
         });
     */
 });
+
+function createclient() {
+
+}
 
 
 

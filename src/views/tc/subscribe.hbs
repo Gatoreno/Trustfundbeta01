@@ -1,5 +1,11 @@
 {{#if user}}
 
+{{#if user.client}}
+
+{{else}}
+<h3> usted no podra suscribirse si no es cliente</h3>
+{{/if}}
+
 {{#if plan}}
 
 <input id="lapso" class="hidden" value="{{plan.repeat_unit}}" />
@@ -41,7 +47,7 @@
     <small class="pull-right">Vigente desde {{timeago plan.creation_date}}</small>
     <br>
     <hr class="my-4">
-    <a class="btn btn-default btn-lg pull-right"  data-toggle="modal" data-target="#myModal"role="button">Suscribirse</a>
+    <a class="btn btn-default btn-lg pull-right"  data-toggle="modal" data-target="#myModal"role="button">Subscribe</a>
 
 
     <br>
@@ -86,14 +92,14 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Suscripción  <label for="">{{plan.name}}</label></h4>
+                    <h4 class="modal-title">Subscripción  <label for="">{{plan.name}}</label></h4>
                 </div>
                 <div class="modal-body">
-                    <form action="/create-suscribtion" enctype="multipart/form-data" method="POST">
+                    <form action="/create-subscribtion" enctype="multipart/form-data" method="POST">
 
-                    <input type="text" class="" value="{{user.id}}"/>
+                    <input type="text" class="" name="id_user" value="{{user.id}}"/>
 
-                    <input type="text" class="" value="{{plan.id}}"/>
+                    <input type="text" class="" name="id_plan" value="{{plan.id}}"/>
                     <h4 class="modal-title"><label for="">{{user.username}} estás seguro que quieres suscribirte a este plan?   </label></h4>
 
                         
