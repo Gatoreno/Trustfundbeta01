@@ -6,31 +6,31 @@
             type: 'GET',
             url: '/plan-list',
             dataType: 'json',
-            success: (data) => {
-                console.log(data)
-                data.forEach((item) => {
+                success: (data) => {
+                    console.log(data)
+                    data.forEach((item) => {
 
-                    const row = `<div class="col-lg-4">
-                    <a>${ item.id}</a>
-                  
-                    <a>${ item.amount}</a>
+                        const row = `<div class="col-lg-4">
+                        <a>${ item.id}</a>
                     
+                        <a>${ item.amount}</a>
+                        
 
 
 
-                <div class="jumbotron"> <h2 class="">${ item.name}</h2>
-                    <p class="lead">
-                        ${ item.amount}
-                    </p>
-                    <hr class="my-4">
-                    <a class="btn btn-primary btn-lg" href="#" role="button">Saber más</a>
-                </div>
+                    <div class="jumbotron"> <h2 class="">${ item.name}</h2>
+                        <p class="lead">
+                            ${ item.amount}
+                        </p>
+                        <hr class="my-4">
+                        <a class="btn btn-primary btn-lg" href="#" role="button">Saber más</a>
+                    </div>
 
 
-                </div>`;
-                    $('#plans').append(row);
-                });
-            }
+                    </div>`;
+                        $('#plans').append(row);
+                    });
+                }
 
         });
         //$("#ownerT").load();
@@ -155,6 +155,7 @@ function getclients(){
                     <td>${ item.creation_date }</td>
                     <td>${ item.email}</td>
                     <td><a href="${ item.id}">ver mas<a></td>
+                    <td><a href="/client-delete/${ item.id}">ver mas<a></td>
                 </tr>`;
                 $('#clientsT').append( row );
             });

@@ -1,4 +1,11 @@
-<ul class="nav nav-tabs">
+{{#if user}}
+{{!  clase fade in : my-element animated fadeIn delay-2s  }}
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+<div class="container my-element animated fadeIn delay-1s">
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="nav nav-tabs">
     <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
     <li><a data-toggle="tab" href="#menu1">Perfil</a></li>
     <li><a data-toggle="tab" href="#menu2">Social</a></li>
@@ -8,8 +15,185 @@
 
 <div class="tab-content">
     <div id="home" class="tab-pane fade in active">
-        <h3>HOME</h3>
-        <p>Some content.</p>
+        <h3>{{user.username}} {{user.id_client}}</h3>
+
+
+
+        {{#if user.id_client}}
+
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Idetificador </th>
+                    <th>Fecha</th>
+                    <th>Mail</th>
+
+                </tr>
+            </thead>
+            <tbody id="clientT">
+
+            </tbody>
+        </table>
+        <br>
+        <div class="pull-right">
+            <a href="/cardclient-create"> Agregar Tarjeta</a>
+            <a href="" data-toggle="modal" data-target="#myModalcard"> Modal</a>
+        </div>
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th>Tarjeta </th>
+                    <th>Fecha</th>
+                    <th>Nombre</th>
+
+                </tr>
+            </thead>
+            <tbody id="cardsT">
+
+            </tbody>
+        </table>
+        <script src="https://code.jquery.com/jquery-3.3.1.js"
+            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+
+
+
+
+        <script>
+
+
+
+
+            function getclient() {
+
+                $.ajax({
+                    type: 'get',
+                    url: '/client-get/{{user.id_client}}',
+                    dataType: 'json',
+
+                    success: (data) => {
+
+
+                        const row = `<tr>
+                    <td>${ data.name}</td>
+                    <td>${ data.creation_date}</td>
+                    <td>${ data.email}</td>
+                   
+                </tr>`;
+                        $('#clientT').append(row);
+
+                    }
+
+                });
+            }
+            function getcl() {
+                $.ajax({
+                    type: 'get',
+                    url: '/cards-list/{{user.id_client}}',
+                    dataType: 'json',
+
+                    success: (data) => {
+                        console.log(data.lenght);
+                        if (data.lenght === undefined) {
+                            const row1 = '<tr>  <td><a >No hay datos aún</a></td><td></td> <td></td></tr>';
+                            $('#cardsT').append(row1);
+                        } else {
+                            data.forEach((item) => {
+                                const row = `<tr>
+                                            <td><img width="96px" height="65px" src="${ item.img}"></td>
+                                            <td>${ item.name}</td>
+                                            <td><a href="/get-user-edit/${ item.id}"><button>Editar</button></a></td>
+                                        </tr>`;
+                                $('#cardsT').append(row);
+                            });
+                        }
+
+                    }
+                });
+            }
+
+
+
+
+
+
+
+            getclient(); getcl();
+        </script>
+
+
+        <!-- Modal -->
+        <div id="myModalcard" class="modal fade" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Agregar tarjeta</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Te permite realizar compras y suscribciones, en trustcoin protegemos todos tus datos.</p>
+
+
+                  
+
+
+
+
+                        <div class="col-4">
+                            
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        {{else}}
+
+        <h4>Usted aún no tiene datos de cliente</h4>
+        <small>Para ser cliente de <a href="" class="" data-toggle="modal" data-target="#myModalcliente">click
+                aquí!</a></small>
+
+
+
+        <!-- Modal -->
+        <div class="modal fade" id="myModalcliente" role="dialog">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">¿Qué implica ser cliente?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Para proteger tus datos TrustFund utiliza OpenPay , una ves seas cliente, podrás hacer,
+                            pagos, subscribirte a un plan , apoyar poryectos y generar tu propio ahorro</p>
+                        <b>Esto no genera ningún costo pero nos ayuda cuidar tu información</b>
+                        <form action="/costumer-create" method="post">
+                            <input type="text" class="hidden" name="id" value="{{user.id}}">
+                            <input type="text" name="mail" class="form-control" value="{{user.mail}}">
+
+                            <input type="text" name="name" class="form-control" value="{{user.username}} ">
+                            <input type="submit" class="btn btn-default" value="Generar mi id cliente">
+                        </form>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        {{/if}}
+
     </div>
     <div id="menu1" class="tab-pane fade">
         <h3>Menu 1</h3>
@@ -28,95 +212,7 @@
         <p>Some content in menu 2.</p>
 
 
-        <script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
-        <script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
 
-        <script type="text/javascript">
-            $(document).ready(function () {
-
-                OpenPay.setId('mzdtln0bmtms6o3kck8f');
-                OpenPay.setApiKey('pk_f0660ad5a39f4912872e24a7a660370c');
-                OpenPay.setSandboxMode(true);
-                //Se genera el id de dispositivo
-                var deviceSessionId = OpenPay.deviceData.setup("payment-form", "deviceIdHiddenFieldName");
-                alert(deviceSessionId);
-
-                $('#pay-button').on('click', function (event) {
-                    event.preventDefault();
-                    $("#pay-button").prop("disabled", true);
-                    OpenPay.token.extractFormAndCreate('payment-form', sucess_callbak, error_callbak);
-                });
-
-                var sucess_callbak = function (response) {
-                    var token_id = response.data.id;
-                    $('#token_id').val(token_id);
-                    $('#payment-form').submit();
-                };
-
-                var error_callbak = function (response) {
-                    var desc = response.data.description != undefined ? response.data.description : response.message;
-                    alert("ERROR [" + response.status + "] " + desc);
-                    $("#pay-button").prop("disabled", false);
-                };
-
-            });
-        </script>
-
-
-
-
-         
-        <div class="bkng-tb-cntnt col-lg-12">
-            <div class="pymnts">
-                <form action="#" method="POST" id="payment-form">
-                    <input type="hidden" name="token_id" id="token_id">
-                    <div class="pymnt-itm card active">
-                        <h2>Tarjeta de crédito o débito</h2>
-                        <div class="pymnt-cntnt">
-                            <div class="card-expl">
-                                <div class="credit">
-                                    <h4>Tarjetas de crédito</h4>
-                                </div>
-                                <div class="debit">
-                                    <h4>Tarjetas de débito</h4>
-                                </div>
-                            </div>
-                            <div class="sctn-row">
-                                <div class="sctn-col l">
-                                    <label>Nombre del titular</label><input type="text"
-                                        placeholder="Como aparece en la tarjeta" autocomplete="off"
-                                        data-openpay-card="holder_name">
-                                </div>
-                                <div class="sctn-col">
-                                    <label>Número de tarjeta</label><input type="text" autocomplete="off"
-                                        data-openpay-card="card_number"></div>
-                            </div>
-                            <div class="sctn-row">
-                                <div class="sctn-col l">
-                                    <label>Fecha de expiración</label>
-                                    <div class="sctn-col half l"><input type="text" placeholder="Mes"
-                                            data-openpay-card="expiration_month"></div>
-                                    <div class="sctn-col half l"><input type="text" placeholder="Año"
-                                            data-openpay-card="expiration_year"></div>
-                                </div>
-                                <div class="sctn-col cvv"><label>Código de seguridad</label>
-                                    <div class="sctn-col half l"><input type="text" placeholder="3 dígitos"
-                                            autocomplete="off" data-openpay-card="cvv2"></div>
-                                </div>
-                            </div>
-                            <div class="openpay">
-                                <div class="logo">Transacciones realizadas vía:</div>
-                                <div class="shield">Tus pagos se realizan de forma segura con encriptación de 256 bits
-                                </div>
-                            </div>
-                            <div class="sctn-row">
-                                <a class="button rght" id="pay-button">Pagar</a>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
 
 
 
@@ -124,3 +220,10 @@
 
     </div>
 </div>
+
+        </div>
+    </div>
+</div>
+{{else}}
+
+{{/if}}

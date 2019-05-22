@@ -1,6 +1,8 @@
-{{#if user}}
+<div class="container">
+    <div class="row">
+        {{#if user}}
 
-{{#if user.client}}
+{{#if user.id_client}}
 
 {{else}}
 <h3> usted no podra suscribirse si no es cliente</h3>
@@ -131,3 +133,5 @@
 
 <h3>Usted no debería estar aquí</h3>
 {{/if}}
+    </div>
+</div>
