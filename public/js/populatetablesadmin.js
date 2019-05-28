@@ -28,7 +28,7 @@
 
 
                     </div>`;
-                        $('#plans').append(row);
+                        $('#plansT').append(row);
                     });
                 }
 
@@ -151,6 +151,8 @@ function getclients(){
 
             data.forEach( ( item ) => {
                 const row = `<tr>
+                    <td>
+                    <input class="form-control" type="checkbox" value="1${ item.id }" ></td>
                     <td>${ item.name }</td>
                     <td>${ item.creation_date }</td>
                     <td>${ item.email}</td>
@@ -163,4 +165,29 @@ function getclients(){
 
     });
 }
-getowners(),getadmins(),getclients(),getprojects(),getNews(),getprojectsIT();
+
+function getmedallas() {
+
+    $.ajax({
+        type: 'GET',
+        url: '/medallas',
+        dataType: 'json',
+            success: (data) => {
+                console.log(data)
+                data.forEach((item) => {
+
+                    const row = `<tr>
+                                    <td><img width="50px" src="${ item.img }"/></td>
+                                    <td>${ item.name }</td>
+                                    <td><a href="/badge/${ item.id }">Detalles</a></td>
+                                </tr>`;
+                    $('#medallasT').append(row);
+                });
+            }
+
+    });
+    //$("#ownerT").load();
+
+};
+
+getowners(),getmedallas(),getadmins(),getclients(),getprojects(),getNews(),getprojectsIT();

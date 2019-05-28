@@ -1,8 +1,105 @@
 
+<script src="http://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+	crossorigin="anonymous"></script>
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+<script src="/js/typeahead.min.js" type="text/javascript"></script>
+<script src="/js/paginations.js"> type="text/javascript"</script>
+
+<div class="container">
+	<div class="row">
+		<h2>Buscar</h2>
+		<div class="typeahead__container">
+			<input class="typeahead tt-query" spellcheck="false" autocomplete="off" name="typeahead" type="text" />
+			<script>
+				$(document).ready(function () {
+					$('input.typeahead').typeahead({
+						name: 'typeahead',
+						remote: 'http://localhost:3000/search?key=%QUERY',
+						
+						limit: 10
+					});
+				});
+			</script>
+		</div>
+	</div>
+	<div class="row">
+		 <div>
+
+            <div class="als-cont" style="position: absolute; margin: 50px; padding: 100px;">
+                Search
+                <input type="text" name="search" id="search" onkeyup="search(this.value)" autocomplete="off" />
+            </div>
+
+			        <script>
+
+            function search(key) {
+                var settings = {
+
+                    /**
+                     *optional
+                     *Pass Ajax URL if data source is from ajax.
+                     */
+                    ajaxUrl: 'ajax.php?key=' + key,
+
+                    /**
+                     *Mandatory
+                     *Text field ID where you want to implement autocomplete.
+                     */
+                    inputId: 'search',
+
+                    /**
+                     *optional
+                     *No. of rows.
+                     */
+                    itemsPerPage: 5,
+
+                    /**
+                     *optional
+                     *No. of length when keyup event fire.
+                     */
+                    inputLength: 1,
+
+                    /**
+                     *optional
+                     *Json Field name which you want to put in text field when selected.
+                     */
+                    inputValue: 'name',
+
+                    /**
+                     *optional
+                     *Caption Table Head
+                     */
+                    coloumnHead: 'Name, Class, Roll No.',
+
+                    /**
+                     *optional
+                     *Fields name from json data which you want to show in table rest fields will hide.
+                     */
+                    fields: 'name,class,roll',
+
+                    /**
+                     *optional
+                     *If you have json data in your page no need to pass ajax url.
+                     *just pass associative json in data
+                     */
+                    data: ''
+                }
+
+                /**
+                 *1st Param : settings
+                 *2nd Param : onSelectCallback, it is fired when select on autosuggestion with selected data
+                 */
+                AjaxLiveSearch.init(settings, function (data) {
+                    console.log(data);
+                });
+
+            }
 
 
+        </script>
 
-<script src="http://code.jquery.com/jquery-3.3.1.js"
-			  integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
-			  crossorigin="anonymous"></script>
-<script src="/js/paginations.js"></script>
+        </div>
+	</div>
+</div>
+

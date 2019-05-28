@@ -1,47 +1,4 @@
 {{#if user}}
-<script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
-<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
-
-<script type="text/javascript">
-    $(document).ready(function () {
-
-        OpenPay.setId('mypdgqijxla2a9w0kdp0'); //process.env
-        OpenPay.setApiKey('pk_5bb1a54a0e5647f1b4d377c5d473ea16');
-        OpenPay.setSandboxMode(true);
-        //Se genera el id de dispositivo
-        var deviceSessionId = OpenPay.deviceData.setup("payment-form", "deviceIdHiddenFieldName");
-
-        //alert de DSI
-        //alert(deviceSessionId);
-
-        $('#pay-button').on('click', function (event) {
-            event.preventDefault();
-            $("#pay-button").prop("disabled", true);
-            OpenPay.token.extractFormAndCreate('payment-form', sucess_callbak, error_callbak);
-        });
-
-        var sucess_callbak = function (response) {
-            var token_id = response.data.id;
-            $('#token_id').val(token_id);
-            $('#payment-form').submit();
-        };
-
-        var error_callbak = function (response) {
-
-            var desc = response.data.description != undefined ? response.data.description : response.message;
-
-            //alert("ERROR [" + response.status + "] " + desc);
-            document.getElementById("error").innerHTML = ""+desc;
-
-            $("#pay-button").prop("disabled", false);
-        };
-
-    });
-
-
-
-
-</script>
 
 <div class="container my-element animated fadeIn delay-2s">
     <div class="row">
@@ -60,6 +17,49 @@
                         Crear tarjeta
                     </h3>
 
+<script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
+<script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        OpenPay.setId('mypdgqijxla2a9w0kdp0'); //process.env
+        OpenPay.setApiKey('pk_5bb1a54a0e5647f1b4d377c5d473ea16');
+        OpenPay.setSandboxMode(true);
+        //Se genera el id de dispositivo
+        var deviceSessionId = OpenPay.deviceData.setup("payment-form", "deviceIdHiddenFieldName");
+
+        
+        //alert(deviceSessionId);
+
+        $('#pay-button').on('click', function (event) {
+            event.preventDefault();
+            $("#pay-button").prop("disabled", true);
+            OpenPay.token.extractFormAndCreate('payment-form', sucess_callbak, error_callbak);
+        });
+
+        var sucess_callbak = function (response) {
+            var token_id = response.data.id;
+            $('#token_id').val(token_id);
+            $('#payment-form').submit();
+        };
+
+        var error_callbak = function (response) {
+
+            var desc = response.data.description != undefined ? response.data.description : response.message;
+
+            alert("ERROR [" + response.status + "] " + desc);
+            document.getElementById("error").innerHTML = ""+desc;
+
+            $("#pay-button").prop("disabled", false);
+        };
+
+    });
+
+
+
+
+</script>
 
                     <form action="/cardclient-create" method="POST" id="payment-form">
                         <input type="hidden" name="token_id" id="token_id">
@@ -69,7 +69,8 @@
                             <div class="">
 
                                 <div class="">
-                                    <label>Nombre del titular</label><input class="form-control" type="text"
+                                    <input type="text" class="hidden" name="client" value="{{user.id_client}}">
+                                    <label>Nombre del titular</label><input name="holder_name" class="form-control" type="text"
                                         placeholder="Como aparece en la tarjeta" autocomplete="off"
                                         data-openpay-card="holder_name">
                                     <br>
@@ -93,13 +94,7 @@
                                 </div>
                                 <a class="btn btn-default" id="pay-button" onclick="Showloader()">Guardar</a>
 
-                                <script>
-
-                                     function Showloader() {
-                                      //  $('#loading').show();
-                                    }
-
-                                </script>
+                            
                             </div>
                     </form>
 

@@ -1,40 +1,21 @@
 {{#if user}}
 
+
+
 {{#if user.status}}
-{{!-- usuario sin información conclusa ---}}
+{{!-- usuario sin información conclusa  <h3>{{user.id}}</h3> ---}}
 {{#if user.user}}
 
 
 
 <div class="container my-element animated fadeIn delay-2s">
     <div class="row">
-        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
 
-            {{!<nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li><a data-toggle="tab" href="#menu1_">Redes sociales</a></li>
-                    <li><a data-toggle="tab" href="#menu2_">Trustcoin</a></li>
-                    <li><a data-toggle="tab" href="#menu3_">Mis proyectos</a></li>
-                </ol>
-            </nav>
-            }}
-
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#menu0_">Info Personal</a></li>
-                <li><a data-toggle="tab" href="#menu1_">Redes sociales</a></li>
-                <li><a data-toggle="tab" href="#menu2_">Trustcoins</a></li>
-                <li><a data-toggle="tab" href="#menu3_">Mis proyectos</a></li>
-
-            </ul>
-        </div>
-
-        <div class="col-lg-3 col-sm-12 col-md-3 col-xs-12">
-            <div class="card hovercard">
-                <div class="cardheader">
-
-                </div>
+       <div class="col-lg-12 col-sm-12 col-md-12     col-xs-12">
+            <div class="card ">
+               
                 <div class="avatar">
-                    <img class="top10" style=' width:100px;height:100px;' src='{{user.img}}'>
+                    <img class="top2" style=' width:100px;height:100px;' src='{{user.img}}'>
 
                 </div>
                 <div class="info">
@@ -72,7 +53,29 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-9 col-sm-12 col-md-9 col-xs-12">
+
+        <div class="col-lg-12 col-sm-12 col-md-12 col-xs-12">
+
+            {{!<nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li><a data-toggle="tab" href="#menu1_">Redes sociales</a></li>
+                    <li><a data-toggle="tab" href="#menu2_">Trustcoin</a></li>
+                    <li><a data-toggle="tab" href="#menu3_">Mis proyectos</a></li>
+                </ol>
+            </nav>
+            }}
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#menu0_">Info Personal</a></li>
+                <li><a data-toggle="tab" href="#menu1_">Redes sociales</a></li>
+                <li><a data-toggle="tab" href="#menu2_">Trustcoins</a></li>
+                <li><a data-toggle="tab" href="#menu3_">Mis proyectos</a></li>
+
+            </ul>
+        </div>
+
+ 
+        <div class="col-lg-12 col-sm-12 col-md-9 col-xs-12 ">
             <div class="tab-content ">
 
 
@@ -288,7 +291,11 @@
 
     </div>
     <!-- Modal -->
-    <div class="modal fade" id="myModal" role="dialog">
+   
+
+</div>
+
+ <div class="modal fade" id="myModal" role="dialog">
         <div class="modal-dialog">
 
             <!-- Modal content-->
@@ -498,8 +505,6 @@
 
         </div>
     </div>
-
-</div>
 
 
 {{/if}}

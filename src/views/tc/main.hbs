@@ -48,6 +48,38 @@
                 </div>
 
 
+
+                </div>
+                <div class="col">
+                    <div align="center" id="plans">
+
+                    </div>
+                </div>
+            </div>
+            <div id="menu2" class="tab-pane fade">
+                <div class="col-lg-12">
+                    <h3>Mis unidades Unidades</h3>
+                    {{user.username}}
+
+                                    <img src="/img/tc.png" class="card-img-top  rounded-circle w-50 animated infinite pulse" width="80" alt="">
+                </div>
+                <div class="col-lg-12">
+                    <small> Mis unidades</small>
+                </div>
+
+                  <div class="col-lg-12">
+                    <h5> Trust Coins</h5>
+
+                    <div id="tcdiv"></div>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+
 <script>
     // -- /get-owners
     function getplans() {
@@ -86,28 +118,36 @@
 
     };
 
-    getplans();
+    function gettc(){
+        $.ajax({
+            type: 'GET',
+            url: '/tc-list',
+            dataType: 'json',
+            success: (data) => {
+                console.log(data)
+                data.forEach((item) => {
+
+                    const row = `<div class="col-lg-4">
+                    <a></a>
+                <div class="jumbotron"> <h2 class="">${ item.name}</h2>
+                                                    <img src="${ item.img}" class="card-img-top  rounded-circle w-50 animated  fadeIn " width="80" alt="">
+                    <p class="lead">
+                        ${ item.amount}
+                    </p>
+                    <hr class="my-4">
+                    <a class="btn btn-primary btn-lg" href="/buy/${ item.id}" role="button">Saber más</a>
+                </div>
+
+
+                </div>`;
+                    $('#tcdiv   ').append(row);
+                });
+            }
+
+        });
+    }
+    getplans(),gettc();
 </script>
-
-                </div>
-                <div class="col">
-                    <div align="center" id="plans">
-
-                    </div>
-                </div>
-            </div>
-            <div id="menu2" class="tab-pane fade">
-                <div class="col-lg-12">
-                    <h3>Mis unidades Unidades</h3>
-                    {{user.name}}
-                </div>
-            </div>
-        </div>
-
-
-
-    </div>
-</div>
 
 
 {{else}}

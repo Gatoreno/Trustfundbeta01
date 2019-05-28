@@ -7,18 +7,18 @@
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#home">Clientes</a></li>
                 <li><a data-toggle="tab" href="#menu1">Planes</a></li>
-                <li><a data-toggle="tab" href="#menu2">Menu 2</a></li>
+                <li><a data-toggle="tab" href="#menu2">Unidades</a></li>
             </ul>
 
             <div class="tab-content">
                 <div id="home" class="tab-pane fade in active">
-   <h3>Clientes</h3>
-                        <small>Estos datos son proveidos por <a href="">OpenPay.com</a></small>
+                    <h3>Clientes</h3>
+                    <small>Estos datos son proveidos por <a href="">OpenPay.com</a></small>
 
 
 
                     <div class="col-lg-12">
-                     
+
                         <h3></h3>
                         <table class="table table-hover">
                             <thead>
@@ -26,7 +26,8 @@
                                     <th>Idetificador </th>
                                     <th>Fecha</th>
                                     <th>Mail</th>
-                                    <th>Balance</th>
+                                    <th>Ver mas</th>
+                                    <th>Borrar</th>
                                 </tr>
                             </thead>
                             <tbody id="clientsT">
@@ -52,8 +53,9 @@
                         <input type="text" class="form-control" name="amount" placeholder="Cantidad - 150.00" required>
                         <input type="text" class="form-control" name="status_after_retry" placeholder="UNPAID/CANCELLED"
                             required>
-                        <input type="text" class="form-control" name="retry_times" placeholder="Reintento de cobro - 1 / 2 / 10" required>
-                        <select  class="form-control" name="repeat_unit" id="" required>
+                        <input type="text" class="form-control" name="retry_times"
+                            placeholder="Reintento de cobro - 1 / 2 / 10" required>
+                        <select class="form-control" name="repeat_unit" id="" required>
                             <option value="week">
                                 semenal
                             </option>
@@ -64,10 +66,10 @@
                                 anual
                             </option>
                         </select>
-                            <input type="text" class="form-control" name="trial_days"
-                                placeholder="Días de prueba - Se recomineda 0" required>                        
-                            <input type="text" class="form-control" name="repeat_every"
-                                placeholder="Repetir por lapso de tiempo semanal = 1 / mensual = 2" required>
+                        <input type="text" class="form-control" name="trial_days"
+                            placeholder="Días de prueba - Se recomineda 0" required>
+                        <input type="text" class="form-control" name="repeat_every"
+                            placeholder="Repetir por lapso de tiempo semanal = 1 / mensual = 2" required>
 
                     </form>
                     <br>
@@ -87,8 +89,75 @@
                     </table>
                 </div>
                 <div id="menu2" class="tab-pane fade">
-                    <h3>Menu 2</h3>
-                    <p>Some content in menu 2.</p>
+                    <h3>Gestión de unidades</h3>
+                    <h4>Agregar unidad</h4>
+
+                    <img src="/img/tc.png" class="card-img-top pull-right  rounded-circle w-50 animated infinite pulse"
+                        width="80" alt="">
+                    <br>
+
+                    <form action="/tc-create" method="post" enctype="multipart/form-data">
+                        <div class="pull-right"><label for=""></label><input type="submit" value="Agregar"></div>
+                                    <div class="form-group">
+                            <img id="PreviewImage" class="" width="150" height="200" src="" alt="Imagen de unidad"
+                                style="height:100px;" required />
+
+
+
+                            <br>
+                            <label for="">Inserte una imagen</label>
+
+                            <input name="fx" onchange="readURL(this);" type="file" enctype="multipart/form-data" />
+
+                            <script>
+                                function readURL(input) {
+                                    if (input.files && input.files[0]) {//Check if input has files.
+                                        var reader = new FileReader(); //Initialize FileReader.
+
+                                        reader.onload = function (e) {
+                                            $('#PreviewImage').attr('src', e.target.result);
+                                            $("#PreviewImage").resizable({ aspectRatio: true, maxWidth: 300 });
+                                        };
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                    else {
+                                        $('#PreviewImage').attr('src', "#");
+                                    }
+                                }
+                            </script>
+                        </div>
+                        <br>
+                        <input class="hidden" type="text" value="{{user.id}}" name="id_user">
+                        <input class="hidden" type="text" value="{{user.id_client}}" name="client">
+
+                        <label for=""></label><input class="form-group" type="text" name="name"
+                            placeholder="Nombre de la unidad" required>
+                        <label for=""></label><input class="form-group" type="text" name="amount"
+                            placeholder="costo - 00.00" required>
+                        <label for=""></label><input name="desc" class="form-group" type="text" required>
+
+            
+                    </form>
+
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">First</th>
+                                <th scope="col">Last</th>
+                                <th scope="col">Handle</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tcT">
+
+                        </tbody>
+                    </table>
+
+
+
+
+
+
                 </div>
             </div>
         </div>
@@ -102,9 +171,39 @@
     crossorigin="anonymous"></script>
 <script src="/js/populatetablesadmin.js"></script>
 
-
-
 <script>
+
+
+    function gettc() {
+
+        $.ajax({
+            type: 'GET',
+            url: '/tc-list',
+            dataType: 'json',
+            success: (data) => {
+                console.log(data)
+                data.forEach((item) => {
+
+                    const row = `<tr>
+                        <td> <img style=' width:50px    ;height:50px;' src='${ item.img}'></td>
+                        <td>${ item.id}</td>  
+                        <td class="">${ item.name}</td>
+                        <td class="">
+                           $ ${ item.amount}
+                        </td>
+                    </tr>`;
+                    $('#tcT').append(row);
+                });
+            }
+
+        });
+        //$("#ownerT").load();
+
+    };
+
+    gettc();
+
+
     function getplans() {
         $.ajax({
             type: 'GET',
@@ -117,7 +216,8 @@
                     <td>${item.name}</td>
                     <td>${item.creation_date}</td>
                     <td>${item.status}</td>
-                    <td><a href="/plan-edit/${item.id}">ver mas<a></td>
+                    <td><a href="/plan-edit/${item.id}">ver mas</a></td>
+                    <td><a href="/plan-delete/${item.id}">Borrar</a></td>
                 </tr>`;
                     $('#plansT').append(row);
                 });

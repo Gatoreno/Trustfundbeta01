@@ -367,15 +367,127 @@ router.get('/false-news/', (req, res) => {
 
 });
 
+router.get('/instrucciones',(req,res)=>{
+    res.render('public/instrucciones');
+})
 
 
+//searching
 
-//STRIPE
+router.get('/search',function(req,res){
+    /*
+    pool.query('SELECT title from projects_ where title like "%'+req.query.key+'%"',
+    function(err, rows, fields) {
+    if (err) throw err;
+    var data=[];
+    for(i=0;i<rows.length;i++)
+    {
+    data.push(rows[i].first_name);
+    }
+    res.end(JSON.stringify(data));
+    });*/
+   
+    
+    const qu = pool.query('SELECT title from projects_ where title like "%'+req.query.key+'%"');
+    qu.then((resx)=>{
+        if(resx.length > 0){
+            
 
-router.get('st-test1', (req, res) => {
-    res.send('llegamos aquí');
+          
+            res.end(JSON.stringify(data));
+            
+        }        
+    }).catch((err)=>{
+        console.log(err)
+    });
+
 });
 
+//tc
+
+router.post('/tc-create',(req,res)=>{
+    const img1 = req.files[0];
+    const nimg1 = img1.location;
+    const {id_user,amount,name,desc} = req.body;
+
+
+    const tc = {
+        id_usercreated:id_user,
+        amount:amount,
+        name: name,
+        desc:desc,
+        img:nimg1
+    }
+
+    const qu = pool.query('INSERT into tc_ set ?',[tc]);
+
+    qu.then((resx)=> {
+        if(resx.length > 0){
+            req.flash('message', 'Unidad creada con éxito.');
+            res.redirect('/costumers');
+        }else{
+            req.flash('error', 'Hubo algín error');
+            res.render('dashboard/costumers');
+        }
+
+    }).catch((err)=>{
+        console.log(err)
+    });
+
+});
+
+router.get('/tc-list',(req,res)=>{
+    const qu = pool.query('SELECT * FROM tc_');
+    qu.then((resx)=>{
+        res.json(resx)
+    });
+})
 //
 
+//medallas
+
+router.post('/create-medalla',(req,res)=>{
+    const {id_user,name,desc,condition} = req.body;
+    const img1 = req.files[0];
+    const nimg1 = img1.location;
+
+    const badge = {
+        id_usercreated:id_user,
+        name:name,
+        desc:desc,
+        status : 'aún fuera de sistema',
+        img:nimg1,
+        condition:condition
+    }
+
+
+    console.log(badge)
+
+    const qu = pool.query('INSERT INTO BADGES_ set ?',[badge]);
+    qu.then((response,error)=>{
+        if(error) throw error;
+        if(response.insertId){
+
+            req.flash('message', 'Medalla agregada con éxitol');
+            res.redirect('/dashboard');
+        }else{
+            req.flash('error', 'Intentelo de nuevo o contacte a soporte');
+            res.redirect('/dashboard');
+        }
+    }).catch((err)=>{
+        console.log(err)
+    });
+
+
+});
+
+
+router.get('/medallas',(req,res)=>{
+    const query = pool.query('SELECT * FROM BADGES_ ');
+    query.then((resp)=>{
+        res.json(resp);
+    }).catch((err)=>{
+        res.json(err);
+    });
+})
 module.exports = router;

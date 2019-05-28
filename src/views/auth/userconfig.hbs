@@ -1,225 +1,235 @@
 {{#if user}}
 {{!  clase fade in : my-element animated fadeIn delay-2s  }}
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
 
 <div class="container my-element animated fadeIn delay-1s">
     <div class="row">
         <div class="col-lg-12">
             <ul class="nav nav-tabs">
-    <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
-    <li><a data-toggle="tab" href="#menu1">Perfil</a></li>
-    <li><a data-toggle="tab" href="#menu2">Social</a></li>
-    <li><a data-toggle="tab" href="#menu3">Mis Proyectos</a></li>
-    <li><a data-toggle="tab" href="#menu4">Datos Bancarios</a></li>
-</ul>
+                <li class="active"><a data-toggle="tab" href="#home">Home</a></li>
+                <li><a data-toggle="tab" href="#menu1">Perfil</a></li>
+                <li><a data-toggle="tab" href="#menu2">Social</a></li>
+                <li><a data-toggle="tab" href="#menu3">Mis Proyectos</a></li>
+                <li><a data-toggle="tab" href="#menu4">Datos Bancarios</a></li>
+            </ul>
 
-<div class="tab-content">
-    <div id="home" class="tab-pane fade in active">
-        <h3>{{user.username}} {{user.id_client}}</h3>
-
-
-
-        {{#if user.id_client}}
-
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Idetificador </th>
-                    <th>Fecha</th>
-                    <th>Mail</th>
-
-                </tr>
-            </thead>
-            <tbody id="clientT">
-
-            </tbody>
-        </table>
-        <br>
-        <div class="pull-right">
-            <a href="/cardclient-create"> Agregar Tarjeta</a>
-            <a href="" data-toggle="modal" data-target="#myModalcard"> Modal</a>
-        </div>
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th>Tarjeta </th>
-                    <th>Fecha</th>
-                    <th>Nombre</th>
-
-                </tr>
-            </thead>
-            <tbody id="cardsT">
-
-            </tbody>
-        </table>
-        <script src="https://code.jquery.com/jquery-3.3.1.js"
-            integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60=" crossorigin="anonymous"></script>
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <h3>{{user.username}} {{user.id_client}}</h3>
 
 
 
 
-        <script>
+
+                    {{#if user.id_client}}
+
+                    <!-- Modal -->
+                    <div id="myModalcard" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Agregar tarjeta</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Te permite realizar compras y suscribciones, en trustcoin protegemos todos tus
+                                        datos.</p>
+
+
+                                    <div class="col-4">
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Idetificador </th>
+                                <th>Fecha</th>
+                                <th>Mail</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="clientT">
+
+                        </tbody>
+                    </table>
+                    <br>
+                    <div class="pull-right">
+                        <a href="/cardclient-create"> Agregar Tarjeta</a>
+                        <!--<a href="" data-toggle="modal" data-target="#myModalcard"> Modal</a>-->
+                    </div>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Tarjeta </th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="cardsT">
+
+                        </tbody>
+                    </table>
 
 
 
 
-            function getclient() {
+                    <script>
 
-                $.ajax({
-                    type: 'get',
-                    url: '/client-get/{{user.id_client}}',
-                    dataType: 'json',
+                        function getclient() {
 
-                    success: (data) => {
+                            $.ajax({
+                                type: 'get',
+                                url: '/client-get/{{user.id_client}}',
+                                dataType: 'json',
 
-
-                        const row = `<tr>
-                    <td>${ data.name}</td>
-                    <td>${ data.creation_date}</td>
-                    <td>${ data.email}</td>
-                   
-                </tr>`;
-                        $('#clientT').append(row);
-
-                    }
-
-                });
-            }
-            function getcl() {
-                $.ajax({
-                    type: 'get',
-                    url: '/cards-list/{{user.id_client}}',
-                    dataType: 'json',
-
-                    success: (data) => {
-                        console.log(data.lenght);
-                        if (data.lenght === undefined) {
-                            const row1 = '<tr>  <td><a >No hay datos aún</a></td><td></td> <td></td></tr>';
-                            $('#cardsT').append(row1);
-                        } else {
-                            data.forEach((item) => {
-                                const row = `<tr>
-                                            <td><img width="96px" height="65px" src="${ item.img}"></td>
-                                            <td>${ item.name}</td>
-                                            <td><a href="/get-user-edit/${ item.id}"><button>Editar</button></a></td>
+                                success: (data) => {
+                                    const row = `<tr>
+                                            <td>${ data.name}</td>
+                                            <td>${ data.creation_date}</td>
+                                            <td>${ data.email}</td>                                      
                                         </tr>`;
-                                $('#cardsT').append(row);
+                                    $('#clientT').append(row);
+
+                                }
+
+                            });
+                        }
+                        function getcl() {
+                            $.ajax({
+                                type: 'get',
+                                url: '/cards-list/{{user.id_client}}',
+                                dataType: 'json',
+                                success: (data) => {
+
+
+
+                                    if (data.lenght == 0) {
+
+                                        const row1 = '<tr>  <td><a >No hay datos aún</a></td><td></td> <td></td></tr>';
+                                        $('#cardsT').append(row1);
+                                    } else {
+                                        data.forEach((item) => {
+                                            const row = `<tr>
+                                                        <td>${ item.card_number}</td>
+                                                        <td>${ item.bank_name}</td>
+                                                        <td>${ item.type}</td>
+                                                        
+                                                        <td><a href="/cardclient-delete/${ item.id}">ver mas<a></td>
+                                                    </tr>`;
+                                            $('#cardsT').append(row);
+                                        });
+                                    }
+                                }
                             });
                         }
 
-                    }
-                });
-            }
+                        getclient(); getcl();
+                    </script>
 
 
 
 
 
+                    {{else}}
 
+                    <h4>Usted aún no tiene datos de cliente</h4>
+                    <small>Para ser cliente de <a href="" class="" data-toggle="modal"
+                            data-target="#myModalcliente">click
+                            aquí!</a></small>
 
-            getclient(); getcl();
-        </script>
-
-
-        <!-- Modal -->
-        <div id="myModalcard" class="modal fade" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
-                        <h4 class="modal-title">Agregar tarjeta</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>Te permite realizar compras y suscribciones, en trustcoin protegemos todos tus datos.</p>
-
-
-                  
-
-
-
-
-                        <div class="col-4">
-                            
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
-
-        {{else}}
-
-        <h4>Usted aún no tiene datos de cliente</h4>
-        <small>Para ser cliente de <a href="" class="" data-toggle="modal" data-target="#myModalcliente">click
-                aquí!</a></small>
-
-
-
-        <!-- Modal -->
-        <div class="modal fade" id="myModalcliente" role="dialog">
-            <div class="modal-dialog">
-
-                <!-- Modal content-->
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="jumbotron">
                         <h4 class="modal-title">¿Qué implica ser cliente?</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p>Para proteger tus datos TrustFund utiliza OpenPay , una ves seas cliente, podrás hacer,
+                        <p>Para proteger tus datos TrustFund utiliza OpenPay , una ves seas cliente, podrás
+                            hacer,
                             pagos, subscribirte a un plan , apoyar poryectos y generar tu propio ahorro</p>
                         <b>Esto no genera ningún costo pero nos ayuda cuidar tu información</b>
+                        <br>
                         <form action="/costumer-create" method="post">
+
                             <input type="text" class="hidden" name="id" value="{{user.id}}">
                             <input type="text" name="mail" class="form-control" value="{{user.mail}}">
 
                             <input type="text" name="name" class="form-control" value="{{user.username}} ">
                             <input type="submit" class="btn btn-default" value="Generar mi id cliente">
                         </form>
+                    </div>
 
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModalcliente" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">¿Qué implica ser cliente?</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Para proteger tus datos TrustFund utiliza OpenPay , una ves seas cliente, podrás
+                                        hacer,
+                                        pagos, subscribirte a un plan , apoyar poryectos y generar tu propio ahorro</p>
+                                    <b>Esto no genera ningún costo pero nos ayuda cuidar tu información</b>
+                                    <form action="/costumer-create" method="post">
+                                        <input type="text" class="hidden" name="id" value="{{user.id}}">
+                                        <input type="text" name="mail" class="form-control" value="{{user.mail}}">
+
+                                        <input type="text" name="name" class="form-control" value="{{user.username}} ">
+                                        <input type="submit" class="btn btn-default" value="Generar mi id cliente">
+                                    </form>
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    </div>
+
+
+                    {{/if}}
+
                 </div>
+                <div id="menu1" class="tab-pane fade">
+                    <h3>Menu 1</h3>
+                    <p>Some content in menu 1.</p>
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    <h3>Menu 2</h3>
+                    <p>Some content in menu 2.</p>
+                </div>
+                <div id="menu3" class="tab-pane fade">
+                    <h3>Menu 2</h3>
+                    <p>Some content in menu 2.</p>
+                </div>
+                <div id="menu4" class="tab-pane fade">
+                    <h3>Datos Bancarios</h3>
+                    <p>Some content in menu 2.</p>
 
+
+
+
+
+
+
+
+                </div>
             </div>
-        </div>
-
-        {{/if}}
-
-    </div>
-    <div id="menu1" class="tab-pane fade">
-        <h3>Menu 1</h3>
-        <p>Some content in menu 1.</p>
-    </div>
-    <div id="menu2" class="tab-pane fade">
-        <h3>Menu 2</h3>
-        <p>Some content in menu 2.</p>
-    </div>
-    <div id="menu3" class="tab-pane fade">
-        <h3>Menu 2</h3>
-        <p>Some content in menu 2.</p>
-    </div>
-    <div id="menu4" class="tab-pane fade">
-        <h3>Datos Bancarios</h3>
-        <p>Some content in menu 2.</p>
-
-
-
-
-
-
-
-
-    </div>
-</div>
 
         </div>
     </div>

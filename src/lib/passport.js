@@ -256,7 +256,8 @@ passport.use('local.signup-subadmin', new LStrategy({
         lastnameP: lastnameP,
         lastnameM: lastnameM,
         mail: mail,
-        phone: phone
+        phone: phone,
+        img:'/img/logo512.png'
     };
 
     switch (role) {

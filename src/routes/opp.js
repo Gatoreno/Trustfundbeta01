@@ -22,69 +22,80 @@ var openpay = new Openpay(
     'sk_3f7296c0f84144ba940b2372b34b619a');
 
 
-    router.get('/client-get/:id',(req,res)=>{
-        
+router.get('/client-get/:id', (req, res) => {
 
-        const id = req.params.id;
 
-        openpay.customers.get(id, function(error, customer) {
-            res.json(customer);
-          });
+    const id = req.params.id;
+
+    openpay.customers.get(id, function (error, customer) {
+        res.json(customer);
     });
+});
 
 
-    router.get('/client-delete/:id',(req,res)=>{
+router.get('/client-delete/:id', (req, res) => {
 
 
-        openpay.customers.delete(req.params.id, function(error) {
-            res.redirect(200, '/costumers/');
-          });
+    openpay.customers.delete(req.params.id, function (error) {
+        res.status(200);
+        res.render('dashboard/costumers');
+        req.flash('message', 'Eliminado con éxito');
+        //res.redirect( 'http://localhost:4000/costumers');
+
     });
+});
 
 
 
-    router.post('/costumer-create', (req, res) => {
+router.post('/costumer-create', (req, res) => {
 
-        console.log(req.body)
-        const {  id, name, mail } = req.body;
-    
-        var customerRequest = {
-            'name': name,
-            'email': mail,
-            'requires_account': false
-        };
-    
+    console.log(req.body)
+    const {
+        id,
+        name,
+        mail
+    } = req.body;
 
-        //const client = 
-        openpay.customers.create(customerRequest, (error, customer) => {
-            console.log(error);
-            console.log(customer);
-    
-    
-          
-            const qu =
+    var customerRequest = {
+        'name': name,
+        'email': mail,
+        'requires_account': false
+    };
+
+
+    //const client = 
+    openpay.customers.create(customerRequest, (error, customer) => {
+        console.log(error);
+        console.log(customer);
+
+
+
+        const qu =
             pool.query('UPDATE users_ SET id_client = ? WHERE id = ?', [customer.id, id]);
-    
-            qu.then((resx) => {
-                console.log(resx);
 
-               
-                return res.redirect(200,'/userconfig');
-    
-            }).catch((err) => {
-                console.log(err);
-            });
-    
-           
-    
+        qu.then((resx) => {
+            console.log(resx);
+
+
+            req.flash('message', 'Cliente creado con éxito');
+            res.status(200);
+            res.render('tc/main');
+
+
+        }).catch((err) => {
+            console.log(err);
         });
+
+
+
     });
+});
 
 router.post('/client-create', (req, res) => {
 
 
     const {
-        
+
         name,
         mail
     } = req.body;
@@ -126,9 +137,9 @@ router.post('/client-create', (req, res) => {
 
 router.get('/clients-list', (req, res) => {
     var searchParams = {
-        'limit' : 250
-      };
-    openpay.customers.list(searchParams,(error, body) => {
+        'limit': 250
+    };
+    openpay.customers.list(searchParams, (error, body) => {
         res.json(body);
     });
 
@@ -140,13 +151,31 @@ router.get('/cards-list/:id', (req, res) => {
     const {
         id
     } = req.params;
-      var searchParams = {
-        'limit' : 20
-      };
-      
-      openpay.customers.cards.list(id, searchParams, function(error, list){
+    var searchParams = {
+        'limit': 20
+    };
+
+    openpay.customers.cards.list(id, searchParams, function (error, list) {
         res.json(list)
-      });
+    });
+});
+
+router.get('/card-get/:id', (req, res) => {
+
+
+    const {
+        id,
+        costumer
+    } = req.params;
+
+
+    openpay.customers.cards.get(costumer, id, function (error, card) {
+        // ...
+        res.json(card);
+
+    });
+
+
 });
 
 
@@ -158,6 +187,9 @@ router.get('/plan-list', (req, res) => {
     });
 });
 
+
+router.get('/plan-delete', () => {});
+
 router.post('/plan-delete', (req, res) => {
 
 
@@ -165,6 +197,10 @@ router.post('/plan-delete', (req, res) => {
     const id_user = req.body.id_user;
     const pass = req.body.pass;
 
+
+    if (!pass) {
+        res.render('/costumers');
+    }
 
 
 
@@ -181,11 +217,15 @@ router.post('/plan-delete', (req, res) => {
                 openpay.plans.delete(id, function (error) {
                     if (error) console.log(error);
 
-                    return res.redirect(200, '/costumers/');
+                    res.status(200);
+                    res.render('dashboard/costumers');
+                    req.flash('message', 'Cliente creado con éxito');
                 });
 
             } else {
-                return res.redirect(500, '/costumers/');
+                res.status(500);
+                res.render('dashboard/costumers');
+                req.flash('error', 'Error de contraseña');
             }
         }
 
@@ -224,8 +264,13 @@ router.post('/plan-create', (req, res) => {
         // ...
         if (error) console.log(error);
         //res.status(200).redirect(req.flash('message', 'Plan creado con éxito.'), '/dashboard/costumers');        
-        res.redirect(200, '/dashboard/');
+        //res.redirect(200, '/dashboard');
+        res.status(200);
+        res.render('dashboard/costumers');
+        req.flash('message', 'Plan creado con éxito');
     });
+
+    //res.render();
 });
 
 
@@ -254,7 +299,9 @@ router.post('/plan-update', (req, res) => {
     openpay.plans.update(planId, planRequest, function (error, plan) {
         // ...
         if (error) console.log(error);
-        res.redirect('/dashboard/costumers', req.flash('message', 'Plan actualizado con éxito.'));
+
+        res.status(200);
+        res.render('dashboard/costumers');
 
     });
 })
@@ -270,7 +317,7 @@ router.post('/plan-get/', (req, res) => {
     });
 })
 
-router.get('/plan-edit/:id', (req, res) => {
+router.get('/plan-edit/:id', isLoggedIn, (req, res) => {
 
     const {
         id
@@ -280,7 +327,7 @@ router.get('/plan-edit/:id', (req, res) => {
     openpay.plans.get(id, function (error, plan) {
         // ...
 
-        res.render('tc/plan', {
+        res.render('auth/plan', {
             plan
         });
     });
@@ -317,91 +364,159 @@ router.get('/subscribe/:id', isLoggedIn, (req, res) => {
 
 });
 
+router.get('/merchant',(req,res)=>{
+    openpay.merchant.get(function(error, merchant){
+        // ...
+        res.json(merchant);
+      });
+});
+
+
 router.post('/create-subscribtion', (req, res) => {
 
     const {
-        id_user,
-        id_plan
+        id_user,    
+        id_plan,token_id
     } = req.body;
-    console.log(id_user, id_plan)
+    console.log(id_user,
+        id_plan,token_id);
 
+
+
+    /*
     const qu = pool.query('select * from users_ where id = ?', [id_user]);
 
-    qu.then((data) => {
+    qu.then(async (data) => {
         if (data.length > 0) {
-          
-            console.log(data[0].id,data[0].mail);
+
+            console.log(data[0].id, data[0].mail);
 
             const userid = data[0].id;
             const clientid = data[0].id_client;
-            
+
             if (clientid == null) {
 
                 const usermail = data[0].mail;
                 const username = data[0].name;
-                function getClientFromServer() {
-                    return axios.post("http://trustfundapp.herokuapp.com/client-create",
 
-                        {
-                            name: username,
-                            mail: usermail
-                        }
+                //const queryInset = await pool.query('Update users_ set ');
 
 
-                    ).then(function (res) {
-                        console.log(res.data);
-                        return res.data;
-                        //console.log(datax.access_token);
+                var customerRequest = {
+                    'name': usermail,
+                    'email': username,
+                    'requires_account': false
+                };
 
-                    }).catch((er) => {
-                        console.log(er);
-                    });
-                    console.log(tok);
-                    //console.log(reqtoken);
-                    // res.render('links/bbvat',{reqbbva: reqbbva});
-                }
+                //const client = 
+                openpay.customers.create(customerRequest, async (error, customer) => {
+                    console.log(error);
+                    console.log(customer);
 
+                    const updatecliente = await pool.quer('Update users_ set id_client = ? where id = ?', [customer.iduserid]);
 
-                getClientFromServer().then(data => {
-                    console.log(data);
-                   /* const customer_id = data.id;
-                    
-                      const query =  pool.query('UPDATE users_ SET id_client = ? WHERE id = ?', [customer_id, userid]);
-                      query.then(()=>{
-                          res.redirect('/subscribe/'+id_plan, 200, req.flash('message', 'Ya puedes subscribirte.'));
-                      });*/
+                    res.redirect('auth/signin', 200, req.flash('message', 'Ya es usted cliente y puede sucribirse.'));
+
                 });
 
 
-
-
-
             } else {
-                console.log('waiting');
+
+                //select opp data from id_client
+                const card = [];
+                card = openpay.customers.cards.get(costumer, id, function (error, card) {
+                    // ...
+                    return card;
+
+                });
+
+                var subscriptionRequest = {
+                    'card': {
+                        'card_number': '4111111111111111',
+                        'holder_name': 'Juan Perez Ramirez',
+                        'expiration_year': '20',
+                        'expiration_month': '12',
+                        'cvv2': '110',
+                        'device_session_id': 'kR1MiQhz2otdIuUlQkbEyitIqVMiI16f'
+                    },
+                    'plan_id': id_plan
+                };
+
+
+
+                console.log(token_id, userid, clientid, id_plan, card,subscriptionRequest);
+
             }
 
         } else {
             res.redirect('auth/signin', 200, req.flash('message', 'No hay usuario con ese mail.'));
-        }
+        };
+
+    })*/
+
+});
+//CARDS
+
+router.get('/cardclient-create', isLoggedIn, (req, res) => {
+
+    res.render('auth/createcard');
+
+});
+
+
+router.post('/cardclient-create', isLoggedIn, (req, res) => {
+
+
+    const {
+        card,
+        year,
+        month,
+        dig,
+        holder_name,
+        client,
+        token_id
+    } = req.body;
+
+    console.log(card, year, month, dig, holder_name, client, token_id);
+
+    var cardRequest = {
+        'card_number': card,
+        'holder_name': holder_name,
+        'expiration_year': year,
+        'expiration_month': month,
+        'cvv2': dig,
+        'device_session_id': token_id
+    }
+
+    openpay.customers.cards.create(client, cardRequest, function (error, card) {
+        // ...    
+        if (error) console.log(error);
+        //res.json(card)
+        res.status(200);
+        res.render('auth/userconfig');
+
+
+
+        //res.redirect(200, '/dashboard');
 
     });
 
 });
 
-//CARDS
 
-router.get('/cardclient-create', isLoggedIn ,(req, res) => {
+router.get('/cardclient-delete/:id', isLoggedIn, (req, res) => {
 
-   res.render('auth/createcard');
+    const {
+        id
+    } = req.params;
+
+    res.render('auth/deletecard', {
+        id
+    });
 
 });
 
 
-router.post('/cardclient-create', isLoggedIn ,(req, res) => {
-
-    console.log(req.body);
- 
- });
 //afro2ik0igsusbot5iox
 
 router.post('/charge-tc-unit', (req, res) => {
@@ -434,9 +549,6 @@ router.post('/charge-tc-unit', (req, res) => {
     */
 });
 
-function createclient() {
-
-}
 
 
 
