@@ -1,54 +1,58 @@
-
 <div class=" container animated fadeIn delay-1s">
-    <h1>Proyectos</h1>
-
-    {{#each projects}}
     <div class="row">
-        <div class="col-sm-6  col-md-6 col-lg-6 col-xs-12">
-            <div class="card text-center ">
-                <a href="">
-                    <a href="/projects/get-project/{{id}}">
-                        <h4 class="card-title text-uppercase p3">
-                            {{title}}
-                        </h4>
+        <h1>Proyectos</h1>
+
+        {{#each projects}}
+        <div class="row">
+            <div class="col-sm-6  col-md-6 col-lg-6 col-xs-12">
+                <div class="card text-center ">
+                    <a href="">
+                        <a href="/projects/get-project/{{id}}">
+                            <h4 class="card-title text-uppercase p3">
+                                {{title}}
+                            </h4>
+                        </a>
                     </a>
-                </a>
-                <div class="card-body ">
-                    <div>
-                        <img style="width:280px;height:200px;" src="{{img}}">
-                    </div>
-             
+                    <div class="card-body ">
+                        <div>
+                            <img style="width:280px;height:200px;" src="{{img}}">
+                        </div>
+
                         {{!description}}
-              
 
 
 
-                </div>
-                <div class="card-footer p3">
-                    <div>
-                        <br>
 
-                        <a href="/projects/get-project/{{id}}" class="btn btn-default btn-sm">Ver Proyecto</a>
-                        {{!--
+                    </div>
+                    <div class="card-footer p3">
+                        <div>
+                            <br>
+
+                            <a href="/projects/get-project/{{id}}" class="btn btn-default btn-sm">Ver Proyecto</a>
+                            {{!--
                         <a href="/links/delete/{{id}}" class="btn btn-default btn-sm">Delete</a>
                         <a href="/links/update/{{id}}" class="btn btn-default btn-sm">Update</a>
                         --}}
+                        </div>
+                        <div>
+                            <br>
+                            creado el día: {{timeago created_at}}
+                        </div>
                     </div>
-                    <div>
-                        <br>
-                        creado el día: {{timeago created_at}}
+                </div>
+            </div>
+            {{else}}
+            <div class="col-lg-12 ">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <p>No hay proyectos</p>
                     </div>
                 </div>
             </div>
         </div>
-        {{else}}
-        <div class="col-lg-12 ">
-            <div class="card text-center">
-                <div class="card-body">
-                    <p>No hay proyectos</p>
-                </div>
-            </div>
-        </div>
+        {{/each}}
+
+
+
     </div>
-    {{/each}}
 </div>

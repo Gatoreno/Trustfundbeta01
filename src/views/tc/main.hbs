@@ -1,98 +1,103 @@
-{{#if user}}
-<script src="http://code.jquery.com/jquery-1.5.js"></script>
-    
-<div class="container my-element animated fadeIn delay-1s">
+<div class="container">
     <div class="row">
-        <div class="col-lg-12">
-            <div align="center">
-                <img src="/img/logo512.png" class="card-img-top  rounded-circle w-50" width="100" alt="">
+        {{#if user}}
+        <script src="http://code.jquery.com/jquery-1.5.js"></script>
 
-                <br>
-                <h3>TrustCoin</h3>
-                <small>
-                    El TrustCoin es la unidad que se adquiere para apoyar proyectos, por cada número de tc adquirida vas recibiendo medallas
-                </small>
-<br><br>
+        <div class="container  animated fadeIn delay-1s">
+            <div class="row my-element">
+                <div class="col-lg-12">
+                    <div align="center">
+                        <img src="/img/logo512.png" class="card-img-top  rounded-circle w-50" width="100" alt="">
+
+                        <br>
+                        <h3>TrustCoin</h3>
+                        <small>
+                            El TrustCoin es la unidad que se adquiere para apoyar proyectos, por cada número de tc
+                            adquirida vas recibiendo medallas
+                        </small>
+                        <br><br>
+
+
+                    </div>
+
+
+                </div>
+
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#home">TC</a></li>
+                    <li><a data-toggle="tab" href="#menu2">Unidades</a></li>
+                    <li><a data-toggle="tab" href="#menu1">Planes</a></li>
+
+                </ul>
+
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                        <div class="col-lg-12">
+                            <h4>Información importante</h4>
+                            <p>Uso de la plataforma.</p>
+
+                            <p>La forma de apoyar <a href="/projects/get-projects">proyectos</a> y generar ganacias es a
+                                través de los TrustCoins, hay dos formas de adquirirlos.</p>
+                        </div>
+                    </div>
+                    <div id="menu1" class="tab-pane fade">
+                        <div class="col-lg-12">
+                            <div>
+                                <h2>Planes</h2>
+                            </div>
+                            <div class="col">
+                                <div align="center" id="plans">
+
+                                </div>
+                            </div>
+
+
+
+                        </div>
+                        <div class="col">
+                            <div align="center" id="plans">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="menu2" class="tab-pane fade">
+                        <div class="col-lg-12">
+                            <h3>Mis unidades Unidades</h3>
+                            {{user.username}}
+
+                            <img src="/img/tc.png" class="card-img-top  rounded-circle w-50 animated infinite pulse"
+                                width="80" alt="">
+                        </div>
+                        <div class="col-lg-12">
+                            <small> Mis unidades</small>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <h5> Trust Coins</h5>
+
+                            <div id="tcdiv"></div>
+                        </div>
+                    </div>
+                </div>
+
 
 
             </div>
-
-
         </div>
 
-        <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#home">TC</a></li>
-            <li><a data-toggle="tab" href="#menu2">Unidades</a></li>
-            <li><a data-toggle="tab" href="#menu1">Planes</a></li>
+        <script>
+            // -- /get-owners
+            function getplans() {
 
-        </ul>
+                $.ajax({
+                    type: 'GET',
+                    url: '/plan-list',
+                    dataType: 'json',
+                    success: (data) => {
+                        console.log(data)
+                        data.forEach((item) => {
 
-        <div class="tab-content">
-            <div id="home" class="tab-pane fade in active">
-                <div class="col-lg-12">
-                    <h4>Información importante</h4>
-                    <p>Uso de la plataforma.</p>
-
-                    <p>La forma de apoyar <a href="/projects/get-projects">proyectos</a> y generar ganacias es a través de los TrustCoins, hay dos formas de adquirirlos.</p>
-                </div>
-            </div>
-            <div id="menu1" class="tab-pane fade">
-                <div class="col-lg-12">
-                    <div>
-                        <h2>Planes</h2>
-                    </div>
-<div class="col">
-                    <div align="center" id="plans">
-
-                    </div>
-                </div>
-
-
-
-                </div>
-                <div class="col">
-                    <div align="center" id="plans">
-
-                    </div>
-                </div>
-            </div>
-            <div id="menu2" class="tab-pane fade">
-                <div class="col-lg-12">
-                    <h3>Mis unidades Unidades</h3>
-                    {{user.username}}
-
-                                    <img src="/img/tc.png" class="card-img-top  rounded-circle w-50 animated infinite pulse" width="80" alt="">
-                </div>
-                <div class="col-lg-12">
-                    <small> Mis unidades</small>
-                </div>
-
-                  <div class="col-lg-12">
-                    <h5> Trust Coins</h5>
-
-                    <div id="tcdiv"></div>
-                </div>
-            </div>
-        </div>
-
-
-
-    </div>
-</div>
-
-<script>
-    // -- /get-owners
-    function getplans() {
-
-        $.ajax({
-            type: 'GET',
-            url: '/plan-list',
-            dataType: 'json',
-            success: (data) => {
-                console.log(data)
-                data.forEach((item) => {
-
-                    const row = `<div class="col-lg-4">
+                            const row = `<div class="col-lg-4">
                     <a></a>
 
                     
@@ -109,25 +114,25 @@
 
 
                 </div>`;
-                    $('#plans').append(row);
+                            $('#plans').append(row);
+                        });
+                    }
+
                 });
-            }
+                //$("#ownerT").load();
 
-        });
-        //$("#ownerT").load();
+            };
 
-    };
+            function gettc() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/tc-list',
+                    dataType: 'json',
+                    success: (data) => {
+                        console.log(data)
+                        data.forEach((item) => {
 
-    function gettc(){
-        $.ajax({
-            type: 'GET',
-            url: '/tc-list',
-            dataType: 'json',
-            success: (data) => {
-                console.log(data)
-                data.forEach((item) => {
-
-                    const row = `<div class="col-lg-4">
+                            const row = `<div class="col-lg-4">
                     <a></a>
                 <div class="jumbotron"> <h2 class="">${ item.name}</h2>
                                                     <img src="${ item.img}" class="card-img-top  rounded-circle w-50 animated  fadeIn " width="80" alt="">
@@ -140,101 +145,103 @@
 
 
                 </div>`;
-                    $('#tcdiv   ').append(row);
+                            $('#tcdiv   ').append(row);
+                        });
+                    }
+
                 });
             }
-
-        });
-    }
-    getplans(),gettc();
-</script>
+            getplans(), gettc();
+        </script>
 
 
-{{else}}
+        {{else}}
 
-<div class="container">
-    <div class="row">
-        <div class="col-lg-12">
-            <div align="center">
-                <img src="/img/logo512.png" class="card-img-top  rounded-circle w-50" width="100" alt="">
-
-                <br>
-                <h3>TrustCoin</h3>
-                <small>
-                    El TrustCoin es la unidad que se adquiere para apoyar proyectos, por cada número de tc adquirida vas recibiendo medallas
-                </small>
-<br><br>
-
-
-            </div>
-
-
-        </div>
-
-        <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#home">TC</a></li>
-            <li><a data-toggle="tab" href="#menu2">Unidades</a></li>
-            <li><a data-toggle="tab" href="#menu1">Planes</a></li>
-
-        </ul>
-
-        <div class="tab-content">
-            <div id="home" class="tab-pane fade in active">
+        <div class="container">
+            <div class="row">
                 <div class="col-lg-12">
-                    <h4>Información importante</h4>
-                    <p>Uso de la plataforma.</p>
+                    <div align="center">
+                        <img src="/img/logo512.png" class="card-img-top  rounded-circle w-50" width="100" alt="">
 
-                    <p>La forma de apoyar <a href="/projects/get-projects">proyectos</a> y generar ganacias es a través de los TrustCoins, hay dos formas de adquirirlos.</p>
-                </div>
-            </div>
-            <div id="menu1" class="tab-pane fade">
-                <div class="col-lg-12">
-                    <div>
-                        <h2>Planes</h2>
+                        <br>
+                        <h3>TrustCoin</h3>
+                        <small>
+                            El TrustCoin es la unidad que se adquiere para apoyar proyectos, por cada número de tc
+                            adquirida vas recibiendo medallas
+                        </small>
+                        <br><br>
+
+
                     </div>
 
 
-
-
                 </div>
-                <div class="col">
-                    <div align="center" id="plans">
 
+                <ul class="nav nav-tabs">
+                    <li class="active"><a data-toggle="tab" href="#home">TC</a></li>
+                    <li><a data-toggle="tab" href="#menu2">Unidades</a></li>
+                    <li><a data-toggle="tab" href="#menu1">Planes</a></li>
+
+                </ul>
+
+                <div class="tab-content">
+                    <div id="home" class="tab-pane fade in active">
+                        <div class="col-lg-12">
+                            <h4>Información importante</h4>
+                            <p>Uso de la plataforma.</p>
+
+                            <p>La forma de apoyar <a href="/projects/get-projects">proyectos</a> y generar ganacias es a
+                                través de los TrustCoins, hay dos formas de adquirirlos.</p>
+                        </div>
+                    </div>
+                    <div id="menu1" class="tab-pane fade">
+                        <div class="col-lg-12">
+                            <div>
+                                <h2>Planes</h2>
+                            </div>
+
+
+
+
+                        </div>
+                        <div class="col">
+                            <div align="center" id="plans">
+
+                            </div>
+                        </div>
+                    </div>
+                    <div id="menu2" class="tab-pane fade">
+                        <div class="col-lg-12">
+                            <h3>Unidades</h3>
+                            <p>Uso de la plataforma.</p>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id="menu2" class="tab-pane fade">
-                <div class="col-lg-12">
-                    <h3>Unidades</h3>
-                    <p>Uso de la plataforma.</p>
-                </div>
+
+
+
             </div>
         </div>
 
 
 
-    </div>
-</div>
+        <script src="https://code.jquery.com/jquery-1.5.js"></script>
 
 
 
-<script src="https://code.jquery.com/jquery-1.5.js"></script>
+        <script>
+            // -- /get-owners
+            function getplans() {
 
+                $.ajax({
+                    type: 'GET',
+                    url: '/plan-list',
+                    dataType: 'json',
+                    success: (data) => {
+                        console.log(data)
+                        data.forEach((item) => {
 
-
-<script>
-    // -- /get-owners
-    function getplans() {
-
-        $.ajax({
-            type: 'GET',
-            url: '/plan-list',
-            dataType: 'json',
-            success: (data) => {
-                console.log(data)
-                data.forEach((item) => {
-
-                    const row = `<div class="col-lg-4">
+                            const row = `<div class="col-lg-4">
                     <a></a>
 
                     
@@ -251,16 +258,18 @@
 
 
                 </div>`;
-                    $('#plans').append(row);
+                            $('#plans').append(row);
+                        });
+                    }
+
                 });
-            }
+                //$("#ownerT").load();
 
-        });
-        //$("#ownerT").load();
+            };
 
-    };
+            getplans();
+        </script>
 
-    getplans();
-</script>
-
-{{/if}}
+        {{/if}}
+    </div>
+</div>
