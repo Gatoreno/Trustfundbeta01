@@ -22,6 +22,9 @@ const multer = require('multer');
 
 
 const app = express();
+
+server  = require('http').createServer(app);
+
 require('./lib/passport');
 const {database} = require('./keys');
 
@@ -157,9 +160,15 @@ app.set('view engine', '.hbs');
   
 
   // Start server
+
+
+  var os = require("os");
+var hostname = os.hostname();
   
+
   app.listen(app.get('port'), () => {
     console.log(`App listening on port ${app.get('port')}`);
+    //console.log(hostname)
   });
 
   /*

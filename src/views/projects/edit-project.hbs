@@ -186,80 +186,7 @@
                         </ol>
                     </nav>
 
-                    {{#if goals}}
-                    <div class="col-lg-2 col-md-2 col-sm-3">
-                        <div align="center">
-                            <div class="alert alert-danger" style="">
-                                <label for="">Metas por alcanzar </label><br><label for="">
-                                    {{missgoals.missgoals}}</label>
-                            </div>
-                            <div class="alert alert-success" style="">
-                                <label for="">Metas por alcanzadas </label><br><label for="">
-                                    {{successgoals.successgoals}}</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-10 col-md-10 col-sm-9">
-
-                        <div class="top2 table-wrapper-scroll-y">
-                            <table class="table table-hover">
-                                <thead>
-                                    <tr>
-                                        <th scope="col">Nombre </th>
-                                        <th scope="col">Inicio</th>
-                                        <th scope="col">Cierre</th>
-                                        <th scope="col">Descripción</th>
-                                        <th scope="col">Estatus</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-
-                                    {{#each goals}}
-                                    <tr>
-                                        <th>{{title}}</th>
-                                        <td>{{formatDate init "short"}}</td>
-                                        <td>{{formatDate end "short"}}</td>
-                                        <td>{{descrip}}</td>
-                                        <td>
-
-                                            {{#switch status}}
-                                            {{#case "1"}}
-                                            <div class="alert alert-danger" align="center" role="alert">
-                                                <label>En espera</plabel>
-                                            </div>
-                                            {{/case}}
-                                            {{#case "2"}}
-                                            <div class="alert alert-sucess" align="center" role="alert">
-                                                <label>Alcanzado</label>
-                                            </div> {{/case}}
-                                            {{#case "3"}}
-                                            <div class="alert alert-info" align="center" role="alert">
-                                                <label>Alcanzado</label>
-                                            </div>
-
-                                            {{/case}}
-                                            {{/switch}}
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-default" href="" type="text" value="Update">Update</a>
-                                        </td>
-                                        <td>
-                                            <a class="btn btn-danger" href="" type="text" value="Eliminar">Eliminar</a>
-                                        </td>
-
-                                    </tr>
-                                    {{/each}}
-
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                    {{else}} <p>Este poryecto no està terminado, aùn no tiene metas, agrega metas a este proyecto</p>
-
-
-
-                    {{/if}}
-
+                  <H2>Table de metas</H2>
 
 
 
@@ -274,6 +201,7 @@
                     </nav>
 
 
+                  <H2>Table de metas</H2>
 
 
                     <div class="table-wrapper-scroll-y">

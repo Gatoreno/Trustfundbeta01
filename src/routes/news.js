@@ -193,5 +193,28 @@ router.get('/edit/:id', (req, res) => {
 
 });
 
+router.get('/newsfrom/:id', (req, res) => {
+    const {
+        id
+    } = req.params;
+    console.log(id);
+
+    const query = pool.query('SELECT * FROM NEWS_ where id_proyecto = ?', [id]);
+
+    const news = [];
+    query.then((data) => {
+        data.forEach((data) => {
+            news.push(data);
+        });
+
+        res.json({
+            news
+        });
+
+    }).catch((err) => {
+        console.log(err);
+    });
+
+});
 
 module.exports = router;

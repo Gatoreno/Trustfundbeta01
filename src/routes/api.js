@@ -68,13 +68,16 @@ router.get('/get-reset-pass',  (req, res) => {
             res.render('auth/get-reset-pass');
 });
 
+
+
+  
+
 router.post('/get-reset-pass', (req, res) => {
 
     //check if user existe
 
     const mailuser = req.body.mail;
     const qu = pool.query('SELECT * from USERS_ where mail = ?', [mailuser]);
-
 
     qu.then((resx) => {
         if (resx.length > 0) {
@@ -87,6 +90,7 @@ router.post('/get-reset-pass', (req, res) => {
             }, 'process.env.SECRETO', {
                 expiresIn: '3600s'
             });
+
             //mail de recuperación
             let transporter = nodemailer.createTransport({
                 service: "gmail",
@@ -97,19 +101,21 @@ router.post('/get-reset-pass', (req, res) => {
                     user: 'manuel.o@trustfund.com.mx',
                     clientId: '804329507754-hibhcnfn4j6vja59ua8vovea5b2r5lr5.apps.googleusercontent.com',
                     clientSecret: 'XG5O2BWvT_FeolZFmc5_Fq2W',
-                    refreshToken: '1/hF2D-9doalNaTWMpGXsXIRttLifkotder8G5CWsV-I1NMxTk1TW8pEOvdl7rbHjK',
+                    refreshToken: '1/K0u_nl6bWWHtMIjIuj2fSMhUss3bTBD-qt93dHyQGpw'
                 }
             });
             const xname = 'TRUSTFUND';
 
-            req.headers = {
+            /*req.headers = {
                 'Content-Type':'application/x-www-form-urlencoded',
                     'authorization':'Bearer'
-                }
+            }*/
         
+            var os = require("os");
+            var hostname = os.hostname();
             //host =    req.header('host');    
-            console.log();
-
+            console.log(JSON.stringify(req.headers.host));
+            const hosty = req.headers.host;
             // send mail with defined transport object
             let mail = transporter.sendMail({
                 from: '"TrustFundWeb 👻 user: ' + xname + ' <' + mailuser + '>', // sender address
@@ -120,12 +126,15 @@ router.post('/get-reset-pass', (req, res) => {
                     '<div class="card-body">' +
                     '<h4 class="card-title">Mensaje de:' + xname + '</h4>' +
                     '<p class="card-text">Este espacio es para recuperar tu contraseña</p>' +
-                    '<a href="http://'+req.headers.host+'/reset-pass-confirm/'+ token + '">Click Aqui</a>' +
+                    '<a href="https://'+hosty+'/reset-pass-confirm/'+ token + '">Click Aqui</a>' +
                     '<p class="card-text">' + mailuser + '</p>' +
                     '' +
                     '</div>' +
                     '</div>',
             });
+
+
+            console.log(token,mail);
             
             mail.then(() => {
                 
@@ -146,10 +155,8 @@ router.post('/get-reset-pass', (req, res) => {
 });
 
 router.get('/reset-pass-confirm/:token',isNotLoggedIn,ensureToken ,(req, res) => {
-  
-    //console.log(req.params);
 
-  
+    //console.log(req.params);
     const {token} = req.params;
     //console.log(token);
     jwt.verify(token, 'process.env.SECRETO', (err, data) => {
@@ -161,8 +168,6 @@ router.get('/reset-pass-confirm/:token',isNotLoggedIn,ensureToken ,(req, res) =>
             res.render('auth/reset-pass',{sc});
         }
     });
-
-
 });
 
 
@@ -227,22 +232,23 @@ router.post('/contact', (req, res) => {
             user: 'manuel.o@trustfund.com.mx',
             clientId: '804329507754-hibhcnfn4j6vja59ua8vovea5b2r5lr5.apps.googleusercontent.com',
             clientSecret: 'XG5O2BWvT_FeolZFmc5_Fq2W',
-            refreshToken: '1/hF2D-9doalNaTWMpGXsXIRttLifkotder8G5CWsV-I1NMxTk1TW8pEOvdl7rbHjK',
+            //refreshToken: '1/hF2D-9doalNaTWMpGXsXIRttLifkotder8G5CWsV-I1NMxTk1TW8pEOvdl7rbHjK',
+            refreshToken: '1/K0u_nl6bWWHtMIjIuj2fSMhUss3bTBD-qt93dHyQGpw'
         }
     });
-    const xname = 'TRUSTFUND';
+    const xname = name;
 
     // send mail with defined transport object
     let mailer = transporter.sendMail({
-        from: '"TrustFundWeb 👻 user: ' + xname + ' <' + mailuser + '>', // sender address
-        to: "support@trsutfund.com.mx", // list of receivers
+        from: '"TrustFundWeb 👻 user: ' + xname + ' <' + mail + '>', // sender address
+        to: "support@trustfund.com.mx", // list of receivers
         subject: "Mensaje de Contacto ✔", // Subject line
         text: 'Mensaje de Contacto',
         html: '<div class="card" style="width:400px">' +
             '<div class="card-body">' +
             '<h4 class="card-title">Mensaje de:' + xname + '</h4>' +
             '<p class="card-text">'+message+'</p>' +
-            '<p class="card-text">' + mailuser + '</p>' +
+            '<p class="card-text">' + mail + '</p>' +
             '' +
             '</div>' +
             '</div>',
@@ -482,6 +488,21 @@ router.post('/create-medalla',(req,res)=>{
 });
 
 
+router.get('/goals-list/:id',(req,res)=> {
+
+const {id} = req.params;
+ const query = pool.query('SELECT * from goals_ where id = ?',[id]);
+
+ query.then((resp)=>{
+    res.json(resp);
+}).catch((err)=>{
+    res.json(err);
+});
+
+
+});
+
+
 router.get('/medallas',(req,res)=>{
     const query = pool.query('SELECT * FROM BADGES_ ');
     query.then((resp)=>{
@@ -489,5 +510,7 @@ router.get('/medallas',(req,res)=>{
     }).catch((err)=>{
         res.json(err);
     });
-})
+});
+
+
 module.exports = router;
