@@ -26,10 +26,89 @@ router.get('/client-get/:id', (req, res) => {
 
 
     const id = req.params.id;
+    const client = {id:id}
 
     openpay.customers.get(id, function (error, customer) {
         res.json(customer);
     });
+});
+
+router.get('/get-charges/:id',(req,res)=>{
+    
+    const id = req.params.id;
+    const client = {id:id}
+
+    searchParams = {};
+
+      openpay.customers.charges.list(id,searchParams, function(error, chargeList) {
+        // ...
+        if(error) res.json(error);
+        else res.json(chargeList);
+      });
+});
+
+router.get('/get-charges-info/:id',(req,res)=>{
+    const id = req.params.id;
+   
+
+    const qu = pool.query('Select * from users_ where id_client = ?',[id]);
+    qu.then((response)=>{
+        res.json(response);
+    }).catch((err)=>{
+        res.json(err);
+    });
+});
+
+router.get('/get-charge/:id',(req,res)=>{
+    const id = req.params.id;
+   
+
+    const qu = pool.query('Select * from users_ where id_client = ?',[id]);
+    qu.then((response)=>{
+        res.json(response);
+    }).catch((err)=>{
+        res.json(err);
+    });
+});
+
+router.get('/get-charge/:id',(req,res)=>{
+    const id = req.params.id;
+   
+
+    const qu = pool.query('Select * from users_ where id_client = ?',[id]);
+    qu.then((response)=>{
+        res.json(response);
+    }).catch((err)=>{
+        res.json(err);
+    });
+});
+
+
+router.get('/get-client-subscription/:id',(req,res)=>{
+    const id = req.params.id;
+
+
+
+    var searchParams = {
+        
+      };
+      
+      openpay.customers.subscriptions.list(id, searchParams, function(error, list){
+        // ...
+        if(error) res.json(error);
+        else res.json(list);
+      });
+
+  
+});
+
+router.get('/client-info/:id',isLoggedIn,(req,res)=>{
+
+    const id = req.params.id;
+    const client = {id:id}
+
+    res.render('auth/client',{client});
+
 });
 
 
@@ -364,22 +443,23 @@ router.get('/subscribe/:id', isLoggedIn, (req, res) => {
 
 });
 
-router.get('/merchant',(req,res)=>{
-    openpay.merchant.get(function(error, merchant){
+router.get('/merchant', (req, res) => {
+    openpay.merchant.get(function (error, merchant) {
         // ...
         res.json(merchant);
-      });
+    });
 });
 
 
 router.post('/create-subscribtion', (req, res) => {
 
     const {
-        id_user,    
-        id_plan,token_id
+        id_user,
+        id_plan,
+        token_id
     } = req.body;
     console.log(id_user,
-        id_plan,token_id);
+        id_plan, token_id);
 
 
 
@@ -519,7 +599,133 @@ router.get('/cardclient-delete/:id', isLoggedIn, (req, res) => {
 });
 
 
-//afro2ik0igsusbot5iox
+//
+
+router.get('/buy/:unit', (req, res) => {
+
+    const {
+        unit
+    } = req.params;
+
+    const qu = pool.query('SELECT * from tc_ where id = ?', [unit]);
+    qu.then((respon, err) => {
+        if (respon.length > 0) {
+            const unit = respon[0];
+            res.render('tc/buy', {
+                unit
+            });
+        } else console.log(err);
+
+    }).catch((err) => {
+        console.log(err);
+    });
+
+});
+
+
+router.post('/buy/', (req, res) => {
+
+    const {
+        token_id,description, amount,
+        device_session_id,id_client,id_plan
+    } = req.body;
+
+
+    var chargeRequest = {
+        'source_id': token_id,
+        'method': 'card',
+        'amount': amount,
+        'description': description,
+        'device_session_id': device_session_id
+        
+    }
+
+    console.log(chargeRequest);
+
+
+    openpay.customers.charges.create(id_client,chargeRequest, function (error, charge) {
+        // ...
+        console.log('try charging ...');
+        console.log(charge);
+        if (charge) {
+            console.log('charging ...');
+            async function resp(){
+                const tc_unit = {
+                    id_client: id_client,
+                    id_charge: charge.id,
+                    id_plan: id_plan,
+                    status: 0,
+                    desc: 'Sin usar aún',
+                    amount: amount
+                };
+                const chargedb = await pool.query('INSERT INTO tc_u set  ?', [tc_unit]);
+                console.log('try query ...');
+                if (chargedb.insertId) {
+                    console.log('success query ...');
+                    //console.log(error);
+                    //res.json(charge);
+                    res.status(200);
+                    res.render('tc/buy', {
+                        charge
+                    });
+                } else {
+                    console.log('error query ...');
+                    console.log(error);
+                    res.json(charge);
+                    res.status(500);
+                    req.flash('error',
+                    `<p>description: ${error.description}</p><p>`+
+                    `http_code: ${error.http_code}</p><p> error_code: ${error.error_code}</p>`+
+                    `<p> category:${error.category}</p>`);
+                    
+                    res.render('error/err',{error});
+                }
+
+
+            }
+
+            resp();
+        } else {
+            console.log(error);
+            res.status(500);
+            req.flash('error',
+            `<p>description: ${error.description}</p><p>`+
+            `http_code: ${error.http_code}</p><p> error_code: ${error.error_code}</p>`+
+            `<p> category:${error.category}</p>`);
+            res.render('error/err',{error});
+        }
+
+    });
+
+});
+
+
+router.get('/charges/:id', (req, res) => {
+    const {
+        id
+    } = req.params;
+
+    var searchParams = {
+        'creation[gte]': '2013-11-01',
+        'limit': 200
+    };
+
+    openpay.customers.charges.list(id, searchParams, function (error, chargeList) {
+        // ...
+        res.json(chargeList);
+    });
+});
+
+router.get('/tc-unit/:id',isLoggedIn,(req,res)=>{
+    const {id} = req.params;
+    const query = pool.query('SELECT * from tc_u  where id = ?' ,[id]);
+    query.then((resp)=>{
+        const unit = resp[0];
+        res.render('tc/unit',{unit});
+    }).catch((error)=> {
+        console.log(error)
+    });
+});
 
 router.post('/charge-tc-unit', (req, res) => {
 
@@ -549,6 +755,35 @@ router.post('/charge-tc-unit', (req, res) => {
             
         });
     */
+});
+
+
+
+router.post('/refund', (req, res) => {
+    const {id,amount,id_client,id_charge} = req.body;
+    
+    var refundRequest = {
+        'description' : 'devolución',
+        'amount' : amount
+     };
+
+    openpay.customers.charges.refund(id_client, id_charge, refundRequest,
+    function(error, charge) {
+        // ...
+
+        async function  bajaTc(){
+            const tc_unit = {
+
+                status: null,
+                descrip: 'Baja Trust coin por devolución',
+            };
+            const chargedb = await pool.query('update  tc_u set  ? where id = ?', [tc_unit,id]);
+        }bajaTc();
+        res.status(200);
+        res.render('tc/refund', {
+            charge
+        });
+    });
 });
 
 

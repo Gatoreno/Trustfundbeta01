@@ -1,0 +1,156 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+<div class="container">
+    <div class="row">
+
+
+
+
+        {{#if client}}
+
+
+
+
+        <div class="col-md-6">
+
+            <div class="jumbotron" id="clientsData">
+
+            </div>
+            <script>
+
+
+                function getCharges() {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/get-charges-info/{{client.id}}',
+                        dataType: 'json',
+                        success: (data) => {
+
+                            data.forEach((item) => {
+                                const row = `
+                                <img class="pull-right" src="${ item.img}" height="100px"/>
+                                    <p> Nombre de ususario : ${ item.username}</p>
+                                    <p>${ item.name}</p>    
+                                    <p>${ item.mail}</p>`;
+                                $('#clientsData').append(row);
+                            });
+                        }
+
+                    });
+                } getCharges();
+
+
+            </script>
+
+        </div>
+        <div class="col-md-6">
+
+
+            <div class="top2 table-wrapper-scroll-y">
+                <h3>Historial de cargos</h3>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Description</th>
+                            <th>Marca</th>
+                            <th>Tarjeta </th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody id="clientsCharges">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-md-6">
+
+
+            <div class="top2 table-wrapper-scroll-y">
+            <h3>Subscripciones</h3>
+
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Description</th>
+                            <th>Plan    </th>
+                            <th>Tarjeta </th>
+
+
+                        </tr>
+                    </thead>
+                    <tbody id="clientsCharges">
+
+                    </tbody>
+                </table>
+
+
+                <script>
+                        //   /get-client-subscription
+function getSubs() {
+                    $.ajax({
+                        type: 'GET',
+                        url: '/get-client-subscription{{client.id}}',
+                        dataType: 'json',
+                        success: (data) => {
+
+                            data.forEach((item) => {
+                                const row = `
+                                <img class="pull-right" src="${ item.img}" height="100px"/>
+                                    <p> Nombre de ususario : ${ item.username}</p>
+                                    <p>${ item.name}</p>    
+                                    <p>${ item.mail}</p>`;
+                                $('#clientsData').append(row);
+                            });
+                        }
+
+                    });
+                } getSubs();
+
+
+                </script>
+            </div>
+
+        </div>
+
+
+
+
+        <script>
+            function getCharges() {
+                $.ajax({
+                    type: 'GET',
+                    url: '/get-charges/{{client.id}}',
+                    dataType: 'json',
+                    success: (data) => {
+
+                        data.forEach((item) => {
+                            const row = `<tr>
+
+                    <td class="hidden"><input class="hidden" value="${ item.id}" /></td>
+                    <td>${ item.creation_date}</td>
+                    <td>${ item.description} por $ ${item.amount} Mx</td>
+                    <td>${ item.card.brand}</td>
+                    <td>${ item.card.card_number}</td>
+                </tr>`;
+                            $('#clientsCharges').append(row);
+                        });
+                    }
+
+                });
+            } getCharges();
+        </script>
+
+        {{else}}
+
+        no client info
+
+        {{/if}}
+
+
+    </div>
+</div>

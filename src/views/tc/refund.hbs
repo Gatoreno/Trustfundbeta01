@@ -1,0 +1,35 @@
+<div class="container">
+    <div class="row">
+        {{#if charge}}
+
+
+                
+        
+        <div class="col-lg-12">
+            <h4>Su solicitud a sido aceptada</h4>
+
+            <p>El producto: <b>
+{{charge.description}}
+            </b></p>
+
+            <p>Estado actual: {{charge.status}}</p>
+            <p>Por favor confirme su deposito o comuniquese a <a href="/contact">
+            soporte</a></p>
+
+        </div>
+
+
+
+{{else}}
+        <div class="col-lg-12">
+
+
+
+ <p>Parece que ha ocurrido un error, comuniquese a <a href="/contact">
+            soporte</a></p>
+
+                    </div>
+
+{{/if}}
+    </div>
+</div> 

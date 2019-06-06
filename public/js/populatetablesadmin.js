@@ -71,7 +71,7 @@ function getprojects(){
 
             data.forEach( ( item ) => {
                 const row = `<tr>
-                    <td><img width="155px" src="/uploads/${ item.img }"></td>
+                    <td><img width="155px" src="${ item.img }"></td>
                     <td>${ item.title }</td>
                     <td><a href="/projects/update-project/${item.id}" class="btn btn-default">Editar</a></td>
                     <td><a href="" class="btn btn-danger">Eliminar</a></td>
@@ -93,7 +93,7 @@ function getNews(){
 
             data.forEach( ( item ) => {
                 const row = `<tr>
-                    <td><img width="155px" src="/uploads/${ item.imgh }"><br></td>
+                    <td><img width="155px" src="${ item.imgh }"><br></td>
                     <td>${ item.title }</td>
                     <td>${ item.created_at }</td>
                     <td><a href="/news/edit/${ item.id } " class="btn btn-default">Editar</a></td>
@@ -156,8 +156,8 @@ function getclients(){
                     <td>${ item.name }</td>
                     <td>${ item.creation_date }</td>
                     <td>${ item.email}</td>
-                    <td><a href="${ item.id}">ver mas<a></td>
-                    <td><a href="/client-delete/${ item.id}">ver mas<a></td>
+                    <td><a href="/client-info/${ item.id}">ver mas<a></td>
+                    <td><a href="/client-delete/${ item.id}">Eliminar<a></td>
                 </tr>`;
                 $('#clientsT').append( row );
             });

@@ -6,6 +6,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const pool = require('../db');
 const nodemailer = require("nodemailer");
+const helpers = require('../lib/helpers');
 
 
 
@@ -50,6 +51,18 @@ router.get('/api/protected', ensureToken, (req, res) => {
 
 });
 
+router.get('/tc-info-plan/:id',(req,res)=>{
+    const {id} = req.params;
+    const plandata =  pool.query('SELECT * FROM tc_ where id = ? ',[id]);
+    //console.log(projects);
+   
+    plandata.then((resx) => {
+        res.json(resx);
+    });
+
+    
+})
+
 function ensureToken(req, res, next) {
     const bearerHeader = req.headers['authorization'];
     console.log(bearerHeader);
@@ -64,13 +77,13 @@ function ensureToken(req, res, next) {
     }
 }
 
-router.get('/get-reset-pass',  (req, res) => {
-            res.render('auth/get-reset-pass');
+router.get('/get-reset-pass', (req, res) => {
+    res.render('auth/get-reset-pass');
 });
 
 
 
-  
+
 
 router.post('/get-reset-pass', (req, res) => {
 
@@ -83,7 +96,7 @@ router.post('/get-reset-pass', (req, res) => {
         if (resx.length > 0) {
             const user_ = res[0];
 
-           //creando token con mail
+            //creando token con mail
             const user = mailuser;
             const token = jwt.sign({
                 user
@@ -110,7 +123,7 @@ router.post('/get-reset-pass', (req, res) => {
                 'Content-Type':'application/x-www-form-urlencoded',
                     'authorization':'Bearer'
             }*/
-        
+
             var os = require("os");
             var hostname = os.hostname();
             //host =    req.header('host');    
@@ -119,14 +132,14 @@ router.post('/get-reset-pass', (req, res) => {
             // send mail with defined transport object
             let mail = transporter.sendMail({
                 from: '"TrustFundWeb 👻 user: ' + xname + ' <' + mailuser + '>', // sender address
-                to: "pushpoped@gmail.com", // list of receivers
+                to: mailuser, // list of receivers
                 subject: "Reinicio de contraseña ✔", // Subject line
                 text: 'Reinicio de contraseña',
                 html: '<div class="card" style="width:400px">' +
                     '<div class="card-body">' +
                     '<h4 class="card-title">Mensaje de:' + xname + '</h4>' +
                     '<p class="card-text">Este espacio es para recuperar tu contraseña</p>' +
-                    '<a href="https://'+hosty+'/reset-pass-confirm/'+ token + '">Click Aqui</a>' +
+                    '<a href="https://' + hosty + '/reset-pass-confirm/' + token + '?' + mailuser + '">Click Aqui</a>' +
                     '<p class="card-text">' + mailuser + '</p>' +
                     '' +
                     '</div>' +
@@ -134,16 +147,16 @@ router.post('/get-reset-pass', (req, res) => {
             });
 
 
-            console.log(token,mail);
-            
+            console.log(token, mail);
+
             mail.then(() => {
-                
+
                 res.render('public/mensajenviado');
 
             }).catch((err) => {
                 console.log(err);
             });
-        }else{
+        } else {
             req.flash('message', 'No existe usuario con ese mail');
             res.redirect('/reset-pass');
         }
@@ -154,32 +167,85 @@ router.post('/get-reset-pass', (req, res) => {
 
 });
 
-router.get('/reset-pass-confirm/:token',isNotLoggedIn,ensureToken ,(req, res) => {
+router.get('/reset-pass-confirm/:token', (req, res) => {
 
     //console.log(req.params);
-    const {token} = req.params;
+    const {
+        token
+    } = req.params;
     //console.log(token);
     jwt.verify(token, 'process.env.SECRETO', (err, data) => {
         if (err) {
             res.sendStatus(403);
         } else {
-        const sc = {tok: token}
+            const sc = {
+                tok: token
+            }
             //console.log(data)
-            res.render('auth/reset-pass',{sc});
+            res.render('auth/reset-pass', {
+                sc
+            });
         }
     });
 });
 
 
-router.get('/getget',(req,res)=>{
-    req.headers = {
-        'Content-Type':'application/x-www-form-urlencoded',
-            'authorization':'Bearer'
-        }
 
-    const host =req.header('host');    
-    console.log(host);
+
+router.post('/reset-password/', (req, res) => {
+
+    //console.log(req.params);
+    const {
+        token,
+        mail,
+        pass,
+        pas1
+    } = req.body;
+    console.log( token,
+        mail,
+        pass,
+        pas1);
+    jwt.verify(token, 'process.env.SECRETO', (err, data) => {
+        if (err) {
+            res.sendStatus(403);
+            console.log(err);
+        } else {
+
+             console.log('data: '+ token);
+            console.log('data: '+ data);
+            //console.log(data)
+            const query = pool.query('Select * from users_ where mail = ?', [mail]);
+            query
+                .then(async (respon) => {
+                    if (respon.length > 0) {
+                        const user = respon[0];
+                        console.log('respon: '+ respon[0]);
+                        const pass_new = await helpers.encryptPass(pass); 
+
+                        console.log('iduser: '+ user.id);
+
+                        const queryUpdate = await pool.query('Update users_ set pass = ? where id = ?', [pass_new, user.id]);
+
+                        req.flash('success', 'Datos actualizados,intende de nuevo');
+                        res.redirect('auth/signin');
+
+                    } else {
+                        console.log(err);
+                        req.flash('error', 'Por favor comunicate con soporte');
+                        res.redirect('public/contact');
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    req.flash('error', 'Por favor comunicate con soporte');
+                    res.redirect('public/contact');
+                });
+        }
+    });
 });
+
+
+
 
 
 router.get('/get-user-edit/:id', isLoggedIn, (req, res) => {
@@ -247,25 +313,25 @@ router.post('/contact', (req, res) => {
         html: '<div class="card" style="width:400px">' +
             '<div class="card-body">' +
             '<h4 class="card-title">Mensaje de:' + xname + '</h4>' +
-            '<p class="card-text">'+message+'</p>' +
+            '<p class="card-text">' + message + '</p>' +
             '<p class="card-text">' + mail + '</p>' +
             '' +
             '</div>' +
             '</div>',
     });
-    
-    
-    
-    
+
+
+
+
     mailer.then((success) => {
         console.log(success)
         res.render('public/mensajenviado');
-    
+
     }).catch((err) => {
         console.log(err);
     });
-   
-       
+
+
 
 });
 
@@ -373,14 +439,14 @@ router.get('/false-news/', (req, res) => {
 
 });
 
-router.get('/instrucciones',(req,res)=>{
+router.get('/instrucciones', (req, res) => {
     res.render('public/instrucciones');
 })
 
 
 //searching
 
-router.get('/search',function(req,res){
+router.get('/search', function (req, res) {
     /*
     pool.query('SELECT title from projects_ where title like "%'+req.query.key+'%"',
     function(err, rows, fields) {
@@ -392,18 +458,18 @@ router.get('/search',function(req,res){
     }
     res.end(JSON.stringify(data));
     });*/
-   
-    
-    const qu = pool.query('SELECT title from projects_ where title like "%'+req.query.key+'%"');
-    qu.then((resx)=>{
-        if(resx.length > 0){
-            
 
-          
+
+    const qu = pool.query('SELECT title from projects_ where title like "%' + req.query.key + '%"');
+    qu.then((resx) => {
+        if (resx.length > 0) {
+
+
+
             res.end(JSON.stringify(data));
-            
-        }        
-    }).catch((err)=>{
+
+        }
+    }).catch((err) => {
         console.log(err)
     });
 
@@ -411,40 +477,45 @@ router.get('/search',function(req,res){
 
 //tc
 
-router.post('/tc-create',(req,res)=>{
+router.post('/tc-create', (req, res) => {
     const img1 = req.files[0];
     const nimg1 = img1.location;
-    const {id_user,amount,name,desc} = req.body;
+    const {
+        id_user,
+        amount,
+        name,
+        desc
+    } = req.body;
 
 
     const tc = {
-        id_usercreated:id_user,
-        amount:amount,
+        id_usercreated: id_user,
+        amount: amount,
         name: name,
-        desc:desc,
-        img:nimg1
+        desc: desc,
+        img: nimg1
     }
 
-    const qu = pool.query('INSERT into tc_ set ?',[tc]);
+    const qu = pool.query('INSERT into tc_ set ?', [tc]);
 
-    qu.then((resx)=> {
-        if(resx.length > 0){
+    qu.then((resx) => {
+        if (resx.length > 0) {
             req.flash('message', 'Unidad creada con éxito.');
             res.redirect('/costumers');
-        }else{
+        } else {
             req.flash('error', 'Hubo algín error');
             res.render('dashboard/costumers');
         }
 
-    }).catch((err)=>{
+    }).catch((err) => {
         console.log(err)
     });
 
 });
 
-router.get('/tc-list',(req,res)=>{
+router.get('/tc-list', (req, res) => {
     const qu = pool.query('SELECT * FROM tc_');
-    qu.then((resx)=>{
+    qu.then((resx) => {
         res.json(resx)
     });
 })
@@ -452,35 +523,40 @@ router.get('/tc-list',(req,res)=>{
 
 //medallas
 
-router.post('/create-medalla',(req,res)=>{
-    const {id_user,name,desc,condition} = req.body;
+router.post('/create-medalla', (req, res) => {
+    const {
+        id_user,
+        name,
+        desc,
+        condition
+    } = req.body;
     const img1 = req.files[0];
     const nimg1 = img1.location;
 
     const badge = {
-        id_usercreated:id_user,
-        name:name,
-        desc:desc,
-        status : 'aún fuera de sistema',
-        img:nimg1,
-        condition:condition
+        id_usercreated: id_user,
+        name: name,
+        desc: desc,
+        status: 'aún fuera de sistema',
+        img: nimg1,
+        condition: condition
     }
 
 
     console.log(badge)
 
-    const qu = pool.query('INSERT INTO BADGES_ set ?',[badge]);
-    qu.then((response,error)=>{
-        if(error) throw error;
-        if(response.insertId){
+    const qu = pool.query('INSERT INTO BADGES_ set ?', [badge]);
+    qu.then((response, error) => {
+        if (error) throw error;
+        if (response.insertId) {
 
             req.flash('message', 'Medalla agregada con éxitol');
             res.redirect('/dashboard');
-        }else{
+        } else {
             req.flash('error', 'Intentelo de nuevo o contacte a soporte');
             res.redirect('/dashboard');
         }
-    }).catch((err)=>{
+    }).catch((err) => {
         console.log(err)
     });
 
@@ -488,26 +564,64 @@ router.post('/create-medalla',(req,res)=>{
 });
 
 
-router.get('/goals-list/:id',(req,res)=> {
+router.get('/goals-list/:id', (req, res) => {
 
-const {id} = req.params;
- const query = pool.query('SELECT * from goals_ where id = ?',[id]);
+    const {
+        id
+    } = req.params;
+    const query = pool.query('SELECT * from goals_ where id = ?', [id]);
 
- query.then((resp)=>{
-    res.json(resp);
-}).catch((err)=>{
-    res.json(err);
-});
-
-
-});
-
-
-router.get('/medallas',(req,res)=>{
-    const query = pool.query('SELECT * FROM BADGES_ ');
-    query.then((resp)=>{
+    query.then((resp) => {
         res.json(resp);
+    }).catch((err) => {
+        res.json(err);
+    });
+
+
+});
+
+
+
+router.get('/tc-info-client/:id',(req,res)=>{
+
+    const id = req.params.id;
+
+    const query = pool.query('select sum(amount) total, count'+
+    '(id) total_units, descrip descrip  from tc_u where status = 0 AND id_client = ?',[id]);
+
+    query.then((response)=>{
+        res.json(response);
+    }).catch((err)=>{  
+        res.json(err);
+    });
+});
+
+router.get('/tc-get/:id',(req,res)=>{
+    const {id} = req.params;
+    const query = pool.query('SELECT * FROM tc_u where status = 0 AND id_client = ?',[id]);
+    
+    query.then((tc)=>{
+        res.json(tc);
     }).catch((err)=>{
+        res.json(err)
+    });
+});
+
+router.get('/tc-get-ocupated/:id',(req,res)=>{
+    const {id} = req.params;
+    const query = pool.query('SELECT * FROM tc_u where id_client = ?',[id]);
+    
+    query.then((tc)=>{
+        res.json(tc);
+    }).catch((err)=>{
+        res.json(err)
+    });
+});
+router.get('/medallas', (req, res) => {
+    const query = pool.query('SELECT * FROM BADGES_ ');
+    query.then((resp) => {
+        res.json(resp);
+    }).catch((err) => {
         res.json(err);
     });
 });

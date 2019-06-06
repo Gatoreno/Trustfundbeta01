@@ -1,0 +1,144 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+
+<div class="container">
+    <div class="row my-element">
+
+
+        {{#if unit}}
+
+
+
+        <div class="col-lg-12" align="center">
+
+
+
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb" id="PlanData">
+
+                </ol>
+            </nav>
+
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Asignar a un proyecto</a></li>
+                <li><a data-toggle="tab" href="#menu1">Solicitar devolución</a></li>
+
+            </ul>
+
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <h3>HOME</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna aliqua.</p>
+
+                    <div class="">
+                        <div id="projectWarp">
+
+
+
+                        </div>
+                    </div>
+
+
+                    <script>
+
+                        function getProjectsL() {
+                            $.ajax({
+                                type: 'GET',
+                                url: '/projects/get-all',
+                                dataType: 'json',
+                                success: (data) => {
+
+
+
+                                    data.forEach((item) => {
+                                        const row = `
+
+                             <div class="col-md-4 col-xs-12 col-sm-4 col-lg-4"  align="center">
+
+                                 <div class="jumbotron">                    
+                                    <img style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" width="100%" class="img-fluid"  src="${ item.img}" />
+                                    <br>
+                                    <small> ${ item.title}</small>
+                                      <p>    <a href="${ item.url}">${item.url}</p>
+
+                             </div>
+                                    </div>
+                                     `;
+                                        $('#projectWarp').append(row);
+                                    });
+                                }
+
+                            });
+
+
+                        }
+                        getProjectsL();
+
+                    </script>
+
+                </div>
+                <div id="menu1" class="tab-pane fade">
+                    <h3>Solicitar reembolso</h3>
+                    <p>Estimado usario, tome en cuenta que 
+                        El monto a devolver será por el total del cargo o un monto menor. 
+                        Ten en cuenta que la devolución puede tardar en aparecer en el
+                         estado de cuenta de tu cliente de 1 a 3 días hábiles
+                        , para mayor información comuniquese
+                        a <a href="/contact">soporte</a>.</p>
+                        <form action="/refund" method="POST">
+                        
+                        <input class="hidden"  name="id" type="text" value="{{unit.id}}">
+
+                        <input class="hidden"  name="amount" type="text" value="{{unit.amount}}">
+                        <input  class="hidden"  name="id_charge"  type="text" value="{{unit.id_charge}}">
+                        <input class="hidden"  name="id_client"  type="text" value="{{user.id_client}}">
+
+                        <input type="submit" class="btn btn-default btn-lg " value="Solicitar reembolso">
+                        
+                        </form>
+
+
+                        
+                </div>
+
+            </div>
+        </div>
+        <script>
+            function getPlanData() {
+
+                $.ajax({
+                    type: 'GET',
+                    url: '/tc-info-plan/{{unit.id}}',
+                    dataType: 'json',
+                    success: (data) => {
+
+                        data.forEach((item) => {
+                            const row = `
+                                                <li class="breadcrumb-item active" aria-current="page">
+                                                    <img  style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" width="50px"  src="${ item.img}" />
+                                                </li>
+                                               <li class="breadcrumb-item active" aria-current="page">
+                                                    $  ${ item.amount}.00 MX 
+                                                </li>
+                                                 <li class="breadcrumb-item active" aria-current="page">
+                                                    Nombre:  ${ item.name}
+                                                </li>                                                
+                                                `;
+                            $('#PlanData').append(row);
+                        });
+                    }
+
+                });
+
+            }
+            getPlanData();
+        </script>
+        {{else}}
+
+
+        No hay unidad, probablemnte hubo un error... notifiquelo a support@trustfund.com.mx
+        {{/if}}
+    </div>
+</div>

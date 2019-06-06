@@ -105,6 +105,8 @@ router.get('/get-projects', async (req, res) => {
   
   });
 
+
+  
  
 
 
@@ -209,57 +211,20 @@ router.get('/get-projects', async (req, res) => {
   //ST
 
 
-  router.post('/buy-tc', isLoggedIn, async (req, res) => {
+  router.get('/get-all',  (req, res) => {
 
-    const {
-      user_id,
-      project_id
-    } = req.body;
-  
-  
-    const customer = await stripe.customers.create({
-      email: req.body.stripeEmail,
-      source: req.body.stripeToken
+    const projects =  pool.query('SELECT * FROM PROJECTS_ ');
+    projects.then((resp)=>{
+      res.json(resp);
+    }).catch((err)=>{
+      console.log(err)
     });
-  
-  
-  
-    const charge = await stripe.charges.create({
-      amount: '2300',
-      currency: 'mxn',
-      customer: customer.id,
-      description: 'Pago valido por una TrustCoin'
-  
-    });
-  
-    
-      console.log(charge.id)
-  
-      console.log(charge);
-
-      const charg = {
-        id_proyecto: project_id,
-        id_usercreated: user_id,
-        id_st: charge.id,
-        amount: charge.amount
-      };
-  
-      const query =  pool.query('INSERT into TC_ set ?',[charg]);
-      
-     
-  
-      query.then(() => {
-        res.render('projects/charges', {
-          charge
-        }).catch((err) => {
-          console.log(err)
-        });
-      });
    
+
   
-    // res.render('buy: ');
   });
-  
+
+
 
 
 module.exports = router;

@@ -1,45 +1,75 @@
-<h3>yeah reset pass</h3>
+<div class="container my-element ">
+    <div class="row">
 
-<div id="panel" class="panel panel-danger hidden">
-    <div class="panel-heading" id="ph">Error - Contraseñas no coiniciden</div>
+        <script src="https://code.jquery.com/jquery-1.5.js"></script>
+
+
+        <div class="col-lg-12">
+
+            <h3>yeah reset pass</h3>
+
+            <div id="panel" class="panel panel-danger hidden">
+                <div class="panel-heading" id="ph">Error - Contraseñas no coiniciden</div>
+            </div>
+            <div id="panelT" class="panel panel-success hidden">
+                <div class="panel-heading" id="ph">Correcto - Contraseñas coiniciden</div>
+            </div>
+            <form action="/reset-password" method="POST">
+                <input type="password" id="pas" name="pass">
+                <input type="password" id="token" class="hidden" name="token" value="" required>
+                <input type="password" id="mail" class="hidden" name="mail" value="" required>
+
+                <input type="password" id="pas1" name="pas1" onchange="checkpass()" required>
+                <input type="submit" value="Cambiar contraseña" required>
+            </form>
+
+            <script>
+
+
+
+                $(document).ready(function () {
+                    var url_string = window.location.href; //window.location.href
+                    var url = new URL(url_string);
+                    var c = url_string.substr(url_string.lastIndexOf('/'), url_string.lenght);
+
+                    var token = c.substr(c.indexOf('/'), c.lastIndexOf('?'));
+                    var token = token.replace("/", "");
+
+                    var mail = c.substr(c.lastIndexOf("?"), c.lenght);
+                    mail = mail.replace("?", "");
+
+                    $("#token").val(token);
+                    $("#mail").val(mail);
+
+                });
+
+                function checkpass() {
+                    var p1 = document.getElementById("pas").value;
+                    var p2 = document.getElementById("pas1").value;
+                    var panel = document.getElementById("panel");
+
+                    panel.classList.add("hidden");
+
+                    if (p1 !== p2) {
+
+                        document.getElementById('pas1').value = '';
+                        document.getElementById('pas').value = '';
+
+                        var panel = document.getElementById("panel");
+                        panel.classList.remove("hidden");
+
+
+
+                    } else {
+                        panel.classList.add("hidden");
+                        var panelT = document.getElementById("panelT");
+                        panelT.classList.remove("hidden");
+                    }
+
+                };
+
+
+            </script>
+        </div>
+    </div>
 </div>
-<div id="panelT" class="panel panel-success hidden">
-    <div class="panel-heading" id="ph">Correcto - Contraseñas coiniciden</div>
-</div>
-<form action="">
-    <input type="password" id="pas">
-
-    <input type="password" id="pas1" onchange="checkpass()">
-    <input type="submit" value="Guardar">
-</form>
-
-<script>
-
-
-    function checkpass() {
-        var p1 = document.getElementById("pas").value;
-        var p2 = document.getElementById("pas1").value;
-        var panel = document.getElementById("panel");
-        
-        panel.classList.add("hidden");
-
-        if (p1 !== p2) {
-            
-            document.getElementById('pas1').value = '';
-            document.getElementById('pas').value = '';
-
-            var panel = document.getElementById("panel");
-            panel.classList.remove("hidden");
-
-
-           
-        }else{
-             panel.classList.add("hidden");
-             var panelT = document.getElementById("panelT");
-             panelT.classList.remove("hidden");
-        }
-
-    };
-
-
-</script>

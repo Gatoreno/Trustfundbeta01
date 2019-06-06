@@ -1,7 +1,23 @@
-<h2>Error</h2>
+<div class="container">
+    <div class="row">
+        {{#if error}}
 
-{{#each err}}
-    
-    <p>{{err}}</p>
+        <p>
+            description: {{error.description}}</p>
+        <p>
+            http_code: {{error.http_code}}</p>
+        <p> error_code: {{error.error_code}}</p>
+        <p> category:
+            {{error.category:}}</p>
 
-{{/each}}
+
+     
+
+
+        {{else}}
+
+        no hay errores que mostrar
+
+        {{/if}}
+    </div>
+</div>

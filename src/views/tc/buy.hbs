@@ -1,0 +1,259 @@
+<div class="container my-element fadeIn delay-2s">
+    <div class="row">
+
+
+        {{#if charge}}
+
+
+
+
+        <div class="col-md-6 col-xs-12 " id="rowhidden" style="position:realtive;display:none;">
+
+            <div class="jumbotron" align="center">
+                <h3>
+                    Cargo generado con éxito
+                </h3>
+
+                {{charge.id}}
+                {{charge.card.type}}
+                {{charge.card.brand}}
+                {{charge.card.bank_name}}
+                {{charge.card.card_number}}
+            </div>
+
+        </div>
+
+        {{else}}
+        {{#if unit}}
+        {{!-- 
+        unit
+        
+           --}}
+        {{#if user.id_client}}
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        <script type="text/javascript" src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
+        <script type='text/javascript' src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
+
+        {{!--            {{user-id_client}} {{unit.id}}
+        {{unit.amount}} {{unit.name}} --}}
+
+        <div class="col-md-6 col-xs-12 " id="rowhidden" style="position:realtive;display:none;">
+            cargando
+        </div>
+        <div class="col-md-6 col-xs-12 " align="center">
+            <div class="jumbotron" align="center">
+                <img src="{{unit.img}}" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" width="100px" alt="">
+                <p> $ {{unit.amount}} Mx</p>
+                <p> {{unit.name}} </p>
+
+            </div>
+        </div>
+
+        <div class="col-md-6 col-xs-12 " align="center">
+
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Pago único</a></li>
+                <li><a data-toggle="tab" href="#menu1">Usar Tarjeta</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <small>Tu trasación es segura.</small>
+                    <br>
+                    <div align="center">
+                        <form action="/buy" method="POST" id="payment-form">
+
+
+                            <input type="" class="hidden" name="plan_id" value="{{unit.id}}" />
+
+                            <div id="error" class="card-body ">
+
+                            </div>
+
+
+                            <div class="">
+                                <h4>Credit or debit card</h4>
+
+                                <div class="">
+                                    <div class="">
+                                        <small>Nombre del titular</small><input type="text" name="holder"
+                                            placeholder="Como aparece en la tarjeta" class="form-control"
+                                            autocomplete="off" data-openpay-card="holder_name">
+                                    </div>
+                                    <div class="">
+                                        <input type="text" name="card" placeholder="Número de tarjeta"
+                                            autocomplete="off" class="form-control" data-openpay-card="card_number">
+                                    </div>
+                                </div>
+                                <div class="">
+                                    <div class="">
+                                        <label>Fecha de expiración</label>
+                                        <div><input type="text" class="form-control" name="month" placeholder="Mes"
+                                                data-openpay-card="expiration_month"></div>
+                                        <div><input class="form-control" type="text" name="year" placeholder="Año"
+                                                data-openpay-card="expiration_year"></div>
+                                    </div>
+                                    <div class=""><label>Código de seguridad</label>
+                                        <div class=""><input type="text" name="cvv" placeholder="****"
+                                                autocomplete="off" data-openpay-card="cvv2">
+                                        </div>
+                                    </div>
+                                </div>
+                                <br>
+                                <div class="">
+                                    <a class="btn btn-default" id="pay-button">Pagar</a>
+                                </div>
+                                <br>
+                                <small>Transacciones realizadas vía:</small>
+                                <small>Tus pagos se realizan de forma segura con encriptación de 256
+                                    bits</small>
+                            </div>
+
+
+                            <input type="" class="hidden" name="amount" value="{{unit.amount}}" />
+                            <input type="" class="hidden" name="id_plan" value="{{unit.id}}" />
+
+                            <input type="" class="hidden" name="id_client" value="{{user.id_client}}" />
+                            <input type="" class="hidden" name="description" value="{{unit.descrip}}" />
+                            <input type="" class="hidden" name="token_id" id="token_id">
+                            <input type="" class="hidden" name="use_card_points" id="use_card_points" value="false">
+
+
+
+                        </form>
+                    </div>
+                </div>
+
+                <div id="menu1" class="tab-pane fade">
+                    <h3>Menu 1</h3>
+                    <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                        consequat.</p>
+
+
+                    <table class="table table-hover" >
+                        <thead>
+                            <tr>
+                                <th>Tarjeta </th>
+                                <th>Fecha</th>
+                                <th>Nombre</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="cardsT">
+
+                        </tbody>
+                    </table>
+
+
+
+                    <script>
+
+                        function getcl() {
+                            $.ajax({
+                                type: 'get',
+                                url: '/cards-list/{{user.id_client}}',
+                                dataType: 'json',
+                                success: (data) => {
+
+
+
+                                    if (data.lenght == 0) {
+
+                                        const row1 = '<tr>  <td><a >No hay datos aún</a></td><td></td> <td></td></tr>';
+                                        $('#cardsT').append(row1);
+                                    } else {
+                                        data.forEach((item) => {
+                                            const row = `<tr>
+                                                        <td>${ item.card_number}</td>
+                                                        <td>${ item.bank_name}</td>
+                                                        <td>${ item.type}</td>
+                                                        
+                                                        <td><a href="/cardclient-delete/${ item.id}">ver mas<a></td>
+                                                    </tr>`;
+                                            $('#cardsT').append(row);
+                                        });
+                                    }
+                                }
+                            });
+                        } getcl();
+                    </script>
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            OpenPay.setId('mypdgqijxla2a9w0kdp0'); //process.env
+            OpenPay.setApiKey('pk_5bb1a54a0e5647f1b4d377c5d473ea16');
+            OpenPay.setSandboxMode(true);
+            var deviceSessionId = OpenPay.deviceData.setup("payment-form", "device_session_id");
+            //alert(deviceSessionId);
+            //document.getElementById("device_session_id").value = deviceSessionId;
+        });
+
+
+        $('#pay-button').on('click', function (event) {
+            event.preventDefault();
+            $("#pay-button").prop("disabled", true);
+            OpenPay.token.extractFormAndCreate('payment-form', success_callbak, error_callbak);
+
+        });
+
+
+        var success_callbak = function (response) {
+            var token_id = response.data.id;
+            $('#token_id').val(token_id);
+            $('#payment-form').submit();
+        };
+
+        var error_callbak = function (response) {
+            var desc = response.data.description != undefined ?
+                response.data.description : response.message;
+            //alert("ERROR [" + response.status + "] " + desc);
+
+            document.getElementById("error").innerHTML = "" + desc;
+            $("#pay-button").prop("disabled", false);
+        };
+
+
+    </script>
+
+    <script>
+        $("#payment-form").submit(function (event) {
+
+            event.preventDefault();
+            $("#rowhidden").show();
+            //$('#loading').hide();
+        })
+
+    </script>
+
+    {{else}}
+    <h3>Usted no puede comprar nada sin ser cliente</h3>
+
+
+    {{/if}}
+
+    {{else}}
+    no unit
+
+    {{/if}}
+    {{/if}}
+
+
+
+
+
+
+
+
+
+
+</div>
+</div>

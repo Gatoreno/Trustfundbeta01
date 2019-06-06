@@ -1,4 +1,4 @@
-<div class="container">
+<div class="container my-element ">
     <div class="row">
         {{#if user}}
         <script src="https://code.jquery.com/jquery-1.5.js"></script>
@@ -7,7 +7,8 @@
             <div class="row my-element">
                 <div class="col-lg-12">
                     <div align="center">
-                        <img src="/img/logo512.png" class="card-img-top  rounded-circle w-50" width="100" alt="">
+                        <img src="/img/logo512.png" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"
+                         class="card-img-top  rounded-circle w-50" width="100" alt="">
 
                         <br>
                         <h3>TrustCoin</h3>
@@ -66,7 +67,7 @@
                             {{user.username}}
 
                             <img src="/img/tc.png" class="card-img-top  rounded-circle w-50 animated infinite pulse"
-                                width="80" alt="">
+                                width="80" alt="" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);">
                         </div>
                         <div class="col-lg-12">
                             <small> Mis unidades</small>
@@ -135,7 +136,7 @@
                             const row = `<div class="col-lg-4">
                     <a></a>
                 <div class="jumbotron"> <h2 class="">${ item.name}</h2>
-                                                    <img src="${ item.img}" class="card-img-top  rounded-circle w-50 animated  fadeIn " width="80" alt="">
+                 <img src="${ item.img}" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" class="card-img-top  rounded-circle w-50 animated  fadeIn " width="80" alt="">
                     <p class="lead">
                         ${ item.amount}
                     </p>
@@ -161,7 +162,8 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div align="center">
-                        <img src="/img/logo512.png" class="card-img-top  rounded-circle w-50" width="100" alt="">
+                        <img src="/img/logo512.png" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"
+                        class="card-img-top  rounded-circle w-50" width="100" alt="">
 
                         <br>
                         <h3>TrustCoin</h3>
