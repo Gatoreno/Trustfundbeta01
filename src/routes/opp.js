@@ -22,6 +22,74 @@ var openpay = new Openpay(
     'sk_3f7296c0f84144ba940b2372b34b619a');
 
 
+router.post('/buy-wcard/',(req,res)=>{
+
+    const {id_card,id_client,cvv2,card_n} = req.body;
+    const cardId = id_card;
+    const customerId = id_client;
+
+
+    //console.log(id_card,id_client);
+
+
+    
+    openpay.customers.cards.get(customerId, cardId, function (error, card) {
+        // ...
+        //console.log(card);
+       if(error){
+        console.log(error);
+        
+        res.render('error/err',{error});
+       }
+
+       card.cvv2 = cvv2;
+       //console.log(card);
+
+       getTokenFromServer(card);
+
+       function getTokenFromServer(card) {
+          // console.log(card);
+    
+        return axios.request({
+            method: "post",
+            baseURL: "https://sandbox-api.openpay.mx/v1/mypdgqijxla2a9w0kdp0/tokens",
+            auth: {
+              username: 'sk_3f7296c0f84144ba940b2372b34b619a'
+            },
+            data: {
+              "Content-Type": "application/json"
+            }, body: {
+                'holder_name': card.holder_name,
+                'card_number': card.card_number,
+                'cvv2': parseInt(cvv2),
+                'expiration_month': parseInt(card.expiration_month),
+                'expiration_year': parseInt(card.expiration_year),
+                'address': 'card.address'
+
+            }
+          }).then(function (res) {
+            //console.log(res.data.access_token);             
+            return res.data;
+            
+            //console.log(datax.access_token);
+      
+          }).catch((er) => {
+            console.log(er);
+          });
+
+        }
+      
+       // getTokenFromServer();
+        
+        /*.then(data => {
+          console.log(data);
+        });*/
+
+    });
+
+   
+});
+
 router.get('/client-get/:id', (req, res) => {
 
 
@@ -128,7 +196,7 @@ router.get('/client-delete/:id', (req, res) => {
 
 router.post('/costumer-create', (req, res) => {
 
-    console.log(req.body)
+    console.log(req.body);
     const {
         id,
         name,
@@ -239,7 +307,7 @@ router.get('/cards-list/:id', (req, res) => {
     });
 });
 
-router.get('/card-get/:id', (req, res) => {
+router.get('/card-get/:id/:costumer', (req, res) => {
 
 
     const {
@@ -456,13 +524,15 @@ router.post('/create-subscribtion', (req, res) => {
     const {
         id_user,
         id_plan,
-        token_id
+        token_id,
+        id_card
     } = req.body;
     console.log(id_user,
         id_plan, token_id);
 
 
 
+        
     /*
     const qu = pool.query('select * from users_ where id = ?', [id_user]);
 

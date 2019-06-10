@@ -135,8 +135,8 @@
                         <thead>
                             <tr>
                                 <th>Tarjeta </th>
-                                <th>Fecha</th>
-                                <th>Nombre</th>
+                                <th>Banco</th>
+                                <th>Confirmar ccv</th>
 
                             </tr>
                         </thead>
@@ -165,11 +165,19 @@
                                     } else {
                                         data.forEach((item) => {
                                             const row = `<tr>
-                                                        <td>${ item.card_number}</td>
-                                                        <td>${ item.bank_name}</td>
-                                                        <td>${ item.type}</td>
-                                                        
-                                                        <td><a href="/cardclient-delete/${ item.id}">ver mas<a></td>
+                                                        <td>
+
+                                                            <input type="text" placeholder="${ item.card_number}" name="card_n" class="" required>
+                                                        </td>
+                                                        <td>${ item.bank_name}</td>                                                        
+                                                        <td>                                                            
+                                                        <form method="post" action="/buy-wcard/">                                                                
+                                                                <input value="${ item.id}" name="id_card" class="hidden" >
+                                                                <input value="{{user.id_client}}" name="id_client" class="hidden" >
+                                                                <input type="text" placeholder="3 / 4 dígitos" name="cvv2" class="" required>
+                                                                <input type="submit" value="Usar tarjeta" class="btn btn-default pull-right" required>
+                                                        </form>
+                                                        </td>
                                                     </tr>`;
                                             $('#cardsT').append(row);
                                         });

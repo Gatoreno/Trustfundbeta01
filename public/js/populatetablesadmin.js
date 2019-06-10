@@ -10,7 +10,7 @@
                     console.log(data)
                     data.forEach((item) => {
 
-                        const row = `<div class="col-lg-4">
+                        const row = `<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
                         <a>${ item.id}</a>
                     
                         <a>${ item.amount}</a>
@@ -152,7 +152,7 @@ function getclients(){
             data.forEach( ( item ) => {
                 const row = `<tr>
                     <td>
-                    <input class="form-control" type="checkbox" value="1${ item.id }" ></td>
+                    <input class="form-control" ty  pe="checkbox" value="1${ item.id }" ></td>
                     <td>${ item.name }</td>
                     <td>${ item.creation_date }</td>
                     <td>${ item.email}</td>

@@ -98,23 +98,17 @@
                         console.log(data)
                         data.forEach((item) => {
 
-                            const row = `<div class="col-lg-4">
-                    <a></a>
-
-                    
-
-
-
-                <div class="jumbotron"> <h2 class="">${ item.name}</h2>
-                    <p class="lead">
-                        ${ item.amount}
-                    </p>
-                    <hr class="my-4">
-                    <a class="btn btn-primary btn-lg" href="/subscribe/${ item.id}" role="button">Saber más</a>
-                </div>
-
-
-                </div>`;
+                            const row = `<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                            <a></a>
+                            <div class="jumbotron"> <h2 class="">${ item.name}</h2>
+                            <small>Pagos por</small>
+                                <p class="lead">
+                                    $ ${ item.amount}.00  ${ item.currency}
+                                </p>
+                                <hr class="my-4">
+                                <a class="btn btn-primary btn-lg" href="/subscribe/${ item.id}" role="button">Saber más</a>
+                            </div>
+                            </div>`;
                             $('#plans').append(row);
                         });
                     }
@@ -133,15 +127,15 @@
                         console.log(data)
                         data.forEach((item) => {
 
-                            const row = `<div class="col-lg-4">
+                            const row = `<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4" align="center">
                     <a></a>
-                <div class="jumbotron"> <h2 class="">${ item.name}</h2>
+                <div class="jumbotron" align="center"> <h4 class="">${ item.name}</h4>
                  <img src="${ item.img}" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" class="card-img-top  rounded-circle w-50 animated  fadeIn " width="80" alt="">
                     <p class="lead">
                         ${ item.amount}
                     </p>
                     <hr class="my-4">
-                    <a class="btn btn-primary btn-lg" href="/buy/${ item.id}" role="button">Saber más</a>
+                    <a class="btn btn-primary " href="/buy/${ item.id}" role="button">Saber más</a>
                 </div>
 
 
@@ -201,6 +195,7 @@
                             <div>
                                 <h2>Planes</h2>
                             </div>
+                            <p>No podrás subscribirte si no estás en la plataforma.</p>
 
 
 
@@ -243,16 +238,18 @@
                         console.log(data)
                         data.forEach((item) => {
 
-                            const row = `<div class="col-lg-4">
+                            const row = `<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
                     <a></a>
-
-                    
-
 
 
                 <div class="jumbotron"> <h2 class="">${ item.name}</h2>
                     <p class="lead">
-                        ${ item.amount}
+                       $ ${ item.amount}.00  ${ item.currency}
+                    </p>
+                     <p class="lead">
+                         ${ item.repeat_every}
+                         cargos generados de manera 
+                        ${ item.repeat_unit}
                     </p>
                     <hr class="my-4">
                     <a class="btn btn-primary btn-lg" href="/plan/${ item.id}" role="button">Saber más</a>
