@@ -1,9 +1,11 @@
+        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
 <div class="container">
     <div class="row">
         {{#if user}}
         {{#if user.id_client}}
 
-        cliente {{user.id_client}}
+      
         {{#if plan}}
 
 
@@ -98,112 +100,69 @@
                     </div>
                     <div class="modal-body">
 
-                        <form action="/create-subscribtion" id="payment-form" enctype="multipart/form-data"
-                            method="POST">
-                            <div id="error">
-                                ...
-                            </div>
-                            <h4 class="modal-title"><label for="">{{user.username}} estás seguro que quieres suscribirte
-                                    a este plan? </label></h4>
-
-                            <select name="" id="cardsopp"></select>
+                    
+                        <small>Selecciona una tarjeta</small>
 
 
-                            <input type="text" class="hidden" name="id_user" value="{{user.id}}" />
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Tarjeta </th>
+                                <th>Banco</th>
+                                <th>Confirmar ccv</th>
 
-                            <input type="text" class="hidden" name="id_plan" value="{{plan.id}}" />
+                            </tr>
+                        </thead>
+                        <tbody id="cardsT">
 
-                            <input type="" name="token_id" id="token_id">tok
-                            <input type="hidden" name="use_card_points" id="use_card_points" value="false">
-                            <div class="">
-                                <h2>Tarjeta de crédito o débito</h2>
-                                <div class="">
+                        </tbody>
+                    </table>
 
-                                    <div class="">
-                                        <input type="text" class="" name="client" value="{{user.id_client}}">
-                                        <label>Nombre del titular</label><input name="holder_name" class="form-control"
-                                            type="text" placeholder="Como aparece en la tarjeta" autocomplete="off"
-                                            data-openpay-card="holder_name">
-                                        <label>Número de tarjeta</label>
-                                        <input class="form-control" name="card" type="text" autocomplete="off"
-                                            data-openpay-card="card_number">
-                                    </div>
+                        <script>
+                            function getcl() {
+                            $.ajax({
+                                type: 'get',
+                                url: '/cards-list/{{user.id_client}}',
+                                dataType: 'json',
+                                success: (data) => {
 
 
 
-                                    <div class="">
-                                        <label>Fecha de expiración</label>
-                                        <div>
-                                            <input class="form-control" name="month" type="text" placeholder="Mes"
-                                                data-openpay-card="expiration_month"></div>
-                                        <div>
-                                            <input class="form-control" name="year" type="text" placeholder="Año"
-                                                data-openpay-card="expiration_year"></div>
-                                    </div>
-                                    <div class=""><label>Código de seguridad</label>
-                                        <input class="form-control" name="dig" type="text" placeholder="3 dígitos"
-                                            autocomplete="off" data-openpay-card="cvv2">
-                                    </div>
+                                    if (data.lenght == 0) {
 
+                                        const row1 = '<tr>  <td><a >No hay datos aún</a></td><td></td> <td></td></tr>';
+                                        $('#cardsT').append(row1);
+                                    } else {
+                                        data.forEach((item) => {
+                                            const row = `<tr>
+                                                        <td>${ item.card_number}</td>
+                                                        <td>${ item.bank_name}</td>
+                                                        <td>${ item.type}</td>
+                                                        
+                                                        <td>
+                                                        
 
+                                                                    <form action="/create-subscribtion" id="payment-form" enctype="multipart/form-data"
+                                                                        method="POST">
+                                                                        
+                                                                
+                                                                                    <input type="text" class="" name="id_client" value="{{user.id_client}}">
+                                                                        <input type="text" class="" name="id_card" value="${ item.id}" />
 
-                                </div>
+                                                                        <input type="text" class="" name="id_user" value="{{user.id}}" />
 
-
-
-
-
-                                <script type="text/javascript"
-                                    src="https://openpay.s3.amazonaws.com/openpay.v1.min.js"></script>
-                                <script type='text/javascript'
-                                    src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
-
-
-                                <script type="text/javascript">
-
-                                    $(document).ready(function () {
-
-                                        OpenPay.setId('mypdgqijxla2a9w0kdp0'); //process.env
-                                        OpenPay.setApiKey('pk_5bb1a54a0e5647f1b4d377c5d473ea16');
-                                        OpenPay.setSandboxMode(true);
-
-
-                                        var deviceSessionId = OpenPay.deviceData.setup("payment-form", "deviceIdHiddenFieldName");
-
-                                        alert(deviceSessionId);
-
-                                        $('#pay-button').on('click', function (event) {
-                                            event.preventDefault();
-                                            $("#pay-button").prop("disabled", true);
-                                            OpenPay.token.extractFormAndCreate('payment-form', sucess_callbak, error_callbak);
-
-                                            var sucess_callbak = function (response) {
-                                                var token_id = response.data.id;
-                                                alert(response):
-                                                $('#token_id').val(token_id);
-                                                $('#payment-form').submit();
-                                            };
-
-                                            var error_callbak = function (response) {
-
-                                                var desc = response.data.description != undefined ? response.data.description : response.message;
-
-                                                alert("ERROR [" + response.status + "] " + desc);
-                                                //document.getElementById("error").innerHTML = "" + desc;
-
-                                                $("#pay-button").prop("disabled", false);
-                                            };
+                                                                        <input type="text" class="" name="id_plan" value="{{plan.id}}" />
+                                                                        <input type="submit" class="btn btn-default" name="" value="Usar Tarjeta" />
+                                                                    </form>
+                                                            </td>
+                                                    </tr>`;
+                                            $('#cardsT').append(row);
                                         });
-                                    });
-
-                                </script>
-
-                            </div>
-                            <div class="modal-footer">
-                                <input type="submit" value="Actaulizar" id="pay-button" class="btn btn-default">
-                                <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
-                            </div>
-                        </form>
+                                    }
+                                }
+                            });
+                        }getcl();
+                        </script>
                     </div>
 
                 </div>

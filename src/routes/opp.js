@@ -24,15 +24,40 @@ var openpay = new Openpay(
 
 router.post('/buy-wcard/',(req,res)=>{
 
-    const {id_card,id_client,cvv2,card_n} = req.body;
+
+
+
+
+
+    const {id_card,id_client,amount,token} = req.body;
     const cardId = id_card;
     const customerId = id_client;
 
 
+    var chargeRequest = {
+        'source_id' : cardId,
+        'method' : 'card',
+        'amount' : 100,
+        'currency' : 'MXN',
+        'description' : 'Compra',
+        'order_id' : 'oid-00051',
+        'device_session_id' : 'kR1MiQhz2otdIuUlQkbEyitIqVMiI16f',
+        'customer' : {
+             'name' : 'Juan',
+             'last_name' : 'Vazquez Juarez',
+             'phone_number' : '4423456723',
+             'email' : 'juan.vazquez@empresa.com.mx'
+        }
+     }
+    console.log(req.body);
+
+
+ /*
+
     //console.log(id_card,id_client);
 
 
-    
+   
     openpay.customers.cards.get(customerId, cardId, function (error, card) {
         // ...
         //console.log(card);
@@ -83,9 +108,10 @@ router.post('/buy-wcard/',(req,res)=>{
         
         /*.then(data => {
           console.log(data);
-        });*/
+        });
 
     });
+    */
 
    
 });
@@ -307,6 +333,30 @@ router.get('/cards-list/:id', (req, res) => {
     });
 });
 
+
+router.post('/cardclient-delete/',(req,res)=>{
+    
+    const {id_card,id_client} = req.body;
+
+    openpay.customers.cards.delete(id_client, id_card, function(error) {
+        // ...
+        if(error){
+            console.log(error);
+            res.status(200);
+            req.flash('error', 'Hubo un error contacte con soporte');
+
+            res.render('error/err',{error});
+        }else{
+            res.status(200);
+            req.flash('sucess', 'Tarjeta eliminada');
+            res.render('public/sucessUpdate');
+
+        }
+      });
+      
+})
+
+
 router.get('/card-get/:id/:costumer', (req, res) => {
 
 
@@ -522,18 +572,20 @@ router.get('/merchant', (req, res) => {
 router.post('/create-subscribtion', (req, res) => {
 
     const {
-        id_user,
         id_plan,
-        token_id,
-        id_card
+        id_card,
+        id_client,
+        id_user
     } = req.body;
-    console.log(id_user,
-        id_plan, token_id);
+    console.log( id_plan,
+        id_card,
+        id_client,
+        id_user);
 
 
 
         
-    /*
+    
     const qu = pool.query('select * from users_ where id = ?', [id_user]);
 
     qu.then(async (data) => {
@@ -573,28 +625,27 @@ router.post('/create-subscribtion', (req, res) => {
             } else {
 
                 //select opp data from id_client
-                const card = [];
-                card = openpay.customers.cards.get(costumer, id, function (error, card) {
-                    // ...
-                    return card;
-
-                });
-
+               
                 var subscriptionRequest = {
-                    'card': {
-                        'card_number': '4111111111111111',
-                        'holder_name': 'Juan Perez Ramirez',
-                        'expiration_year': '20',
-                        'expiration_month': '12',
-                        'cvv2': '110',
-                        'device_session_id': 'kR1MiQhz2otdIuUlQkbEyitIqVMiI16f'
-                    },
-                    'plan_id': id_plan
-                };
+                    'plan_id':id_plan,
+                    'source_id' : id_card,
+                    'trial_end_date' :  Date.now()
+                 };
+                 
+                 openpay.customers.subscriptions.create(id_client, subscriptionRequest, function(error, subscription){
+                   // ...
+                   if(error){
+                    console.log(error)
+                   }else{
+                       console.log(subscription);
+                       
+                       res.status(200);
+                    res.render('public/sucessUpdate');
+                    req.flash('message', 'Suscripción creada con éxito');
+                   }
+                 });
 
 
-
-                console.log(token_id, userid, clientid, id_plan, card,subscriptionRequest);
 
             }
 
@@ -602,7 +653,7 @@ router.post('/create-subscribtion', (req, res) => {
             res.redirect('auth/signin', 200, req.flash('message', 'No hay usuario con ese mail.'));
         };
 
-    })*/
+    })
 
 });
 

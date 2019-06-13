@@ -42,7 +42,9 @@
         </div>
         <div class="col-md-6 col-xs-12 " align="center">
             <div class="jumbotron" align="center">
-                <img src="{{unit.img}}" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" width="100px" alt="">
+                <img src="{{unit.img}}"
+                    style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" width="100px"
+                    alt="">
                 <p> $ {{unit.amount}} Mx</p>
                 <p> {{unit.name}} </p>
 
@@ -131,7 +133,7 @@
                         consequat.</p>
 
 
-                    <table class="table table-hover" >
+                    <table class="table table-hover">
                         <thead>
                             <tr>
                                 <th>Tarjeta </th>
@@ -146,8 +148,18 @@
                     </table>
 
 
+                    <script type='text/javascript'
+                        src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
+                    <script type="text/javascript">
+                        //var deviceSessionId = OpenPay.deviceData.setup("formId", "token");
+                        //var deviceDataId = OpenPay.deviceData.setup("formId");  
+                        var deviceDataId = OpenPay.deviceData.setup();
+                        //alert(deviceDataId);
+                        deviceDataId = OpenPay.deviceData.setup("formId", "device_session_id");
 
-                    <script>
+                        //    document.getElementsByClassName("okt").value = deviceDataId;
+
+
 
                         function getcl() {
                             $.ajax({
@@ -169,17 +181,22 @@
 
                                                             <input type="text" placeholder="${ item.card_number}" name="card_n" class="" required>
                                                         </td>
-                                                        <td>${ item.bank_name}</td>                                                        
+                                                        <td>${ item.bank_name}</td> 
+                                                         <td></td>  
+                                                                                                              
                                                         <td>                                                            
-                                                        <form method="post" action="/buy-wcard/">                                                                
-                                                                <input value="${ item.id}" name="id_card" class="hidden" >
-                                                                <input value="{{user.id_client}}" name="id_client" class="hidden" >
-                                                                <input type="text" placeholder="3 / 4 dígitos" name="cvv2" class="" required>
+                                                        <form method="post" id="formId"  action="/buy-wcard/">  
+                                                                                                                              
+                                                                <input value="${ item.id}" name="id_card" class="" >
+                                                                <input value="" class="okt" id="device_session_id" name="token" />
+                                                                <input value="{{user.id_client}}" name="id_client" class="" >
                                                                 <input type="submit" value="Usar tarjeta" class="btn btn-default pull-right" required>
                                                         </form>
                                                         </td>
                                                     </tr>`;
                                             $('#cardsT').append(row);
+
+                                            document.getElementById("okt").innerHTML = "" + deviceDataId
                                         });
                                     }
                                 }
@@ -244,12 +261,14 @@
 
     {{else}}
     <h3>Usted no puede comprar nada sin ser cliente</h3>
+        <h4> <a href="/userconfig"> Activar mi cuenta</a> </h4>
+
 
 
     {{/if}}
 
     {{else}}
-    no unit
+    no unit - error
 
     {{/if}}
     {{/if}}

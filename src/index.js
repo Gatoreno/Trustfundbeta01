@@ -128,6 +128,8 @@ app.use((req,res,next) => {
 app.use(require('./routes/'));
 app.use(require('./routes/api'));
 app.use(require('./routes/opp'));
+app.use(require('./routes/mobil'));
+
 app.use('/auth',require('./routes/auth'));
 app.use('/tc',require('./routes/tc'));
 

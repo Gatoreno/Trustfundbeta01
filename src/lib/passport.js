@@ -151,8 +151,8 @@ passport.use('local.signin', new LStrategy({
     passwordField: 'pass',
     passReqToCallback: true
 }, async (req, username, pass, done) => {
-    console.log(req.body);
-    console.log(username, pass);
+    //console.log(req.body);
+    //console.log(username, pass);
 
 
 

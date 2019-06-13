@@ -137,6 +137,24 @@ router.get('/get-projects', async (req, res) => {
   });
 
 
+  router.get('/get/:id', (req, res) => {
+    const {
+      id
+    } = req.params;
+    const queyk = pool.query('SELECT * FROM PROJECTS_ where id = ?',[id]);
+
+    
+    queyk.then((data) => {
+    res.json(data);
+    }).catch((err) => {
+      res.send('error: ' + err);
+      //res.render('err/err',{err: err});
+    });
+  
+  
+  });
+
+
 
 
   router.get('/update-project/:id_project', (req, res) => {
