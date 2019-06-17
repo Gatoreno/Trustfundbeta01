@@ -2,7 +2,7 @@
 
 
 <div class="container">
-    <div class="row">
+    <div class="row my-element">
         {{!--
         recibir y mandar
 
@@ -20,9 +20,6 @@
 
             
 
-            {{user.id}}
-
-
 
             <script>
                 // -- /get-owners
@@ -36,7 +33,7 @@
                             console.log(data)
                             data.forEach((item) => {
 
-                                const row = `<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                                const row = `<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <a></a>
                             <div class="jumbotron"> <h4 class="">${ item.title}</h4>
                             <small>Pagos por</small>
@@ -59,24 +56,24 @@
 
                     $.ajax({
                         type: 'GET',
-                        url: '/projects/get/{{tc.id}}',
+                        url: '/tc-info/{{tc.id}}',
                         dataType: 'json',
                         success: (data) => {
                             console.log(data)
                             data.forEach((item) => {
 
-                                const row = `<div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
-                            <a></a>
+                                const row = `<div align="center" class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                             <div class="jumbotron"> <h2 class="">${ item.name}</h2>
-                            <small>Pagos por</small>
+                           <img src="${ item.img}" style="box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" class="card-img-top  rounded-circle w-50 animated  fadeIn " width="80" alt="">
+                            <br>
+                            <small>Pago unico por</small>
                                 <p class="lead">
-                                    $ ${ item.amount}.00  ${item.currency}
+                                    $ ${ item.amount}.00  
                                 </p>
                                 <hr class="my-4">
-                                <a class="btn btn-primary btn-lg" href="/subscribe/${ item.id}" role="button">Saber más</a>
                             </div>
                             </div>`;
-                                $('#projectDiv').append(row);
+                                $('#tcDiv').append(row);
                             });
                         }
 

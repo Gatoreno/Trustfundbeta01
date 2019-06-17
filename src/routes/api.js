@@ -38,7 +38,7 @@ router.post('/api/login', (req, res) => {
 
 //Ensure
 router.get('/api/protected', ensureToken, (req, res) => {
-    jwt.verify(req.token, 'seceto', (err, data) => {
+    jwt.verify(req.token, 'process.env.SECRETO', (err, data) => {
         if (err) {
             res.sendStatus(403);
         } else {
@@ -607,6 +607,17 @@ router.get('/tc-get/:id',(req,res)=>{
     });
 });
 
+router.get('/tc-info/:id',(req,res)=>{
+    const {id} = req.params;
+    const query = pool.query('SELECT * FROM tc_ where id = ?',[id]);
+    
+    query.then((tc)=>{
+        res.json(tc);
+    }).catch((err)=>{
+        res.json(err)
+    });
+});
+
 router.get('/tc-get-ocupated/:id',(req,res)=>{
     const {id} = req.params;
     const query = pool.query('SELECT * FROM tc_u where id_client = ?',[id]);
@@ -634,7 +645,9 @@ router.get('/tc-assign/:id/:idunit', (req, res) => {
     const query = pool.query('SELECT * FROM tc_u where id = ? ',[idunit]);
     query.then((tc) => {
         //res.json(resp);
+        //console.log(tc[0]) 
         tc.id_project = id;
+        tc.id = tc[0].id;
         res.render('tc/assign',{tc});
     }).catch((err) => {
         res.json(err);

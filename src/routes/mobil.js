@@ -20,7 +20,7 @@ router.post('/api/login', (req, res) => {
     const token = jwt.sign({
         user
     }, 'process.env.SECRETO', {
-        expiresIn: '3600s'
+        expiresIn: '300s'
     });
 
     res.json({
@@ -45,15 +45,15 @@ function ensureToken(req, res, next) {
 
 
 //Ensure
-router.get('/api/protected', ensureToken, (req, res) => {
-    jwt.verify(req.token, 'seceto', (err, data) => {
+router.post('/m/ensureToken', ensureToken, (req, res) => {
+
+    console.log(req.token)
+
+    jwt.verify(req.token, 'process.env.SECRETO', (err, data) => {
         if (err) {
             res.sendStatus(403);
         } else {
-            res.json({
-                text: 'protected',
-                data: data //iat 
-            });
+            res.sendStatus(200);
         }
     });
 
