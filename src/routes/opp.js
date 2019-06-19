@@ -776,7 +776,7 @@ router.post('/buy/', (req, res) => {
                     id_charge: charge.id,
                     id_plan: id_plan,
                     status: 0,
-                    desc: 'Sin usar aún',
+                    descrip: 'Sin usar aún',
                     amount: amount
                 };
                 const chargedb = await pool.query('INSERT INTO tc_u set  ?', [tc_unit]);
