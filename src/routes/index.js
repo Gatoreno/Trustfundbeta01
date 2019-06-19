@@ -53,6 +53,23 @@ router.get('/get-usersall',(req,res)=>{
 });
 
 
+router.get('/get-user/:id',(req,res)=>{
+    const {id} = req.params;
+    
+    
+    pool.query('SELECT * FROM USERS_ where id = ?',[id]);
+    query.then((data)=>{
+        
+        const userinfo = data[0];
+          //console.log(admins)
+          res.json(userinfo);
+    }).catch((err)=>{
+        console.log(err);
+    });
+
+});
+
+
 
 
 router.get('/pag-news',(req,res)=>{
