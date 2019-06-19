@@ -881,7 +881,8 @@ router.post('/charge-tc-unit', (req, res) => {
 router.post('/getallwh',(req,response)=>{
 
     console.info('Received!'); // Log every time a WebHook is handled.
-    console.info(req);
+    console.log(req.webhook);
+    console.log(req);
     // Execute any logic that you want when the 3rd Party Client hits that endpoint
 
     response.status(200); // Let the sender know that we've received the WebHook
