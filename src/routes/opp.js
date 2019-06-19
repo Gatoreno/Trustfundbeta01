@@ -878,7 +878,7 @@ router.post('/charge-tc-unit', (req, res) => {
     */
 });
 
-router.get('/getallwh',(req,response)=>{
+router.post('/getallwh',(req,response)=>{
 
     console.info('Received!'); // Log every time a WebHook is handled.
     console.info(req);
