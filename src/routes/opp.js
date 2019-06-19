@@ -890,6 +890,18 @@ router.post('/getallwh',(req,response)=>{
 });
 
 
+router.post('/create-wh',(req,response)=>{
+
+    console.info('Received!'); // Log every time a WebHook is handled.
+    console.info(req);
+    // Execute any logic that you want when the 3rd Party Client hits that endpoint
+
+    response.status(200); // Let the sender know that we've received the WebHook
+    response.send();
+    
+});
+
+
 
 router.post('/refund', (req, res) => {
     const {id,amount,id_client,id_charge} = req.body;
