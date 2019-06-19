@@ -17,6 +17,11 @@ router.get('/', (req,res) => {
 });
 
 
+router.get('/get-logo',(req,res)=>{
+ 
+//always try https://trustfundapp.herokuapp.com/img/logo512.png
+    res.sendFile('/img/logo512.png');
+});
 
 router.get('/profile',isLoggedIn,(req,res)=>{
     res.render('public/profile');
