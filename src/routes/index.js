@@ -57,7 +57,7 @@ router.get('/get-user/:id',(req,res)=>{
     const {id} = req.params;
     
     
-    pool.query('SELECT * FROM USERS_ where id = ?',[id]);
+    pool.query('SELECT * FROM USERS_ where id = ',[id]);
     query.then((data)=>{
         
         const userinfo = data[0];
