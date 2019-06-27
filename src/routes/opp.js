@@ -547,6 +547,48 @@ router.get('/plan/:id', (req, res) => {
 
 });
 
+router.get('/plan-json/:id', (req, res) => {
+
+    const {
+        id
+    } = req.params;
+
+    //console.log(id);
+    openpay.plans.get(id, function (error, plan) {
+        // ...
+
+        res.json({plan});
+    });
+
+});
+
+
+
+router.get('/subscription/:id/:id_client', isLoggedIn, (req, res) => {
+    const id = req.params.id;
+    const id_client = req.params.id_client;
+
+
+    console.log(id);
+
+    openpay.customers.subscriptions.get(id_client, id, function(error, subscription){
+        // ...
+      if(error){
+          res.status(500);
+        res.render('tc/subscription', {
+            error
+        });
+      }
+      res.status(200);
+        res.render('tc/subscription', {
+            subscription
+        });
+
+
+    });
+
+});
+
 router.get('/subscribe/:id', isLoggedIn, (req, res) => {
     const id = req.params.id;
     console.log(id);
@@ -558,6 +600,25 @@ router.get('/subscribe/:id', isLoggedIn, (req, res) => {
             plan
         });
     });
+
+});
+
+router.post('/subscription-delete/', isLoggedIn, (req, res) => {
+   const {id_client,id}  = req.body;
+   openpay.customers.subscriptions.delete(id_client, id, function(error){
+    // ...
+
+    if(error){
+        res.render('error/err',{error});
+    }
+    else{
+              
+        res.status(200);
+        res.render('public/sucessUpdate');
+        req.flash('message', 'Suscripción eliminada con éxito');
+    }
+
+  });
 
 });
 
@@ -767,7 +828,7 @@ router.post('/buy/', (req, res) => {
     openpay.customers.charges.create(id_client,chargeRequest, function (error, charge) {
         // ...
         console.log('try charging ...');
-        console.log(charge);
+        //console.log(charge);
         if (charge) {
             console.log('charging ...');
             async function resp(){
@@ -785,10 +846,7 @@ router.post('/buy/', (req, res) => {
                     console.log('success query ...');
                     //console.log(error);
                     //res.json(charge);
-                    res.status(200);
-                    res.render('tc/buy', {
-                        charge
-                    });
+                    
                 } else {
                     console.log('error query ...');
                     console.log(error);
@@ -802,10 +860,13 @@ router.post('/buy/', (req, res) => {
                     res.render('error/err',{error});
                 }
 
-
+               
             }
 
             resp();
+
+            res.status(200);
+            res.render('tc/buy', {charge});
         } else {
             console.log(error);
             res.status(500);
@@ -848,35 +909,19 @@ router.get('/tc-unit/:id',isLoggedIn,(req,res)=>{
     });
 });
 
-router.post('/charge-tc-unit', (req, res) => {
 
-    const customerId = 'afro2ik0igsusbot5iox';
-
-    //https://sandbox-api.openpay.mx/v1/{MERCHANT_ID}/tokens
-
-    // var http = 'https://sandbox-api.openpay.mx/v1/'{MERCHANT_ID}'/tokens';
-
-    var chargeRequest = {
-        'source_id': 'kqgykn96i7bcs1wwhvgw',
-        'method': 'card',
-        'amount': 100,
-        'currency': 'MXN',
-        'description': 'Cargo inicial a mi cuenta',
-        'order_id': 'oid-00051',
-        'device_session_id': 'kR1MiQhz2otdIuUlQkbEyitIqVMiI16f',
-        'customer': {
-            'name': 'Juan',
-            'last_name': 'Vazquez Juarez',
-            'phone_number': '4423456723',
-            'email': 'juan.vazquez@empresa.com.mx'
-        }
-    }
-    /*
-        openpay.customers.charges.create(customerId, chargeRequest, ()=>{
-            
-        });
-    */
+router.get('/tc-info-plan/:id',isLoggedIn,(req,res)=>{
+    const {id} = req.params;
+    const query = pool.query('SELECT * from tc_u  where id = ?' ,[id]);
+    query.then((resp)=>{
+        const unit = resp[0];
+        res.render('tc/unit',{unit});
+    }).catch((error)=> {
+        console.log(error)
+    });
 });
+
+
 
 router.post('/getallwh',(req,response)=>{
 
@@ -891,17 +936,21 @@ router.post('/getallwh',(req,response)=>{
 });
 
 //wkz94otmlqqxoi6b7xfw
-router.post('/create-wh',(req,response)=>{
+
+
+router.get('/get-wh/',(req,response)=>{
 
     console.info('Received!'); // Log every time a WebHook is handled.
     console.info(req);
     // Execute any logic that you want when the 3rd Party Client hits that endpoint
 
-    response.status(200); // Let the sender know that we've received the WebHook
-    response.send();
-    
-});
+    openpay.webhooks.get('wkz94otmlqqxoi6b7xfw', function(error, webhook){
+        // ...
+        response.json(webhook);
+      });
 
+    response.status(200); // Let the sender know that we've received the WebHook
+    });
 
 
 router.post('/refund', (req, res) => {

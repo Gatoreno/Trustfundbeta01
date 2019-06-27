@@ -147,7 +147,26 @@
 
 
 
-                    <div>
+                    <h4>Subscripciones</h4>
+                     <div class="top2 table-wrapper-scroll-y">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Tarjeta </th>
+                                <th>Banco</th>
+                                <th>Ver más</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody id="subscriptionT">
+
+                        </tbody>
+                    </table>
+
+                    </div>
+
+                    
 
 
 
@@ -209,7 +228,36 @@
                                 });
                             }
 
-                            listtcT(), gettcinfo();
+                            function getsubs() {
+
+                            $.ajax({
+                                type: 'get',
+                                url: '/get-client-subscription/{{user.id_client}}',
+                                dataType: 'json',
+
+                                success: (data) => {
+
+                                    data.forEach((item) => {
+                                        const row = `<tr>
+                                            <td>${ item.card.type}</td>
+                                            <td>${ item.card.bank_name}</td>                                      
+                                             <td>
+                                                 
+                                                 <a class="pull-right" href="/subscription/${ item.id}/{{user.id_client}}">
+                                                 <span class="glyphicon glyphicon-eye-open"></span></a></td>
+                                            
+                                        </tr>`;
+                                        $('#subscriptionT').append(row);
+                                    });
+
+
+
+                                }
+
+                            });
+                        }
+
+                            listtcT(), gettcinfo(),getsubs();
 
 
 
@@ -217,7 +265,8 @@
 
                         </script>
 
-                    </div>
+                    
+                    
 
                     {{! termina menu 2}}
                 </div>

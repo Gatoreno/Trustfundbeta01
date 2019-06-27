@@ -14,10 +14,7 @@
                         <a>${ item.id}</a>
                     
                         <a>${ item.amount}</a>
-                        
-
-
-
+                    
                     <div class="jumbotron"> <h2 class="">${ item.name}</h2>
                         <p class="lead">
                             ${ item.amount}
@@ -50,7 +47,7 @@ function getowners(){
                 const row = `<tr>
                     <td><img width="96px" height="65px"  src="${ item.img }"></td>
                     <td>${ item.name }</td>
-                    <td><a href="/get-user/${ item.id}"><button>Editar</button></a></td>
+                    <td><a href="/get-user-edit/${ item.id}"><button>Editar</button></a></td>
                 </tr>`;
                 $('#ownerT').append( row );
             });
@@ -157,7 +154,6 @@ function getclients(){
                     <td>${ item.creation_date }</td>
                     <td>${ item.email}</td>
                     <td><a href="/client-info/${ item.id}">ver mas<a></td>
-                    <td><a href="/client-delete/${ item.id}">Eliminar<a></td>
                 </tr>`;
                 $('#clientsT').append( row );
             });

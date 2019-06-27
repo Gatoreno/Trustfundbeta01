@@ -7,21 +7,38 @@
 
 
 
-        <div class="col-md-6 col-xs-12 " id="rowhidden" style="position:realtive;display:none;">
+        <div class="col-md-6 col-xs-12 " id="my-element" style="">
 
             <div class="jumbotron" align="center">
                 <h3>
                     Cargo generado con éxito
                 </h3>
+                <p>
+                    Id de compra: {{charge.id}}
+                </p>
+                               
+                <p>
+                    Banco :    {{charge.card.bank_name}}
+                </p>
+                <p> 
+                    Trajeta : {{charge.card.card_number}} / {{charge.card.type}} / {{charge.card.brand}} 
+                </p>
 
-                {{charge.id}}
-                {{charge.card.type}}
-                {{charge.card.brand}}
-                {{charge.card.bank_name}}
-                {{charge.card.card_number}}
+                
+                <small>
+                    Si estos datos son incorrectos o encuentra alguna error comuniquese a <a href="/contact">Soporte</a>
+                    si su reembolzo no llegara a suceder. <small>Por favor tome en cuenta que el proceso podría de durar de 3 a 4 días habiles</small>
+                </small>
+               
+             
+                
             </div>
 
         </div>
+
+     
+
+       
 
         {{else}}
         {{#if unit}}

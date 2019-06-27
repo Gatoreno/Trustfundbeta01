@@ -5,23 +5,56 @@
     
 
     {{#each user}}
+    <div class="col-lg-12">
+            <h3>Datos de usuario {{username}}</h3>
 
-
-    {{id}}
-    {{img}}
-
-    {{mail}}
-    {{phone}}
-
-    <div class="card" style="width: 18rem;">
-      <img class="card-img-top" src="/uploads/{{img}}" alt="Card image cap">
-      <div class="card-body">
-        <h5 class="card-title">{{name}} - nombre</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-          content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-      </div>
     </div>
+   <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+            <div class="jumbotron">
+
+      <img class="card-img-top pull-right" src="{{img}}" width="100px" alt="Card image cap">
+
+                  <p>{{username}}</p>
+
+                  <p>{{name}}  {{lastnameM}} {{lastnameP}}</p>
+                  <p>{{phone}}</p>
+                  <p>{{mail}}</p>
+                
+
+            </div>
+
+        </div>
+
+    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+
+
+  
+        
+
+        <form action="">
+          <input type="submit" value="Guardar" class="btn btn-default pull-right"><br>
+          <label for=""></label>  <br>
+          <input class="form-control" type="text" name="id" placeholder="{{id}}"><br>
+          <label for="">Usuario</label>  <br>
+           <input class="form-control" type="text" name="username" placeholder="{{username}}"><br>
+          <label for="">Nombre</label>  <br>
+            <input class="form-control" type="text"  name="name" placeholder="{{name}}"><br>
+          <label for="">A.P</label>  <br>
+             <input  class="form-control" type="text" name="lastnameP" placeholder="{{lastnameP}}"><br>
+          <label for="">A.M</label>  <br>
+              <input class="form-control" type="text" name="lastnameM" placeholder="{{lastnameM}}"><br>
+          <label for="">Mail</label>  <br>
+               <input class="form-control" type="text" name="mail" placeholder="{{mail}}"><br>
+          <label for="">Teléfono</label>  <br>
+               <input class="form-control" type="text" name="phone" placeholder="{{phone}}"><br>
+
+        </form>
+     
+    </div>
+
+     
+
 
     {{/each}}
 

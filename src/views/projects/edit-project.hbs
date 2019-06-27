@@ -1,3 +1,5 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
 <div class=" container animated fadeIn delay-1s">
     <div class="row">
 
@@ -17,7 +19,7 @@
     <br><br>
     <div class="card p3" style="border:1px solid gray">
         <div class="card-body">
-            <p class="pull-right"><img width="300" src="/uploads/{{img}}" alt=""></p>
+            <p class="pull-right"><img width="300" src="{{img}}" alt=""></p>
             <p><label for="">Investigador:</label> {{name_investigator}}</p>
             <p><label for="">Mail:</label> {{mail_investigator}}</p>
             <p><label for="">CVU:</label> {{cvu}}</p>
@@ -201,15 +203,15 @@
                     </nav>
 
 
-                  <H2>Table de metas</H2>
+                  <H2>Table de Noticias</H2>
 
 
                     <div class="table-wrapper-scroll-y">
                         <table class="table table-hover">
                             <thead>
                                 <tr>
-                                    <th scope="col">Nombre </th>
-                                    <th scope="col">Fecha inicial</th>
+                                    <th scope="col">... </th>
+                                    <th scope="col">Titulo</th>
 
                                 </tr>
                             </thead>
@@ -226,16 +228,18 @@
 
                                         $.ajax({
                                             type: 'GET',
-                                            url: '/get-admins',
+                                            url: '/get-news',
                                             dataType: 'json',
                                             success: (data) => {
 
                                                 data.forEach((item) => {
-                                                    const row = `<tr>
-                                                                    <td><img src="${ item.img}"></td>
-                                                                    <td>${ item.name}</td>
-                                                                    <td><button>Eliminar</button></td>
-                                                                </tr>`;
+                                                     const row = `<tr>
+                    <td><img width="155px" src="${ item.imgh }"><br></td>
+                    <td>${ item.title }</td>
+                    <td>${ item.created_at }</td>
+                    <td><a href="/news/edit/${ item.id } " class="btn btn-default">Editar</a></td>
+                     <td><a class="btn btn-default">Eliminar</a></td>
+                </tr>`;
                                                     $('#newsT').append(row);
                                                 });
                                             }

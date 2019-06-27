@@ -1,58 +1,156 @@
-<div class=" container animated fadeIn delay-1s">
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+
+
+<div class=" container animated fadeIn delay-1s my-element">
     <div class="row">
         <h1>Proyectos</h1>
 
         {{#each projects}}
-        <div class="row">
-            <div class="col-sm-6  col-md-6 col-lg-6 col-xs-12">
-                <div class="card text-center ">
-                    <a href="">
-                        <a href="/projects/get-project/{{id}}">
-                            <h4 class="card-title text-uppercase p3">
-                                {{title}}
-                            </h4>
-                        </a>
+
+        <div class="col-sm-6  col-md-6 col-lg-6 col-xs-12">
+            <div class="card text-center ">
+                <a href="">
+                    <a href="/projects/get-project/{{id}}">
+                        <h4 class="card-title text-uppercase p3">
+                            {{title}}
+                        </h4>
                     </a>
-                    <div class="card-body ">
-                        <div>
-                            <img style="width:280px;height:200px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);" src="{{img}}">
-                        </div>
-
-                        {{!description}}
-
-
-
-
+                </a>
+                <div class="card-body ">
+                    <div>
+                        <img style="width:280px;height:200px; box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);"
+                            src="{{img}}">
                     </div>
-                    <div class="card-footer p3">
-                        <div>
-                            <br>
 
-                            <a href="/projects/get-project/{{id}}" class="btn btn-default btn-sm">Ver Proyecto</a>
-                            {{!--
+                    {{!description}}
+
+
+
+
+                </div>
+                <div class="card-footer p3">
+                    <div>
+                        <br>
+
+                        <a href="/projects/get-project/{{id}}" class="btn btn-default btn-sm">Ver Proyecto</a>
+                        {{!--
                         <a href="/links/delete/{{id}}" class="btn btn-default btn-sm">Delete</a>
                         <a href="/links/update/{{id}}" class="btn btn-default btn-sm">Update</a>
                         --}}
-                        </div>
-                        <div>
-                            <br>
-                            creado el día: {{timeago created_at}}
-                        </div>
                     </div>
-                </div>
-            </div>
-            {{else}}
-            <div class="col-lg-12 ">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <p>No hay proyectos</p>
+                    <div>
+                        <br>
+                        creado el día: {{timeago created_at}}
                     </div>
                 </div>
             </div>
         </div>
+        {{else}}
+
+
+
+        <div class="col-lg-12 ">
+            <div class="card text-center">
+                <div class="card-body">
+                    <p>No hay proyectos</p>
+                </div>
+            </div>
+        </div>
+
+ 
         {{/each}}
 
 
+        <div class="col-lg-12 col-xs-12" align="center" >
+            <nav aria-label="Page navigation example" id="paginationbar">
+                <ul class="pagination" id="totalPages" >
+                   
+                   
+                   
+                  
+                </ul>
+            </nav>
+        </div>
+
+        <script>
+
+
+
+            window.onload = function () {
+                function setPagination() {
+
+                    var nextp = {{ current_page }} + 1;
+                var prevp = {{ current_page }} - 1;
+
+         
+            var totalPages = {{total_pages}};
+
+
+            if(totalPages > 3){
+               var divPageBar = document.getElementById("totalPages");
+                let paginationLinks = ` <li class="page-item">
+                                        <a class="page-link" aria-label="Previous" id="previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                            <span class="sr-only">Previous</span>
+                                        </a>
+                                    </li>
+                                    
+                                    <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                    <li class="page-item"><a class="page-link" href="/projects/get-projects/`+i+`">`+ {{ current_page }} +`</a></li>
+                                    <li class="page-item"><a class="page-link" href="#">...</a></li>
+                                    
+                                    <li>    <a class="page-link" aria-label="Next" id="next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                            <span class="sr-only">Next</span>
+                                        </a>
+                                    </li>`;
+
+
+                divPageBar.innerHTML = paginationLinks; //Ponemos todos los li en en el div
+
+                  var previos = document.getElementById("previous").setAttribute("href", "/projects/get-projects/" + prevp);
+            var next = document.getElementById("next").setAttribute("href", "/projects/get-projects/" + nextp);
+
+
+            }else{
+               var divPageBar = document.getElementById("totalPages");
+
+            let paginationLinks = ` <li class="page-item">
+                        <a class="page-link" aria-label="Previous" id="previous">
+                            <span aria-hidden="true">&laquo;</span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                    </li>`;
+            for(var i = 1; i <= totalPages; i++){ //Vamos a llenar una variable con todos los li               
+                paginationLinks += `<li class="page-item"><a class="page-link" href="/projects/get-projects/`+i+`">`+ i +`</a></li>`;
+            };
+            paginationLinks += `
+                    <li>    <a class="page-link" aria-label="Next" id="next">
+                            <span aria-hidden="true">&raquo;</span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </li>`;
+            divPageBar.innerHTML = paginationLinks; //Ponemos todos los li en en el div
+            
+
+
+            var previos = document.getElementById("previous").setAttribute("href", "/projects/get-projects/" + prevp);
+            var next = document.getElementById("next").setAttribute("href", "/projects/get-projects/" + nextp);
+
+            }
+
+
+
+           
+                };
+
+            setPagination();
+            };
+
+        </script>
 
     </div>
 </div>

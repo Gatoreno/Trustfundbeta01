@@ -1,5 +1,165 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js">
+</script>
+
+
+
+                    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+
+
 <div class="container my-element fadeIn delay-2s">
     <div class="row">
-        
+
+        <div class="col-lg-12">
+
+            {{#if error}}
+
+            <div class="jumbotron">
+                Errror : {{error}}
+            </div>
+
+            {{else}}
+
+
+
+            {{#if subscription}}
+
+          
+
+            <div class="jumbotron">
+                <div id="plan-name" class="">
+                   
+                </div>
+                <small>Sujeto a la tarjeta </small><br>
+                <small>{{subscription.card.card_number}} /
+                    {{subscription.card.bank_name}} /{{subscription.card.type}} </small>
+            </div>
+
+            <div>
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb" id="plan-info">
+                        
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="">
+                <small>Datos de suscripción</small>
+                <ul>
+                    <li>
+
+                        <small>
+                            estado actual : {{subscription.status}}
+                        </small>
+                    </li>
+                    <li>
+
+                        <small>
+                            periodo final : {{subscription.period_end_date}}
+                        </small>
+                    </li>
+                    <li>
+                        <small>
+                            periodo actual : {{subscription.current_period_number}}
+                        </small>
+                    </li>
+                    <li>
+                        <small>
+
+                            fecha de creación : {{subscription.creation_date}}
+
+                        </small>
+                    </li>
+                    <li>
+                        <small>
+                            fecha de cargo : {{subscription.charge_date}}
+                        </small>
+                    </li>
+                    <li>
+                        <small>
+                            se cancelará : {{subscription.cancel_at_period_end}}
+                        </small>
+
+                    </li>
+                </ul>
+            </div>
+
+
+
+            <div class="pull-right">
+                <form action="/subscription-delete" method="POST">
+                    <input type="submit" value="Eliminar" class="btn btn-danger">
+                    <input type="text" class="hidden" name="id_client" value="{{user.id_client}}">
+
+                    <input type="text" class="hidden" name="id" value="{{subscription.id}}">
+                </form>
+                <small><b>Nota:</b>
+                Toma en</small>
+            </div>
+
+
+
+
+            <script>
+                function getplanInfo() {
+                    //all data
+                    $.ajax({
+                        type: 'GET',
+                        url: '/plan-json/{{subscription.plan_id}}',
+                        dataType: 'json',
+                       success: (data) => {                             
+                                            const row = `
+                                                <li class="breadcrumb-item active" aria-current="page">
+                                                    $  ${ data.plan.amount}.00 MX 
+                                                </li>
+                                                
+                                                  
+                                                 <li class="breadcrumb-item active" aria-current="page">
+                                                    Status:   ${ data.plan.status}
+                                                </li>`;
+                                            $('#plan-info').append(row);
+                                     
+                                    }
+
+
+
+                                    });
+                                    //$("#ownerT").load();
+
+                                };
+                    //name
+                     $.ajax({
+                        type: 'GET',
+                        url: '/plan-json/{{subscription.plan_id}}',
+                        dataType: 'json',
+                       success: (data) => {                             
+                                            const row = `
+                                                <h3 id="plan-name">                 
+                                                ${ data.plan.name}
+                                                `;
+                                            $('#plan-name').append(row);
+                                     
+                                    }
+
+
+
+                                    });
+                                    //$("#ownerT").load();
+
+                              
+
+                getplanInfo();
+            </script>
+
+
+            {{else}}}
+
+            no subscription
+
+            {{/if}}
+
+            {{/if}}
+
+        </div>
+
     </div>
-    </div>
+</div>

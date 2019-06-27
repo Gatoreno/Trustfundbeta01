@@ -87,21 +87,7 @@
                     <br>
 
 
-                    <h4>Subscripciones</h4>
-                    <table class="table table-hover">
-                        <thead>
-                            <tr>
-                                <th>Tarjeta </th>
-                                <th>Banco</th>
-                                <th>Tipo</th>
-
-
-                            </tr>
-                        </thead>
-                        <tbody id="subscriptionT">
-
-                        </tbody>
-                    </table>
+                  
 
 
 
@@ -109,32 +95,7 @@
                     <script>
 
 
-                        function getsubs() {
-
-                            $.ajax({
-                                type: 'get',
-                                url: '/get-client-subscription/{{user.id_client}}',
-                                dataType: 'json',
-
-                                success: (data) => {
-
-                                    data.forEach((item) => {
-                                        const row = `<tr>
-                                            <td>${ item.id}</td>
-                                            <td>${ item.card.bank_name}</td>                                      
-                                            <td>${ item.plan_id}</td>
-                                             <td><a href="/subscription/${ item.id}">ver más</a></td>
-                                            
-                                        </tr>`;
-                                        $('#subscriptionT').append(row);
-                                    });
-
-
-
-                                }
-
-                            });
-                        }
+                        
 
                         function getclient() {
 
@@ -253,8 +214,11 @@
 
                 </div>
                 <div id="menu1" class="tab-pane fade">
-                    <h3>Menu 1</h3>
-                    <p>Some content in menu 1.</p>
+                    <small>Datos Actuales  </small><br>
+                    <img width="100px" src="{{user.img}}">
+                   
+
+                    <p>Nombre de usuario : {{user.username}}</p>
                 </div>
                 <div id="menu2" class="tab-pane fade">
                     <h3>Menu 2</h3>

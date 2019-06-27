@@ -96,11 +96,63 @@ router.post('/add-project',  (req, res) => {
 });
 
 
-router.get('/get-projects', async (req, res) => {
 
-    const projects = await pool.query('SELECT * FROM PROJECTS_ ');
+router.get('/get-projects/', async (req, res) => {
+
+  const current_page = 1;
+
+ console.log(current_page)
+
+  const items_per_page = 3;
+    const start_index = (current_page - 1) * items_per_page;
+
+    const query_projects = await pool.query('SELECT count(id) count FROM PROJECTS_');
+    const total_items = query_projects[0].count;
+
+    console.log();
+
+    const total_pages = total_items / items_per_page ;
+
+    const projects = await pool.query('SELECT *  from PROJECTS_ LIMIT  ? , ? ',[start_index,total_pages]);
+
+    //console.log(projects);
+
+
+    res.render('projects/projects', {projects,total_pages,current_page});
+
+  /*const projects = await pool.query('SELECT * FROM PROJECTS_ ');
     console.log(projects);
     res.render('projects/projects', {projects});
+*/
+  
+  });
+
+
+
+router.get('/get-projects/:current_page', async (req, res) => {
+
+  const {current_page} = req.params;
+
+  //console.log(current_page)
+
+  const items_per_page = 3;
+    const start_index = (current_page - 1) * items_per_page;
+
+    const query_projects = await pool.query('SELECT count(id) count FROM PROJECTS_');
+    const total_items = query_projects[0].count;
+
+
+    const total_pages = total_items / items_per_page ;
+
+    const projects = await pool.query('SELECT * from PROJECTS_ LIMIT  ? , ? ',[start_index,total_pages]);
+
+   // console.log(projects,total_pages);
+
+
+   
+  
+  
+    res.render('projects/projects', {projects,total_pages,current_page});
 
   
   });
