@@ -219,13 +219,13 @@
                                                     url: '/goals',
                                                     dataType: 'json',
                                                     success: (data) => {
-
+                                                        console.log(data) 
                                                         data.forEach((item) => {
                                                             const row = `<tr>
                                                                     <td><img width="155px" src="${ item.img}"><br></td>
                                                                     <td>${ item.title}</td>
                                                                     <td>${ item.created_at}</td>
-                                                                    <td><a href="/goals/edit/${ item.id} " class="btn btn-default">Ver</a></td>
+                                                                    <td><a href="/goal-edit/${ item.id} " class="btn btn-default">Ver</a></td>
                                                                    
                                                                 </tr>`;
                                                             $('#goalsT').append(row);

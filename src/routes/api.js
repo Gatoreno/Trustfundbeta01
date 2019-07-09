@@ -276,7 +276,6 @@ router.post('/reset-password/', (req, res) => {
 
 
 
-
 router.get('/get-user-edit/:id', isLoggedIn, (req, res) => {
     const {
         id
@@ -593,6 +592,55 @@ router.post('/create-medalla', (req, res) => {
 });
 
 
+
+
+router.get('/goal-edit/:id',(req,res)=>{
+    const id = req.params.id;
+    const query = pool.query('SELECT * FROM goals_ where id = ?',[id]);
+    query.then((goal)=>{
+        res.render('auth/goal-edit',{goal});
+    }).catch((err)=>{console.log(err)});
+    
+})
+
+router.get('/goal/:id',(req,res)=>{
+    const id = req.params.id;
+    const query = pool.query('SELECT * FROM goals_ where id = ?',[id]);
+    query.then((goal)=>{
+        res.json({goal});
+    }).catch((err)=>{console.log(err)});
+    
+});
+
+router.get('/get-user-badge/:id', (req, res) => {
+    const {
+        id
+    } = req.params;
+
+    const query = pool.query('SELECT * FROM USERS_ where id = ?', [id]);
+
+    query.then((user)=>{console.log(user);   res.json(user); }).catch((err)=>{console.log(err)});
+});
+
+
+router.get('/badge/:id',(req,res)=>{
+    const id = req.params.id;
+    const query = pool.query('SELECT * FROM badges_ where id = ?',[id]);
+    query.then((badge)=>{
+        res.render('auth/badge-edit',{badge});
+    }).catch((err)=>{console.log(err)});
+    
+});
+
+router.get('/badgeJson/:id',(req,res)=>{
+    const id = req.params.id;
+    const query = pool.query('SELECT * FROM badges_ where id = ?',[id]);
+    query.then((badge)=>{
+        res.json({badge});
+    }).catch((err)=>{console.log(err)});
+});
+
+
 router.get('/goals-list/:id', (req, res) => {
 
     const {
@@ -701,7 +749,6 @@ router.post('/delete-admin',(req,res)=>{
 router.post('/tc-assign',(req,res)=>{
     const {id_user, id_porject , id_tc} = req.body;
 });
-
 
 
 

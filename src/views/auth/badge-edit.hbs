@@ -1,0 +1,141 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+<div class="container">
+    <div class="row my-element">
+
+
+
+
+        {{#if user.admin}}
+
+
+        {{#each badge}}
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
+
+            <div align="center">
+                <h4>
+                     {{title}}
+                </h4>
+            </div>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb" id="usercreatedinfo">
+                    <li class="breadcrumb-item " aria-current="page">Creado: {{timeago created_at}} /</li>
+                </ol>
+            </nav>
+                                          
+
+            <script>
+                function getUserInfo() {
+
+                    $.ajax({
+                        type: 'GET',
+                        url: '/get-user-badge/{{id_usercreated}}',
+                        dataType: 'json',
+                        success: (data) => {
+                                console.log(data)
+                                        data.forEach((item) => {
+                                            const row = `
+                                            <small>Admin creador : </small>
+                                        <li class="breadcrumb-item " aria-current="page">
+                                        <a href="/get-user-edit/${ item.id}">${ item.username}</a>
+                                        
+                                              
+                                                `;
+                                            $('#usercreatedinfo').append(row);
+                                        });
+                                    }
+
+
+                    });
+                    //$("#ownerT").load();
+
+                };getUserInfo();
+
+
+                        
+            </script>
+
+
+            <div class="w3-card-4">
+                <img src="{{img}}" width="120px" alt="Alps">
+                <div class="w3-container w3-center">
+                    <h4>
+                        {{name}}
+                    </h4>
+                    <p>{{desc}}</p>
+                    <p>Condición: {{condition}}</p>
+                    <p><b>Status:</b>{{status}}</p>
+                    <p><b>Trigger:</b>{{id_trigger}}</p>
+                    <p><small>creado hace:</small>{{timeago created_at}}</p>
+                </div>
+            </div>
+        </div>
+
+
+
+        {{else}}
+
+        Parece que hubo un error y no hay ningun badge
+
+        {{/each}}
+
+
+
+        {{else}}
+
+        
+
+        {{/if}}
+
+
+        {{#if user.user}}
+
+
+
+        {{#each badge}}
+
+        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12" align="center">
+
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb" id="usercreatedinfo">
+                    <li class="breadcrumb-item " aria-current="page">{{name}} / Creado: {{timeago created_at}} </li>
+                </ol>
+            </nav>
+                                          
+
+
+            <div class="w3-card-4">
+                <img src="{{img}}" width="120px" alt="Alps">
+                <div class="w3-container w3-center">
+                    <h4>
+                        {{name}}
+                    </h4>
+                    <p>{{desc}}</p>
+                    <p>Condición: {{condition}}</p>
+                    <p><small>creado hace:</small>{{timeago created_at}}</p>
+                </div>
+            </div>
+        </div>
+
+
+
+        {{else}}
+
+        Parece que hubo un error y no hay ningun badge
+
+        {{/each}}
+
+
+
+        {{else}}
+
+        <div class="col-lg-12">
+            <small>Para poder saber más de las medallas necesitas <a href="/auth/signin">Iniciar Sesión</a></small>
+        </div>
+
+        {{/if}}
+
+
+    </div>
+</div>
