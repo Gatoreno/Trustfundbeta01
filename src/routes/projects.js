@@ -27,7 +27,50 @@ router.get('/add', async (req, res) => {
 
 
 
+router.post('/add-goal',(req,res)=>{
 
+    const {id_user,id_proyecto,init,end,
+      descrip,title} = req.body;
+
+      const img = req.files[0];
+
+      const imgn = img.location;
+
+      const goal = {
+        id_proyecto: id_proyecto,
+        id_usercreated: id_user,
+        title: title,
+        descrip: descrip,
+        init: init,
+        end: end,
+        percentage: 0,
+        img: imgn
+      }
+
+      //console.log(goal)
+
+      const query = pool.query('INSERT INTO goals_ set ?',[goal]);
+
+
+      query.then(()=>{
+        req.flash('success', 'Meta generada');
+        res.redirect('/projects/update-project/'+id_proyecto);
+      }).catch((err)=>{
+        console.log(err)
+      });
+    
+
+});
+
+router.get('/goals/:id',(req,res)=>{
+  const {id} = req.params;
+  const query = pool.query('select * from goals_ where id_proyecto = ?',[id]);
+  query.then((goals)=>{
+    res.json(goals);
+  }).catch((err)=>{
+    console.log(err);
+  });
+});
 
 
 router.post('/add-project',  (req, res) => {
@@ -36,8 +79,6 @@ router.post('/add-project',  (req, res) => {
 
     const pdfn = pdf.location;
     const imgn = img.location;
-
-    //console.log(req.files , pdfn,imgn)
 
     const {
         title,

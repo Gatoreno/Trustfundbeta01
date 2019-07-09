@@ -47,7 +47,7 @@ router.get('/api/protected', ensureToken, (req, res) => {
                 data: data //iat 
             });
         }
-    });
+    }); 
 
 });
 
@@ -82,6 +82,35 @@ router.get('/get-reset-pass', (req, res) => {
 });
 
 
+router.get('/goals',(req,res)=>{
+    const query = pool.query('SELECT * FROM GOALS_');
+    query.then((goals)=>{
+        res.json(goals);
+    }).catch((err)=>{
+        console.log(err);
+    });
+});
+
+
+router.post('/update-photoprofile',(req,res)=>{
+    const img1 = req.files[0];
+    const nimg1 = img1.location;
+    const {id} = req.body;
+
+    console.log(nimg1,id)
+
+
+   const query = pool.query('Update users_ set img = ? where id = ?',[nimg1,id]);
+    query.then(()=>{
+        res.status(200);
+        req.flash('message', 'Imagen de perfil actualizada');
+        res.render('auth/userconfig');
+
+    }).catch((err)=>{
+        console.log(err)
+    });
+
+});
 
 
 
@@ -655,6 +684,20 @@ router.get('/tc-assign/:id/:idunit', (req, res) => {
 });
 
 
+router.post('/delete-admin',(req,res)=>{
+    const {id_user,id_usercreated} = req.body;
+    const query = pool.query('DELETE FROM USERS_ where id = ?',[id_user]);
+
+    query.then(()=>{
+
+
+        req.flash('message', 'Admin eliminado con éxito');
+        res.redirect('/dashboard');
+    }).catch((err)=>{
+        res.json(err)
+    });
+});
+
 router.post('/tc-assign',(req,res)=>{
     const {id_user, id_porject , id_tc} = req.body;
 });
@@ -664,61 +707,3 @@ router.post('/tc-assign',(req,res)=>{
 
 module.exports = router;
 
-
-/*
-
-router.post("/users/platform/Notifications",routeValidator.validate({   body:{
-          'start': { isRequired: true },
-          'limit': { isRequired: true }
-       }
-    }),function(req, res) {   
-
-//To calculate Total Count use MySQL count function
-var query = "Select count(*) as TotalCount from ??"; 
-
-// Mention table from where you want to fetch records example-users
-var table = ["users"]; 
-
-query = mysql.format(query, table);
-connection.query(query, function(err, rows) {
- if(err){
-   return err;
- }else{
-  
-  //store Total count in variable
-  let totalCount = rows[0].TotalCount
-  
- if(req.body.start == '' || req.body.limit == ''){
-     let startNum = 0;
-     let LimitNum = 10;
-   }
- 
- else{
-     //parse int Convert String to number 
-      let startNum = parseInt(req.body.start);
-      let LimitNum = parseInt(req.body.limit);
-   }
-}
-
-var query = "Select * from ?? ORDER BY created_at DESC limit ? OFFSET ?";
-
-//Mention table from where you want to fetch records example-users & send limit and start 
-var table = ["users",LimitNum,startNum];
-
-query = mysql.format(query, table);
-connection.query(query, function(err, rest) {
- if(err){
-  res.json(err);
-}
-else{
-// Total Count varibale display total Count in Db and data display the records
-   res.json("Total Count": totalCount , "data":rest)
-}
-
-});
-});
-
-
-
-
-*/

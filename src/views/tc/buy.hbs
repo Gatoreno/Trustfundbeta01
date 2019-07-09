@@ -155,7 +155,7 @@
                             <tr>
                                 <th>Tarjeta </th>
                                 <th>Banco</th>
-                                <th>Confirmar ccv</th>
+                                <th></th>
 
                             </tr>
                         </thead>
@@ -168,14 +168,8 @@
                     <script type='text/javascript'
                         src="https://openpay.s3.amazonaws.com/openpay-data.v1.min.js"></script>
                     <script type="text/javascript">
-                        //var deviceSessionId = OpenPay.deviceData.setup("formId", "token");
-                        //var deviceDataId = OpenPay.deviceData.setup("formId");  
-                        var deviceDataId = OpenPay.deviceData.setup();
-                        //alert(deviceDataId);
-                        deviceDataId = OpenPay.deviceData.setup("formId", "device_session_id");
-
-                        //    document.getElementsByClassName("okt").value = deviceDataId;
-
+                       
+                       
 
 
                         function getcl() {
@@ -193,32 +187,49 @@
                                         $('#cardsT').append(row1);
                                     } else {
                                         data.forEach((item) => {
+                                             var deviceDataId = OpenPay.deviceData.setup();
+
+                                            deviceDataId = OpenPay.deviceData.setup("formId", "device_session_id");
+                                            
                                             const row = `<tr>
                                                         <td>
-
-                                                            <input type="text" placeholder="${ item.card_number}" name="card_n" class="" required>
+                                                            <p>
+                                                                ${ item.holder_name} - ${ item.card_number} 
+                                                            </p>
+                                                            <input type="text" placeholder="${ item.card_number}" name="card_n" class="hidden" required>
                                                         </td>
                                                         <td>${ item.bank_name}</td> 
                                                          <td></td>  
                                                                                                               
                                                         <td>                                                            
                                                         <form method="post" id="formId"  action="/buy-wcard/">  
-                                                                                                                              
-                                                                <input value="${ item.id}" name="id_card" class="" >
-                                                                <input value="" class="okt" id="device_session_id" name="token" />
-                                                                <input value="{{user.id_client}}" name="id_client" class="" >
+                                                                <input type="" class="hidden" name="amount" value="{{unit.amount}}" />                                                   
+                                                                <input value="${ item.id}" name="id_card" class="hidden" >
+                                                                <input type="" class="hidden" name="token_id" id="token_id">
+
+                                                                <input value="${ deviceDataId }" class="hidden" id="device_session_id" name="device_session_id" />
+                                                                <input value="{{user.id_client}}" name="id_client" class="hidden" >
                                                                 <input type="submit" value="Usar tarjeta" class="btn btn-default pull-right" required>
+                                                                <input type="" class="hidden" name="name" value="{{user.name}}" /> 
+                                                                <input type="" class="hidden" name="lastname" value="{{user.lastnameM}}" /> 
+                                                                <input type="" class="hidden" name="mail" value="{{user.mail}}" /> 
+                                                                <input type="" class="hidden" name="phone" value="{{user.phone}}" />                                                   
+
                                                         </form>
                                                         </td>
                                                     </tr>`;
                                             $('#cardsT').append(row);
 
-                                            document.getElementById("okt").innerHTML = "" + deviceDataId
+                                           // document.getElementsByClassName("okt").innerHTML = "" + deviceDataId;
+
+                                           // alert(deviceDataId);
                                         });
                                     }
                                 }
                             });
                         } getcl();
+
+                        
                     </script>
 
                 </div>

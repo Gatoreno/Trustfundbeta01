@@ -293,6 +293,127 @@
 {{else}}
 {{/if}}
 
+
+{{#if user.owner}}
+
+
+
+<div class="container my-element animated fadeIn delay-2s">
+    <div class="row">
+
+        <div class="col-lg-4 col-sm-12 col-md-4 col-xs-12">
+            <div class="card ">
+
+                <div class="avatar" align="center">
+                    <img class="top2" style='box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19); width:180px;height:150px; '  src='{{user.img}}'>
+
+                </div>
+                <div class="info">
+                    <br>
+
+
+
+                    <div class="desc">Desde: {{timeago user.created_at}}</div>
+                    <div class="desc">Nombre de usuario: {{user.username}}</div>
+                    <div class="desc">Nombre: {{user.name}} {{user.lastnameP}} {{user.lastnameM}}</div>
+
+
+                    <div class="bottom top2">
+                        <font class="p3" size="5"><i class="fab fa-facebook "></i></font>
+                        <font class="p3" size="5"><i class="fab fa-instagram"></i></font>
+                        <font class="p3" size="5"><i class="fab fa-google-plus"></i></font>
+
+                    </div>
+
+                </div>
+                <div class="bottom top2 hidden">
+                    <a class="btn btn-primary btn-twitter btn-sm" href="">
+                        <i class="fab fa-facebook"></i>
+                    </a>
+                    <a class="btn btn-danger btn-sm" rel="publisher" href="">
+                        <i class="fab fa-google-plus"></i>
+
+
+                    </a>
+                    <a class="btn  btn-sm white" style="background-color: #E1306C; color: #ffffff;" el="publisher"
+                        href="https://plus.google.com/shahnuralam">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-lg-8 col-sm-12 col-md-8 col-xs-12 ">
+
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#menu0_">Info Personal</a></li>
+                <li><a data-toggle="tab" href="#menu1_">Redes sociales</a></li>
+                <li><a data-toggle="tab" href="#menu2_">Trustcoins</a></li>
+                <li><a data-toggle="tab" href="#menu3_">Mis proyectos</a></li>
+
+            </ul>
+            <div class="tab-content ">
+
+
+                {{!-- Pestañas --}}
+                <div id="menu0_" class="tab-pane fade in p3 active">
+
+                    <p>
+                        <h4><label for="">Información Personal</label></h4>
+                    </p>
+                    <p><label for="">Teléfono:</label>{{user.phone}}</p>
+                    <p><label for="">Mail:</label>{{user.mail}}</p>
+                    <p><label for="">Rol:</label>Dueño de proyecto.</p>
+                    <div align="center"><a href="" class="btn btn-default">Actualizar Información Personal</a></div>
+
+                    {{! termina menu 0}}
+
+                </div>
+                <div id="menu1_" class="tab-pane fade p3">
+
+                    <p>1</p>
+
+                    {{! termina menu 1}}
+
+
+
+                    <div align="center"><a href="" class="btn btn-default">Actualizar Información Personal</a></div>
+
+
+                </div>
+                <div id="menu2_" class="tab-pane fade p3">
+                    <h4>Mis unidades</h4>
+
+                    
+                    
+
+                    {{! termina menu 2}}
+                </div>
+                <div id="menu3_" class="tab-pane fade p3">
+                    <p>3</p>
+                    <div align="center"><a href="" class="btn btn-default">Actualizar Información Personal</a></div>
+
+                    {{! termina menu 3}}
+                </div>
+
+
+
+            </div>
+
+
+        </div>
+
+        {{!end row}}
+    </div>
+</div>
+
+
+
+{{else}}
+{{/if}}
+
 {{#if user.admin}}
 <div class="container my-element animated fadeIn delay-2s">
     <div class="row">

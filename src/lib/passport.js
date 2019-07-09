@@ -194,7 +194,8 @@ passport.use('local.signup', new LStrategy({
         username: name,
         mail: mail,
         datenac: datenac,
-        id_usercreated: 0
+        id_usercreated: 0,
+        user: 1
     };
     console.log(pass.length);
     if (pass.length < 8) {
@@ -256,20 +257,21 @@ passport.use('local.signup-subadmin', new LStrategy({
         lastnameP: lastnameP,
         lastnameM: lastnameM,
         mail: mail,
+        user:null,
         phone: phone,
         img:'/img/logo512.png'
     };
 
     switch (role) {
         case 1:
-            newUser.admin = true;
-            newUser.owner = false;
+            newUser.admin = 1;
+            newUser.owner = null;
 
             break;
 
         case 2:
-            neUser.owner = true;
-            newUser.admin = false;
+            neUser.owner = 1;
+            newUser.admin = null;
             break;
     }
 

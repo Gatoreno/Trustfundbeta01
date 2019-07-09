@@ -29,36 +29,34 @@ router.post('/buy-wcard/',(req,res)=>{
 
 
 
-    const {id_card,id_client,amount,token} = req.body;
+    const {id_card,id_client,amount,device_session_id,
+        token_id,
+    name,lastnameM,phone,mail} = req.body;
     const cardId = id_card;
     const customerId = id_client;
 
-
+        //falta la source id
     var chargeRequest = {
         'source_id' : cardId,
         'method' : 'card',
-        'amount' : 100,
+        'amount' : amount,
         'currency' : 'MXN',
         'description' : 'Compra',
         'order_id' : 'oid-00051',
-        'device_session_id' : 'kR1MiQhz2otdIuUlQkbEyitIqVMiI16f',
+        'device_session_id' : device_session_id,
         'customer' : {
-             'name' : 'Juan',
-             'last_name' : 'Vazquez Juarez',
-             'phone_number' : '4423456723',
-             'email' : 'juan.vazquez@empresa.com.mx'
+             'name' : name,
+             'last_name' : lastnameM,
+             'phone_number' : phone,
+             'email' : mail
         }
      }
+
     console.log(req.body);
-
-
- /*
-
-    //console.log(id_card,id_client);
-
+    
 
    
-    openpay.customers.cards.get(customerId, cardId, function (error, card) {
+    openpay.customers.charges.create(customerId,chargeRequest, function (error, charge) {
         // ...
         //console.log(card);
        if(error){
@@ -67,53 +65,10 @@ router.post('/buy-wcard/',(req,res)=>{
         res.render('error/err',{error});
        }
 
-       card.cvv2 = cvv2;
-       //console.log(card);
-
-       getTokenFromServer(card);
-
-       function getTokenFromServer(card) {
-          // console.log(card);
-    
-        return axios.request({
-            method: "post",
-            baseURL: "https://sandbox-api.openpay.mx/v1/mypdgqijxla2a9w0kdp0/tokens",
-            auth: {
-              username: 'sk_3f7296c0f84144ba940b2372b34b619a'
-            },
-            data: {
-              "Content-Type": "application/json"
-            }, body: {
-                'holder_name': card.holder_name,
-                'card_number': card.card_number,
-                'cvv2': parseInt(cvv2),
-                'expiration_month': parseInt(card.expiration_month),
-                'expiration_year': parseInt(card.expiration_year),
-                'address': 'card.address'
-
-            }
-          }).then(function (res) {
-            //console.log(res.data.access_token);             
-            return res.data;
-            
-            //console.log(datax.access_token);
-      
-          }).catch((er) => {
-            console.log(er);
-          });
-
-        }
-      
-       // getTokenFromServer();
-        
-        /*.then(data => {
-          console.log(data);
-        });
+   res.status(200);
+   res.render('tc/buy', {charge});
 
     });
-    */
-
-   
 });
 
 router.get('/client-get/:id', (req, res) => {

@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
+const nodemailer = require("nodemailer");
 
 
 const passport = require('passport');
@@ -222,8 +223,7 @@ router.post('/update-info-user-form', (req, res) => {
         cp: cp,
         estado: estado,
         status: 1,
-        img: imgfn,
-        user: true
+        img: imgfn
     };
     
     
@@ -266,7 +266,9 @@ router.post('/signup-subadmin', async (req, res) => {
         mail: mail,
         phone: phone,
         admin: null,
-        owner: null
+        owner: null,
+        user : null,
+        img: '/img/logo512.png'
     };
 
     if (role == 1) {
@@ -277,10 +279,67 @@ router.post('/signup-subadmin', async (req, res) => {
         newUser.user = null
     }
 
-
+    const nosavepass = req.body.pass;
     newUser.pass = await helpers.encryptPass(pass);
 
+    //mailing
+
+    const token = jwt.sign({
+        newUser
+    }, 'process.env.SECRETO', {
+        expiresIn: '3600s'
+    });
+
+//mail de invitación
+    let transporter = nodemailer.createTransport({
+        service: "gmail",
+        port: 25,
+        secure: false, // true for 465, false for other ports
+        auth: {
+            type: 'oauth2',
+            user: 'manuel.o@trustfund.com.mx',
+            clientId: '804329507754-hibhcnfn4j6vja59ua8vovea5b2r5lr5.apps.googleusercontent.com',
+            clientSecret: 'XG5O2BWvT_FeolZFmc5_Fq2W',
+            refreshToken: '1/K0u_nl6bWWHtMIjIuj2fSMhUss3bTBD-qt93dHyQGpw'
+        }
+    });
+    const xname = 'TRUSTFUND';
+
+
+var os = require("os");
+var hostname = os.hostname();
+//host =    req.header('host');    
+console.log(JSON.stringify(req.headers.host));
+const hosty = req.headers.host;
+// send mail with defined transport object
+let mailx = await transporter.sendMail({
+    from: '"TrustFundWeb 👻 Administración y soporte', // sender address
+    to: newUser.mail, // list of receivers
+    subject: "Estas invitado a formar parte de TrustFund ✔", // Subject line
+    text: 'Invitación Trustfund',
+    html: '<div class="card" style="width:400px">' +
+        '<div class="card-body">' +
+        '<h4 class="card-title">Mensaje de:' + xname + '</h4>' +
+        '<p class="card-text">Esta invitación es para formes parte de TrustFund</p>' +
+        '<p class="card-text">Datos de access:</p>' +
+        '<p class="card-text">Usuario: '+newUser.username+'</p>' +
+        '<p class="card-text">Contraseña: '+nosavepass+'</p>' +
+        '<a href="https://trustfundapp.herokuapp.com/auth/signin">Click aquí para iniciar sessión</a><br>' +
+        '<small>Siempre puedes cambiar tu contraseña en el siguiete link</small><br>' +
+        '<a href="https://trustfundapp.herokuapp.com/reset-pass">Recuperar contraseña</a>' +
+
+        
+   
+        '</div>' +
+        '</div>',
+});
+
+//end mail
+
     console.log(newUser);
+
+
+
 
     const query = pool.query('INSERT INTO USERS_ set ?', [newUser]);
 
@@ -288,6 +347,10 @@ router.post('/signup-subadmin', async (req, res) => {
         //console.log(data.toString());
         newUser.id = parseInt(data);
         console.log(newUser);
+
+
+
+
         res.redirect('/profile/', 200, req.flash('success', newUser.username + ' creado con éxito'));
 
     }).catch((err) => {

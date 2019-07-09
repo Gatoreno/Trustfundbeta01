@@ -215,10 +215,46 @@
                 </div>
                 <div id="menu1" class="tab-pane fade">
                     <small>Datos Actuales  </small><br>
-                    <img width="100px" src="{{user.img}}">
-                   
-
+                    <img width="100px" src="{{user.img}}">                   
                     <p>Nombre de usuario : {{user.username}}</p>
+                    <br>
+                     <form action="/update-photoprofile" method="POST" enctype="multipart/form-data">
+                        <h4>Cambiar foto de perfil</h4>
+
+
+
+                                <div class="form-group">
+                                    <img id="PreviewImage" class="" width="150" height="200" src=""
+                                        alt="Imagen de medalla" style="height:100px;" required />
+
+                                    <br>
+                                    <label for="">Inserte una imagen</label>
+                                    <input class="hidden" type="text" value="{{user.id}}" name="id"/>
+                                    <input name="fx" onchange="readURL(this);" type="file"
+                                        enctype="multipart/form-data" required/>
+
+                                    <script>
+                                        function readURL(input) {
+                                            if (input.files && input.files[0]) {//Check if input has files.
+                                                var reader = new FileReader(); //Initialize FileReader.
+
+                                                reader.onload = function (e) {
+                                                    $('#PreviewImage').attr('src', e.target.result);
+                                                    $("#PreviewImage").resizable({ aspectRatio: true, maxWidth: 300 });
+                                                };
+                                                reader.readAsDataURL(input.files[0]);
+                                            }
+                                            else {
+                                                $('#PreviewImage').attr('src', "#");
+                                            }
+                                        }
+                                    </script>
+
+                                </div>
+
+                                <input type="submit" value="Cambiar foto de perfil" class="btn btn-default">
+
+                    </form>
                 </div>
                 <div id="menu2" class="tab-pane fade">
                     <h3>Menu 2</h3>

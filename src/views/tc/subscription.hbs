@@ -86,14 +86,15 @@
 
 
             <div class="pull-right">
+                <br>
                 <form action="/subscription-delete" method="POST">
-                    <input type="submit" value="Eliminar" class="btn btn-danger">
+                    <input type="submit" value="Eliminar Subscripción" class="btn btn-danger pull-right">
                     <input type="text" class="hidden" name="id_client" value="{{user.id_client}}">
 
                     <input type="text" class="hidden" name="id" value="{{subscription.id}}">
-                </form>
-                <small><b>Nota:</b>
-                Toma en</small>
+                </form><br>
+                <small class="pull-right" ><b>Nota:</b>
+                Recuerda que si estas suscrito a algún plan no podrúas eliminar esta tarjeta.</small>
             </div>
 
 

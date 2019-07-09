@@ -1,7 +1,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
 
 
-<div class="container">
+<div class="container my-element">
     <div class="row">
 
 
@@ -9,16 +9,30 @@
 
 
         {{#if id}}
-        {{card_number}}
+
 
 
         <div class="col-lg-12">
             <div class="jumbotron">
-                <h5>Datos de tarjeta</h5>
-                <div id="Tarjeta">
+               
+                <div>
 
                 </div>
 
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>
+                                 <h5>Datos de tarjeta</h5>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="Tarjeta">
+
+                    </tbody>
+                </table>
+       
 
 
 
@@ -29,21 +43,39 @@
 
                         $.ajax({
                             type: 'get',
-                            url: '/client-get/{{user.id_client}}',
+                            url: '/card-get/{{id}}/{{user.id_client}}',
                             dataType: 'json',
 
                             success: (data) => {
-                                const row = `<tr>
-                                            <td>${ data.name}</td>
-                                            <td>${ data.creation_date}</td>
-                                            <td>${ data.email}</td>                                      
-                                        </tr>`;
+                                const row = `
+                                         <tr>
+                                            <td>${ data.holder_name}</td>   
+                                              </tr>
+                                            <tr>
+                                            <td>${ data.type}</td>                                 
+                                             </tr>
+
+                                            
+                                                     <tr>
+                                            <td>${ data.brand}</td>   
+                                              </tr>
+
+                                                         <tr>
+                                            <td>${ data.bank_name}</td>   
+                                              </tr>
+
+                                              <tr>
+                                            <td> fecha de registro: ${ data.creation_date}</td>
+                                               </tr>
+                                
+                                              
+                                        `;
                                 $('#Tarjeta').append(row);
 
                             }
 
                         });
-                    }
+                    } getclarddt();
 
                 </script>
             </div>
