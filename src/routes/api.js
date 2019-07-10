@@ -394,9 +394,9 @@ router.get('/news-json', async (req, res) => {
 
     const news = await pool.query('SELECT * FROM NEWS_ ');
     //console.log(projects);
-    res.json({
+    res.json(
         news
-    });
+    );
 
 
 });
