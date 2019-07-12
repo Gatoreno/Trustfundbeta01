@@ -1,17 +1,21 @@
 {{#if user}}
+
+{{#if user.owner}}
 {{!  clase fade in : my-element animated fadeIn delay-2s  }}
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="/js/populatetablesadmin.js" type="text/javascript"></script>
+
 <script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
     crossorigin="anonymous"></script>
 
 <div class="container my-element animated fadeIn delay-1s">
-    <div class="row">
+    <div class="row my-element">
         <div class="col-lg-12">
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#home">Datos Bancatios</a></li>
                 <li><a data-toggle="tab" href="#menu1">Perfil</a></li>
                 <li><a data-toggle="tab" href="#menu2">Social</a></li>
-                <li><a data-toggle="tab" href="#menu3">Mis Proyectos</a></li>
+                <li><a data-toggle="tab" href="#menu3">Mi Proyecto</a></li>
                 <li><a data-toggle="tab" href="#menu4">General</a></li>
             </ul>
 
@@ -87,7 +91,7 @@
                     <br>
 
 
-                  
+
 
 
 
@@ -95,7 +99,7 @@
                     <script>
 
 
-                        
+
 
                         function getclient() {
 
@@ -214,45 +218,444 @@
 
                 </div>
                 <div id="menu1" class="tab-pane fade">
-                    <small>Datos Actuales  </small><br>
-                    <img width="100px" src="{{user.img}}">                   
+                    <small>Datos Actuales </small><br>
+                    <img width="100px" src="{{user.img}}">
                     <p>Nombre de usuario : {{user.username}}</p>
                     <br>
-                     <form action="/update-photoprofile" method="POST" enctype="multipart/form-data">
+                    <form action="/update-photoprofile" method="POST" enctype="multipart/form-data">
                         <h4>Cambiar foto de perfil</h4>
 
 
 
-                                <div class="form-group">
-                                    <img id="PreviewImage" class="" width="150" height="200" src=""
-                                        alt="Imagen de medalla" style="height:100px;" required />
+                        <div class="form-group">
+                            <img id="PreviewImage" class="" width="150" height="200" src="" alt="Imagen de medalla"
+                                style="height:100px;" required />
 
-                                    <br>
-                                    <label for="">Inserte una imagen</label>
-                                    <input class="hidden" type="text" value="{{user.id}}" name="id"/>
-                                    <input name="fx" onchange="readURL(this);" type="file"
-                                        enctype="multipart/form-data" required/>
+                            <br>
+                            <label for="">Inserte una imagen</label>
+                            <input class="hidden" type="text" value="{{user.id}}" name="id" />
+                            <input name="fx" onchange="readURL(this);" type="file" enctype="multipart/form-data"
+                                required />
 
-                                    <script>
-                                        function readURL(input) {
-                                            if (input.files && input.files[0]) {//Check if input has files.
-                                                var reader = new FileReader(); //Initialize FileReader.
+                            <script>
+                                function readURL(input) {
+                                    if (input.files && input.files[0]) {//Check if input has files.
+                                        var reader = new FileReader(); //Initialize FileReader.
 
-                                                reader.onload = function (e) {
-                                                    $('#PreviewImage').attr('src', e.target.result);
-                                                    $("#PreviewImage").resizable({ aspectRatio: true, maxWidth: 300 });
-                                                };
-                                                reader.readAsDataURL(input.files[0]);
-                                            }
-                                            else {
-                                                $('#PreviewImage').attr('src', "#");
-                                            }
+                                        reader.onload = function (e) {
+                                            $('#PreviewImage').attr('src', e.target.result);
+                                            $("#PreviewImage").resizable({ aspectRatio: true, maxWidth: 300 });
+                                        };
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                    else {
+                                        $('#PreviewImage').attr('src', "#");
+                                    }
+                                }
+                            </script>
+
+                        </div>
+
+                        <input type="submit" value="Cambiar foto de perfil" class="btn btn-default">
+
+                    </form>
+                </div>
+                <div id="menu2" class="tab-pane fade">
+                    <h3>Redes sociales, Fuentes, Páginas web</h3>
+                    <p>Aqui puedes actualizar tus datos.</p>
+
+
+                          <div class="col-md-6 col-lg-6 col-sm-6">
+                        <div id="projectdata"></div>
+                        <form action="">
+
+                        </form>
+
+
+                        <script>
+
+                            function getProjectData() {
+
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '/projects/byowner/{{ user.id }}',
+                                    dataType: 'json',
+                                    success: (data) => {
+                                        console.log(data)
+
+                                        if (data.length == 0) {
+                                            
+                                                    
+
+                                                    document.getElementById("projectdata").innerHTML += `
+                                                    <h3>Advertencia</h3><br><small> Usted aún no tiene 
+                                                            un proyecto definido,
+                                                            <a href="/contact">
+                                                            Contacte a soporte
+                                                            <a/>
+                                                    </small>`;
+                                               
+                                                
+                                        } else {
+
+                                            data.forEach((item) => {
+                                                const row = `<tr>
+                                                    
+                                                            <td><img width="50px" src="${ item.img}"/></td>
+                                                            <td>${ item.name}</td>
+                                                            <td><a href="/badge/${ item.id}">Detalles</a></td>
+                                                        </tr>`;
+                                                $('#project-dataT').append(row);
+                                            });
                                         }
-                                    </script>
+                                    }
+
+
+
+                                });
+                                //$("#ownerT").load();
+
+                            };
+
+                            getProjectData();
+
+
+                        </script>
+
+                    </div>
+
+
+                    <div class="col-md-6 col-lg-6 col-sm-6">
+                        <form action="">
+
+
+                            <input type="submit" name="" id=" " class="btn btn-default pull-right"
+                                value="Editar datos.">
+                            <br>
+                            <label for=""><b>Datos Personales:</b></label><br>
+
+
+                            <input type="text" name="ownerfb" placeholder="Facebook Personal" class="form-control"><br>
+                            <input type="text" name="ownerTw" placeholder="Twitter Personal" class="form-control"><br>
+                            <input type="text" name="owenrWeb" placeholder="Web Personal" class="form-control"><br>
+
+
+                            <label for=""><b>Datos de proyecto:</b></label><br>
+
+                            <input type="text" name="fb" placeholder="Facebook" class="form-control"><br>
+                            <input type="text" name="tw" placeholder="Twitter" class="form-control"><br>
+                            <input type="text" name="ig" placeholder="Instagram" class="form-control"><br>
+                            <input type="text" name="web" placeholder="www.miproyecto.com.x" class="form-control"><br>
+
+
+                        </form>
+
+                    </div>
+
+              
+
+
+
+                </div>
+                <div id="menu3" class="tab-pane fade">
+                    <h3>Mi proyecto</h3>
+                   
+                    <p>Datos Generales de projecto</p>
+
+
+                    <div id="projectdataGenerales"></div>
+
+
+                    <script>
+                        //
+
+                      
+                    </script>
+
+                </div>
+                <div id="menu4" class="tab-pane fade">
+                    <h3>Generales</h3>
+
+                    <div id="userdatafull">
+                        ...
+                    </div>
+                    <br>
+                     <div id="partialproject">
+                        ...
+
+                    </div>
+                     <div id="projectfull">
+                        ...
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{{else}}
+
+{{/if}}
+
+
+
+
+{{#if user.user}}
+{{!  clase fade in : my-element animated fadeIn delay-2s  }}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.js" integrity="sha256-2Kok7MbOyxpgUVvAk/HJ2jigOSYS2auK4Pfzbm7uH60="
+    crossorigin="anonymous"></script>
+
+<div class="container my-element animated fadeIn delay-1s">
+    <div class="row">
+        <div class="col-lg-12">
+            <ul class="nav nav-tabs">
+                <li class="active"><a data-toggle="tab" href="#home">Datos Bancatios</a></li>
+                <li><a data-toggle="tab" href="#menu1">Perfil</a></li>
+                <li><a data-toggle="tab" href="#menu2">Social</a></li>
+                <li><a data-toggle="tab" href="#menu3">Mis Proyectos</a></li>
+                <li><a data-toggle="tab" href="#menu4">General</a></li>
+            </ul>
+
+            <div class="tab-content">
+                <div id="home" class="tab-pane fade in active">
+                    <br>
+                    <small>identificador:</small><br>
+                    <h4>{{user.username}}</h4>
+
+                    {{#if user.id_client}}
+
+                    <!-- Modal -->
+                    <div id="myModalcard" class="modal fade" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">Agregar tarjeta</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Te permite realizar compras y suscribciones, en trustcoin protegemos todos tus
+                                        datos.</p>
+
+
+                                    <div class="col-4">
+
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Idetificador </th>
+                                <th>Fecha de registro</th>
+                                <th>Mail</th>
+
+                            </tr>
+                        </thead>
+                        <tbody id="clientT">
+
+                        </tbody>
+                    </table>
+                    <br>
+                    <h4>Tarjetas</h4>
+                    <div class="pull-right">
+                        <a href="/cardclient-create"> Agregar Tarjeta</a>
+                        <!--<a href="" data-toggle="modal" data-target="#myModalcard"> Modal</a>-->
+                    </div>
+
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Tarjeta </th>
+                                <th>Banco</th>
+                                <th>Tipo</th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody id="cardsT">
+
+                        </tbody>
+                    </table>
+                    <br>
+
+
+
+
+
+
+
+                    <script>
+
+
+
+
+                        function getclient() {
+
+                            $.ajax({
+                                type: 'get',
+                                url: '/client-get/{{user.id_client}}',
+                                dataType: 'json',
+
+                                success: (data) => {
+                                    const row = `<tr>
+                                            <td>${ data.name}</td>
+                                            <td>${ data.creation_date}</td>
+                                            <td>${ data.email}</td>                                      
+                                        </tr>`;
+                                    $('#clientT').append(row);
+
+                                }
+
+                            });
+                        }
+                        function getcl() {
+                            $.ajax({
+                                type: 'get',
+                                url: '/cards-list/{{user.id_client}}',
+                                dataType: 'json',
+                                success: (data) => {
+
+
+
+                                    if (data.lenght == 0) {
+
+                                        const row1 = '<tr>  <td><a >No hay datos aún</a></td><td></td> <td></td></tr>';
+                                        $('#cardsT').append(row1);
+                                    } else {
+                                        data.forEach((item) => {
+                                            const row = `<tr>
+                                                        <td>${ item.card_number}</td>
+                                                        <td>${ item.bank_name}</td>
+                                                        <td>${ item.type}</td>
+                                                        
+                                                        <td><a href="/cardclient-delete/${ item.id}">ver mas<a></td>
+                                                    </tr>`;
+                                            $('#cardsT').append(row);
+                                        });
+                                    }
+                                }
+                            });
+                        }
+
+                        getclient(); getcl(), getsubs();
+                    </script>
+
+
+
+
+
+                    {{else}}
+
+                    <h4>Usted aún no tiene datos de cliente</h4>
+                    <small>Para ser cliente de <a href="" class="" data-toggle="modal"
+                            data-target="#myModalcliente">click
+                            aquí!</a></small>
+
+                    <div class="jumbotron">
+                        <h4 class="modal-title">¿Qué implica ser cliente?</h4>
+                        <p>Para proteger tus datos TrustFund utiliza OpenPay , una ves seas cliente, podrás
+                            hacer,
+                            pagos, subscribirte a un plan , apoyar poryectos y generar tu propio ahorro</p>
+                        <b>Esto no genera ningún costo pero nos ayuda cuidar tu información</b>
+                        <br>
+                        <form action="/costumer-create" method="post">
+
+                            <input type="text" class="hidden" name="id" value="{{user.id}}">
+                            <input type="text" name="mail" class="form-control" value="{{user.mail}}">
+
+                            <input type="text" name="name" class="form-control" value="{{user.username}} ">
+                            <input type="submit" class="btn btn-default" value="Generar mi id cliente">
+                        </form>
+                    </div>
+
+
+                    <!-- Modal -->
+                    <div class="modal fade" id="myModalcliente" role="dialog">
+                        <div class="modal-dialog">
+
+                            <!-- Modal content-->
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                    <h4 class="modal-title">¿Qué implica ser cliente?</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Para proteger tus datos TrustFund utiliza OpenPay , una ves seas cliente, podrás
+                                        hacer,
+                                        pagos, subscribirte a un plan , apoyar poryectos y generar tu propio ahorro</p>
+                                    <b>Esto no genera ningún costo pero nos ayuda cuidar tu información</b>
+                                    <form action="/costumer-create" method="post">
+                                        <input type="text" class="hidden" name="id" value="{{user.id}}">
+                                        <input type="text" name="mail" class="form-control" value="{{user.mail}}">
+
+                                        <input type="text" name="name" class="form-control" value="{{user.username}} ">
+                                        <input type="submit" class="btn btn-default" value="Generar mi id cliente">
+                                    </form>
 
                                 </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
 
-                                <input type="submit" value="Cambiar foto de perfil" class="btn btn-default">
+                        </div>
+                    </div>
+
+
+                    {{/if}}
+
+                </div>
+                <div id="menu1" class="tab-pane fade">
+                    <small>Datos Actuales </small><br>
+                    <img width="100px" src="{{user.img}}">
+                    <p>Nombre de usuario : {{user.username}}</p>
+                    <br>
+                    <form action="/update-photoprofile" method="POST" enctype="multipart/form-data">
+                        <h4>Cambiar foto de perfil</h4>
+
+
+
+                        <div class="form-group">
+                            <img id="PreviewImage" class="" width="150" height="200" src="" alt="Imagen de medalla"
+                                style="height:100px;" required />
+
+                            <br>
+                            <label for="">Inserte una imagen</label>
+                            <input class="hidden" type="text" value="{{user.id}}" name="id" />
+                            <input name="fx" onchange="readURL(this);" type="file" enctype="multipart/form-data"
+                                required />
+
+                            <script>
+                                function readURL(input) {
+                                    if (input.files && input.files[0]) {//Check if input has files.
+                                        var reader = new FileReader(); //Initialize FileReader.
+
+                                        reader.onload = function (e) {
+                                            $('#PreviewImage').attr('src', e.target.result);
+                                            $("#PreviewImage").resizable({ aspectRatio: true, maxWidth: 300 });
+                                        };
+                                        reader.readAsDataURL(input.files[0]);
+                                    }
+                                    else {
+                                        $('#PreviewImage').attr('src', "#");
+                                    }
+                                }
+                            </script>
+
+                        </div>
+
+                        <input type="submit" value="Cambiar foto de perfil" class="btn btn-default">
 
                     </form>
                 </div>
@@ -281,6 +684,13 @@
         </div>
     </div>
 </div>
+{{else}}
+
+
+
+{{/if}}
+
+
 {{else}}
 
 {{/if}}

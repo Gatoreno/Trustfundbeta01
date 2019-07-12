@@ -186,4 +186,50 @@ function getmedallas() {
 
 };
 
+function getProjectData() {
+
+    $.ajax({
+        type: 'GET',
+        url: '/projects/byowner/{{ user.id }}',
+        dataType: 'json',
+        success: (data) => {
+            console.log(data)
+
+            if (data.length == 0) {
+                
+                        
+
+                        document.getElementById("projectdataGenerales").innerHTML += `<h3>Advertencia</h3><br><small> Usted aún no tiene 
+                                un proyecto definido,
+                                <a href="/contact">
+                                Contacte a soporte
+                                <a/>
+                        </small>`;
+                   
+                    
+            } else {
+
+                data.forEach((item) => {
+                    const row = `<tr>
+                        
+                                <td><img width="50px" src="${ item.img}"/></td>
+                                <td>${ item.name}</td>
+                                <td><a href="/badge/${ item.id}">Detalles</a></td>
+                            </tr>`;
+                    $('#projectdataGenerales').append(row);
+                });
+            }
+        }
+
+
+
+    });
+    //$("#ownerT").load();
+
+};
+
+
+
+getProjectData();
+
 getowners(),getmedallas(),getadmins(),getclients(),getprojects(),getNews(),getprojectsIT();

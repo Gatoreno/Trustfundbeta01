@@ -1,14 +1,102 @@
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
 <div class="container">
-  <div class="row">
+  <div class="row my-element">
+
+
+    
+    
+
+
+    {{#each user}}
+
+
+
+
+
+
 
 
     
 
-    {{#each user}}
-    <div class="col-lg-12">
+    <div class="col-lg-12" id="errorcol">
+
+      
+      <div id="panelerror">
+
+      </div>
+
+
+    <script>
+       function getProjectData() {
+
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '/projects/byowner/{{ id }}',
+                                    dataType: 'json',
+                                    success: (data) => {
+                                        console.log(data)
+
+                                        if (data.length == 0) {
+                                            
+                                                    
+
+                                                    document.getElementById("panelerror").innerHTML += `
+                                                      <div class="panel panel-danger">
+                                                      <div class="panel-heading">
+                                                          <h3>Advertencia</h3><small> Este Owner aún no tiene proyecto
+                                                                                                    </small>
+
+                                                      <a href="/projects/add" class="btn btn-danger pull-right">Generar Projecto</a>
+                                                      <br>
+                                                                                                    
+                                                      </div>
+                                                    </div>`;
+                                               
+                                                
+                                        } else {
+
+                                            data.forEach((item) => {
+                                                const row = `<tr>
+                                                    
+                                                            <td><img width="50px" src="${ item.img}"/></td>
+                                                            <td>${ item.title}</td>
+                                                            <td><a href="/projects/${ item.id}">Ver Proyecto</a></td>
+                                                        </tr>`;
+                                                $('#project-dataT').append(row);
+                                            });
+                                        }
+                                    }
+
+
+
+                                });
+                                //$("#ownerT").load();
+
+                            };
+
+                            getProjectData();
+    </script>
+
+   
             <h3>Datos de usuario {{username}}</h3>
 
     </div>
+
+
+{{#if admin}}
+ <script>
+
+  $('#errorcol').addClass("hidden");
+</script>
+ 
+{{else}}
+
+{{/if}}
+
+   
+   
    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
 
             <div class="jumbotron">
@@ -62,6 +150,15 @@
           <input type="submit" class="btn btn-danger pull-right" value="Eliminar Aministrador {{username}}">
         </form>
      
+    </div>
+
+
+    <div class="col-lg-12">
+      <h3>Datos de proyecto:</h3>
+      <div id="project-dataT">
+
+      </div>
+
     </div>
 
      

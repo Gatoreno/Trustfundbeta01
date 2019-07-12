@@ -238,7 +238,7 @@ passport.use('local.signup-subadmin', new LStrategy({
     //console.log(req.body);
     const mail = req.body.mail;
     //const name = req.body.name;
-    const {
+    const {  
         lastnameM,
         lastnameP,
         phone,
