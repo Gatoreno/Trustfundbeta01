@@ -876,7 +876,11 @@ router.get('/tc-info-plan/:id',isLoggedIn,(req,res)=>{
     });
 });
 
-
+router.get('/tc-info-plan-json/:id', async (req,res)=>{
+    const id = req.params.id;
+    const tc = await pool.query('SELECT * from tc_u  where id = ?' ,[id]);
+    res.json(tc);
+});
 
 router.post('/getallwh',(req,response)=>{
 

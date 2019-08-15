@@ -9,6 +9,19 @@ const Path = require('path');
 require('../lib/handlebars');
 
 
+router.get('/',async (req,res)=>{
+
+    const news = await pool.query('Select * from news_');
+    res.render('public/news',{news});
+});
+
+
+router.get('/json',async (req,res)=>{
+
+    const news = await pool.query('Select * from news_');
+    res.json({news});
+});
+
 router.post('/add-New', (req, res) => {
    const {
         title,

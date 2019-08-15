@@ -36,6 +36,11 @@ router.post('/api/login', (req, res) => {
 
 
 
+router.get('/test1',(req,res)=>{
+res.render('test/test');
+
+});
+
 //Ensure
 router.get('/api/protected', ensureToken, (req, res) => {
     jwt.verify(req.token, 'process.env.SECRETO', (err, data) => {

@@ -1,0 +1,62 @@
+<div class="container">
+
+<div class="row">
+
+    <div class="col-lg-12">
+                
+                
+                <input type="number" id="hinit">
+
+                <input type="number" id="hfin">
+
+                <input type="number" id="cadad">
+
+                <input type="button" onclick="tryme()">
+
+                <div id="horactual"></div>
+                <div id="primerCommit"></div>
+                <div id="ultimoCommit"></div>
+
+                <script>
+
+                       function tryme(){
+                        /*var hinit = $('#hinit').val();
+
+                        var hfin = $('#hfin').val();
+
+                        var cadad = $('#cadad').val();
+
+
+                        var fecha = new Date();
+
+                        $('#horactual').append(fecha);
+
+                        	
+                    		const primerCommit =  fecha.setHours(fecha.getHours()+hinit);
+                            const ultimocommit = primerCommit.setHours(primerCommit.getHours()+hinit);
+                        
+                        $('#primerCommit').append(primerCommit);
+                        $('#ultimocommit').append(ultimocommit);*/
+
+                        
+
+                        setInterval(trymesetint,3);
+                      
+
+                        //alert(getdatenow);
+
+
+                       }
+
+                       function trymesetint(){
+                            $('#primerCommit').append('hola 3 seg');
+                        }
+
+                </script>
+
+
+    </div> 
+</div> 
+
+
+</div> 

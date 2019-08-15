@@ -54,7 +54,7 @@ router.post('/add-goal', (req, res) => {
   } = req.body;
 
   const img = req.files[0];
-
+  
   const imgn = img.location;
 
   const goal = {
@@ -178,9 +178,6 @@ router.post('/add-project', (req, res) => {
         '<p class="card-text">Felicidades usted ya cuenta como dueño de un proyecto dentro de TrustFundx</p>' +
         '<small>Ahora usted puede actualizar su proyecto desde la plataforma</small><br>' +
         '<a href="https://trustfundapp.herokuapp.com/profile">Ver proyecto</a>' +
-
-
-
         '</div>' +
         '</div>',
     });
