@@ -206,6 +206,20 @@ router.get('/edit/:id', (req, res) => {
 
 });
 
+
+router.get('/json/:id', async (req, res) => {
+
+    const id = req.params.id;
+    const news = await pool.query('SELECT * FROM NEWS_ where id = ?',[id]);
+    //console.log(projects);
+    res.json(
+        news
+    );
+
+
+});
+
+
 router.get('/newsfrom/:id', (req, res) => {
     const {
         id
