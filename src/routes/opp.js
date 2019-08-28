@@ -6,6 +6,7 @@ const router = express.Router();
 const pool = require('../db');
 const helpers = require('../lib/helpers');
 const axios = require('axios');
+const jwt = require('jsonwebtoken');
 
 
 const {
@@ -940,6 +941,37 @@ router.post('/refund', (req, res) => {
 });
 
 
+
+//mobil payments
+
+function ensureToken(req, res, next) {
+    const bearerHeader = req.headers['authorization'];
+    console.log(bearerHeader);
+
+    if (typeof bearerHeader !== 'undefined') {
+        const bearer = bearerHeader.split(" ");
+        const bearerToken = bearer[1];
+        req.token = bearerToken;
+        next();
+    } else {
+        res.sendStatus(403);
+    }
+}
+
+router.get('/buyUnit/protected/', ensureToken, (req, res) => {
+
+    const {id,token} = req.headers;
+    const resp = {
+        'id':id,
+        'token':token
+    };
+
+   
+    
+
+   res.json(resp);
+
+});
 
 
 module.exports = router;
