@@ -375,13 +375,47 @@
                                 <input type="text" class="form-control hidden " name="id_user" value="{{user.id}}" />
                                 <input type="text" class="form-control" name="name" placeholder="Nombre de la medalla"
                                     required />
-                        </div>
+                                    <br>
+                                 <div>  
+                                     <small>Elgie el tipo de medalla según el usuario</small>
+                                     
+                                            </div>
+                                            <br>
+                                 <div>
 
+                                        <label class="checkbox-inline">
+                                          
+                                    <input name="tipomedalla" type="checkbox" checked data-toggle="toggle" value="Usario"> Usario
+                                    </label>
+                                    <label class="checkbox-inline">
+                                    <input name="tipomedalla" type="checkbox" data-toggle="toggle" value="Projecto"> Projecto
+                                    </label>
+                                    <label class="checkbox-inline">
+                                 </div>
 
-                        <div class="col-lg-6">
+                                 <div>
 
-                            <textarea class="form-control" placeholder="Condición" name="condition" id="" cols="20"
+                            <textarea class="form-control" placeholder="Condición escrita" name="condition" id="" cols="20"
                                 rows="4"></textarea>
+
+                                <label for="">ncomprasunidades</label><br>
+                                <input type="number" name="ncomprasunidades" placeholder="0"><br>
+                                <label for="">nunidadesusadas</label><br>
+                                <input type="number" name="nunidadesusadas" placeholder="0"><br>
+
+                                <label for="">ndevoluciones</label><br>
+                                <input type="number" name="ndevoluciones" placeholder="0"><br>
+                                
+                                <label for="">nproyectos</label><br>
+                                <input type="number" name="nproyectos" placeholder="0"><br>
+
+                                 <label for="">nsubscripiciones</label><br>
+                                <input type="number" name="nsubscripiciones" placeholder="0"><br>
+
+                                <label for="">nmedallas</label><br>
+                                <input type="number" name="nmedallas" placeholder="0"><br>
+
+
 
                             <textarea class="form-control" placeholder="Descripción" name="desc" id="" cols="20"
                                 rows="4"></textarea>
@@ -389,13 +423,16 @@
                             <br>
                             <input type="submit" class="btn btn-default " value="Crear Medalla">
                             </form>
+                                 </div>
+                        
+                        
                         </div>
-                        <div class="col-lg-12">
-                            <h4>Lista de medallas</h4>
-                        </div>
-                        <div class="col-lg-6">
 
-                            <div class="top2 table-wrapper-scroll-y">
+
+                        <div class="col-lg-6">
+                             <h4>Lista de medallas</h4>
+                             <br>
+   <div class="top2 table-wrapper-scroll-y">
                                 <table class="table table-hover">
                                     <thead>
                                         <tr>
@@ -412,6 +449,8 @@
                                 </table>
                             </div>
                         </div>
+                   
+                      
 
 
 

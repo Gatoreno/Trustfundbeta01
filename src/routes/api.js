@@ -409,10 +409,10 @@ router.get('/news-json', async (req, res) => {
 
 router.get('/users-json', async (req, res) => {
 
-    const news = await pool.query('SELECT * FROM USERS_ where user = 1 ');
+    const users = await pool.query('SELECT * FROM USERS_ where user = 1 ');
     //console.log(projects);
     res.json({
-        news
+        users
     });
 
 
@@ -556,12 +556,20 @@ router.get('/tc-list', (req, res) => {
 
 //medallas
 
-router.post('/create-medalla', (req, res) => {
+router.post('/create-medalla', async (req, res) => {
     const {
         id_user,
         name,
         desc,
-        condition
+        condition,
+        ncomprasunidades,
+        nunidadesusadas,
+        ndevoluciones,
+        nproyectos,
+        nsubscripiciones,
+        nmedallas,
+        tipomedalla
+
     } = req.body;
     const img1 = req.files[0];
     const nimg1 = img1.location;
@@ -572,17 +580,26 @@ router.post('/create-medalla', (req, res) => {
         desc: desc,
         status: 'aún fuera de sistema',
         img: nimg1,
-        condition: condition
+        condition: condition,
+        typebadge: tipomedalla
     }
 
 
+    const conditions = {
+        bagdes: nmedallas,
+        units: ncomprasunidades,
+        unitsused : nunidadesusadas,
+        refunds : ndevoluciones,
+        projects : nproyectos,
+        subscriptions : nsubscripiciones
+    }
     console.log(badge)
 
-    const qu = pool.query('INSERT INTO BADGES_ set ?', [badge]);
-    qu.then((response, error) => {
+    const qu = await pool.query('INSERT INTO BADGES_ set ?', [badge]);
+    qu.then( async (response, error) => {
         if (error) throw error;
         if (response.insertId) {
-
+            //const quConditions = await pool.query('Insert into ', [conditions]);
             req.flash('message', 'Medalla agregada con éxitol');
             res.redirect('/dashboard');
         } else {
@@ -756,6 +773,9 @@ router.post('/tc-assign',(req,res)=>{
 });
 
 
+router.get('/donate/:id/',(req,res)=>{
+
+});
 
 module.exports = router;
 

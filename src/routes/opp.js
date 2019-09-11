@@ -958,20 +958,67 @@ function ensureToken(req, res, next) {
     }
 }
 
-router.get('/buyUnit/protected/', ensureToken, (req, res) => {
 
-    const {id,token} = req.headers;
+//ensureToken, 
+router.get('/buyUnit/protected/', (req, res) => {
+
+    const {id,id_unit,token,amount} = req.headers;
     const resp = {
         'id':id,
-        'token':token
+        'token':token,
+        'id_unit':id_unit,
+        'amount':amount
     };
 
-   
-    
-
-   res.json(resp);
+    res.render('mobil/buyUnitMobil',{resp});
+   //res.json(resp);
 
 });
+
+router.get('/buyUnit/Test/', (req, res) => {
+
+    const {id,id_unit,token,amount} = req.headers;
+    const resp = {
+        'id':842,
+        'id_unit':22,
+        'amount':50
+    };
+
+    res.render('mobil/buyUnitMobil',{resp});
+   //res.json(resp);
+
+});
+
+router.get('/checkcharges-conditions/:id_user'), async (req,res)=>{
+
+        //check if object have ncharges
+        /*
+        id_user
+        ask charges count
+        */  
+        const { id_user } = req.params;
+        const charges = await pool.query('Select count from user_unitCounter where id_user = ?',[id_user]); 
+
+        if(charges = 0 || charges == null){
+            return res.json({});
+        }else{
+
+            //Check condition
+            const condition = await pool.query('Select * from conditions_ where ncharges = ?',[charges]); 
+            if (condition){
+                // insert badge yo y todo lo concecuente
+
+                //insert into badelist id_badge, id_user
+
+                //return show badge 
+            }
+            else{
+                return res.json({});
+            }
+
+        }
+
+};
 
 
 module.exports = router;
