@@ -586,29 +586,26 @@ router.post('/create-medalla', async (req, res) => {
 
 
     const conditions = {
-        bagdes: nmedallas,
-        units: ncomprasunidades,
-        unitsused : nunidadesusadas,
-        refunds : ndevoluciones,
-        projects : nproyectos,
-        subscriptions : nsubscripiciones
+        nbadges: nmedallas,
+        ncharges: ncomprasunidades,
+        nusedunits : nunidadesusadas,
+        nrefunds : ndevoluciones,
+        nprojects : nproyectos,
+        nsubscriptions : nsubscripiciones
     }
     console.log(badge)
 
     const qu = await pool.query('INSERT INTO BADGES_ set ?', [badge]);
-    qu.then( async (response, error) => {
-        if (error) throw error;
-        if (response.insertId) {
-            //const quConditions = await pool.query('Insert into ', [conditions]);
-            req.flash('message', 'Medalla agregada con éxitol');
-            res.redirect('/dashboard');
-        } else {
-            req.flash('error', 'Intentelo de nuevo o contacte a soporte');
-            res.redirect('/dashboard');
-        }
-    }).catch((err) => {
-        console.log(err)
-    });
+    
+    if (qu) {
+        conditions.id_badge = qu.insertId;
+        const quConditions = await pool.query('Insert into conditions_ set ?', [conditions]);
+        req.flash('message', 'Medalla agregada con éxitol ');
+        res.redirect('/dashboard');
+    } else {
+        req.flash('error', 'Intentelo de nuevo o contacte a soporte');
+        res.redirect('/dashboard');
+    }
 
 
 });
