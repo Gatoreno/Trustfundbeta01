@@ -7,6 +7,7 @@ const jwt = require('jsonwebtoken');
 const pool = require('../db');
 const nodemailer = require("nodemailer");
 const helpers = require('../lib/helpers');
+const request = require('request');
 
 
 
@@ -36,7 +37,7 @@ router.post('/api/login', (req, res) => {
 
 
 
-router.get('/test1',(req,res)=>{
+router.get('/test',(req,res)=>{
 res.render('test/test');
 
 });
@@ -105,7 +106,7 @@ router.post('/update-photoprofile',(req,res)=>{
     console.log(nimg1,id)
 
 
-   const query = pool.query('Update users_ set img = ? where id = ?',[nimg1,id]);
+   const query = pool.query('Update USERS_ set img = ? where id = ?',[nimg1,id]);
     query.then(()=>{
         res.status(200);
         req.flash('message', 'Imagen de perfil actualizada');
@@ -248,7 +249,7 @@ router.post('/reset-password/', (req, res) => {
              console.log('data: '+ token);
             console.log('data: '+ data);
             //console.log(data)
-            const query = pool.query('Select * from users_ where mail = ?', [mail]);
+            const query = pool.query('Select * from USERS_ where mail = ?', [mail]);
             query
                 .then(async (respon) => {
                     if (respon.length > 0) {
@@ -258,7 +259,7 @@ router.post('/reset-password/', (req, res) => {
 
                         console.log('iduser: '+ user.id);
 
-                        const queryUpdate = await pool.query('Update users_ set pass = ? where id = ?', [pass_new, user.id]);
+                        const queryUpdate = await pool.query('Update USERS_ set pass = ? where id = ?', [pass_new, user.id]);
 
                         req.flash('success', 'Datos actualizados,intende de nuevo');
                         res.redirect('auth/signin');
@@ -644,7 +645,7 @@ router.get('/get-user-badge/:id', (req, res) => {
 
 router.get('/badge/:id',(req,res)=>{
     const id = req.params.id;
-    const query = pool.query('SELECT * FROM badges_ where id = ?',[id]);
+    const query = pool.query('SELECT * FROM BADGES_ where id = ?',[id]);
     query.then((badge)=>{
         res.render('auth/badge-edit',{badge});
     }).catch((err)=>{console.log(err)});
@@ -653,7 +654,7 @@ router.get('/badge/:id',(req,res)=>{
 
 router.get('/badgeJson/:id',(req,res)=>{
     const id = req.params.id;
-    const query = pool.query('SELECT * FROM badges_ where id = ?',[id]);
+    const query = pool.query('SELECT * FROM BADGES_ where id = ?',[id]);
     query.then((badge)=>{
         res.json({badge});
     }).catch((err)=>{console.log(err)});
@@ -684,6 +685,22 @@ router.get('/tc-info-client/:id',(req,res)=>{
 
     const query = pool.query('select sum(amount) total, count'+
     '(id) total_units, descrip descrip  from tc_u where status = 0 AND id_client = ?',[id]);
+
+    query.then((response)=>{
+        res.json(response);
+    }).catch((err)=>{  
+        res.json(err);
+    });
+});
+
+
+
+router.get('/tcused-info-client/:id',(req,res)=>{
+
+    const id = req.params.id;
+
+    const query = pool.query('select sum(amount) total, count'+
+    '(id) total_units, descrip descrip  from tc_u where status = 1 AND id_client = ?',[id]);
 
     query.then((response)=>{
         res.json(response);
@@ -738,12 +755,24 @@ router.get('/tc-assign/:id/:idunit', (req, res) => {
     
 
     const {id,idunit} = req.params;
+    console.log(id);
     const query = pool.query('SELECT * FROM tc_u where id = ? ',[idunit]);
-    query.then((tc) => {
+    query.then((tcr) => {
         //res.json(resp);
-        //console.log(tc[0]) 
+        console.log(tcr[0]) 
+
+        const tc = {};
+        
         tc.id_project = id;
-        tc.id = tc[0].id;
+        tc.id_plan = tcr[0].id_plan;
+        tc.id = tcr[0].id;
+        tc.id_client = tcr[0].id_client;
+        tc.id_charge = tcr[0].id_charge;
+        tc.descrip = tcr[0].descrip;
+        tc.status = tcr[0].status;
+        tc.amount = tcr[0].amount
+
+       //console.log(tc)
         res.render('tc/assign',{tc});
     }).catch((err) => {
         res.json(err);
@@ -765,8 +794,98 @@ router.post('/delete-admin',(req,res)=>{
     });
 });
 
-router.post('/tc-assign',(req,res)=>{
-    const {id_user, id_porject , id_tc} = req.body;
+router.get('/amount-project/:id', async (req,res)=>{
+    const {id} = req.params;
+    const amount = await pool.query('select sum(amount) amount from project_unitList where id_project = ?',[id]);
+
+    res.json(amount);
+});
+
+router.get('/projects-userinfo-json/:id_client', async (req,res)=>{
+
+    const {id_client} = req.params;
+const userListProyct = 
+await pool.query('select distinct id_project from tc_u where id_project IS NOT NULL && id_client = ? ',[id_client]);
+
+    res.json(userListProyct);
+});
+
+    router.post('/tc-assign/',async (req,res)=>{
+        const {id_user, id_project , id_tc,id_client,amount} = req.body;
+
+        console.log(id_client);
+
+        var unitIntoList = {
+            id_unit : id_tc,
+            amount : amount,
+            id_project : id_project
+        };
+
+       //
+       
+       const unitListProyct = await pool.query('Insert into project_unitList set  ?',[unitIntoList]);
+       const updatestatusunit = await pool.query('UPDATE tc_u set status = 1 , id_project = ? where id = ? ', [id_project,id_tc]);
+
+        console.log(id_client)
+          
+        try {
+               
+            const query = pool.query('SELECT * FROM tc_u where id = ? ',[id_tc]);
+            query.then((tcr) => {
+                //res.json(resp);
+                console.log(tcr[0]) 
+        
+                const tc = {};
+                
+                tc.id_project = tcr[0].id_project;
+                tc.id_plan = tcr[0].id_plan;
+                tc.id = tcr[0].id;
+                tc.id_client = tcr[0].id_client;
+                tc.id_charge = tcr[0].id_charge;
+                tc.descrip = tcr[0].descrip;
+                tc.status = tcr[0].status;
+                tc.amount = tcr[0].amount
+        
+               //console.log(tc)
+                res.render('tc/assign',{tc});
+
+            });
+                //res.json(rows);
+                }catch(e){
+                    console.error(e.message); // mostramos el error
+    
+                }
+    
+        // console.log(unitListProyct);
+    // console.log(updatestatusunit);
+
+    });
+
+
+
+router.get('/counttcunit/:id',async (req,res)=>{
+
+    const {id} = req.params;
+
+    try {
+            
+        const rows = await pool.query('SELECT count(id) AS count FROM tc_u where status = 1 and id_client = ?', [id]);
+            console.log(rows);
+            res.json(rows);
+            }catch(e){
+                console.error(e.message); // mostramos el error
+
+            }
+
+});
+
+router.post('/check-conditions/', async (req,res)=>{
+
+    const {ncharges,nsubscriptions,nuseduntis} = req.body;
+    const conditions = {};
+    const checkquery = await pool.query('select * froms conditions_');
+
+
 });
 
 

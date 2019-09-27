@@ -129,7 +129,7 @@
                                     <th>Total</th>
                                     <th>Unidades</th>
                                     <th>Proyecto</th>
-¡                                </tr>
+                              </tr>
                             </thead>
                             <tbody id="listtcTtcinfoOcupatedT">
 
@@ -164,6 +164,25 @@
 
 
                     <h4>Subscripciones</h4>
+                    <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb" id="subsinfoT">
+                                <span id="countSubs">Total de Subscripciones : </span>
+                        </ol>
+                    </nav>
+                    <script>
+                        $.ajax({
+                            
+                            type: "GET",  
+                            url: "/get-client-subscription/{{user.id_client}}",
+                            success: function(response){  
+                                  //alert(response.length)
+                                  document.getElementById('countSubs').innerHTML += response.length;
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                            }       
+                        });
+                    </script>
                      <div class="top2 table-wrapper-scroll-y">
                     <table class="table table-hover">
                         <thead>
@@ -187,6 +206,35 @@
 
 
                         <script>
+                            
+//tcused-info-client
+//listtcTtcinfoOcupatedT
+ function gettciusednfo() {
+                                $.ajax({
+                                    type: 'GET',
+                                    url: '/tcused-info-client/{{user.id_client}}',
+                                    dataType: 'json',
+                                    success: (data) => {
+
+                                        data.forEach((item) => {
+                                            const row = `
+                                                <li class="breadcrumb-item active" aria-current="page">
+                                                    $  ${ item.total}.00 MX 
+                                                </li>
+                                                 <li class="breadcrumb-item active" aria-current="page">
+                                                    Unidades:  ${ item.total_units}
+                                                </li>
+                                                  
+                                                 <li class="breadcrumb-item active" aria-current="page">
+                                                    Status:   Usadas en proyectos
+                                                </li>`;
+                                            $('#tcinfoOcupatedT').append(row);
+                                        });
+                                    }
+
+                                });
+                            }
+
 
                             function gettcinfo() {
                                 $.ajax({
@@ -273,7 +321,7 @@
                             });
                         }
 
-                            listtcT(), gettcinfo(),getsubs();
+                            listtcT(), gettcinfo(),getsubs(),gettciusednfo();
 
 
 
@@ -287,7 +335,70 @@
                     {{! termina menu 2}}
                 </div>
                 <div id="menu3_" class="tab-pane fade p3">
-                    <p>3</p>
+                    <p>Mis proyectos</p>
+
+                        <div id="ProyectosIDX"></div>
+                        <div class="row" id="ProjectBAdges"></div>
+
+                      <script>
+                         $.ajax({
+                                type: 'get',
+                                url: '/projects-userinfo-json/{{user.id_client}}',
+                                dataType: 'json',
+
+                                success: (data) => {
+
+                                    data.forEach((item) => {
+                                        
+                                            let idx = item.id_project;
+                                                callProjectsInfo(idx);
+                                       
+                                    });
+                                }
+
+                            });
+
+
+                            function callProjectsInfo(id){
+                                //alert(id + 'callproj');
+                                //ProjectBAdges
+
+                                    $.ajax({
+                                            type: 'get',
+                                            url: `/projects/json-project-info/${id}`,
+                                            dataType: 'json',
+
+                                            success: (data) => {
+
+                                                data.forEach((item) => {
+                                                    const row = `                                                               
+                                                                <div class="col-lg-4 col-md-4 col-sm-4" >
+                                                                    <div class="card" style="width: 18rem;">
+                                                                    <div class="card-body">
+                                                                        <img class="img-responsive" src="${ item.img}" alt="">
+                                                                        <h5 class="card-title">${item.title}</h5>
+                                                                        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+                                                                        <p class="card-text"></p>
+                                                                        <a href="#" class="card-link">Card link</a>
+                                                                        <a href="#" class="card-link">Another link</a>
+                                                                            
+                                                                    </div>
+                                                                    </div>
+                                                                </div>
+                                                          `;
+
+                                                           // callProjectsInfo(item.id_project);
+                                                    $('#ProjectBAdges').append(row);
+                                                });
+                                        }
+                                });
+                            }
+
+
+                    </script>
+                    
+
+
                     <div align="center"><a href="" class="btn btn-default">Actualizar Información Personal</a></div>
 
                     {{! termina menu 3}}
@@ -303,6 +414,7 @@
         {{!end row}}
     </div>
 </div>
+
 
 
 
@@ -408,7 +520,11 @@
                     {{! termina menu 2}}
                 </div>
                 <div id="menu3_" class="tab-pane fade p3">
-                    <p>3</p>
+                    <p>Proyectos</p>
+
+
+
+                  
                     <div align="center"><a href="" class="btn btn-default">Actualizar Información Personal</a></div>
 
                     {{! termina menu 3}}

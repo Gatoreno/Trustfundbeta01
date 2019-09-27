@@ -44,14 +44,14 @@ router.post('/buy-wcard/',(req,res)=>{
         'currency' : 'MXN',
         'description' : 'Compra',
         'order_id' : 'oid-00051',
-        'device_session_id' : device_session_id,
-        'customer' : {
+        'device_session_id' : device_session_id}
+        /*'customer' : {
              'name' : name,
              'last_name' : lastnameM,
              'phone_number' : phone,
              'email' : mail
-        }
-     }
+        }*/
+     
 
     console.log(req.body);
     
@@ -84,7 +84,7 @@ router.get('/client-get/:id', (req, res) => {
 });
 
 router.get('/get-charges/:id',(req,res)=>{
-    
+
     const id = req.params.id;
     const client = {id:id}
 
@@ -200,7 +200,7 @@ router.post('/costumer-create', (req, res) => {
 
 
         const qu =
-            pool.query('UPDATE users_ SET id_client = ? WHERE id = ?', [customer.id, id]);
+            pool.query('UPDATE USERS_ SET id_client = ? WHERE id = ?', [customer.id, id]);
 
         qu.then((resx) => {
             console.log(resx);
@@ -603,7 +603,7 @@ router.post('/create-subscribtion', (req, res) => {
 
         
     
-    const qu = pool.query('select * from users_ where id = ?', [id_user]);
+    const qu = pool.query('select * from USERS_ where id = ?', [id_user]);
 
     qu.then(async (data) => {
         if (data.length > 0) {
@@ -614,13 +614,9 @@ router.post('/create-subscribtion', (req, res) => {
             const clientid = data[0].id_client;
 
             if (clientid == null) {
-
                 const usermail = data[0].mail;
                 const username = data[0].name;
-
                 //const queryInset = await pool.query('Update users_ set ');
-
-
                 var customerRequest = {
                     'name': usermail,
                     'email': username,
@@ -632,8 +628,7 @@ router.post('/create-subscribtion', (req, res) => {
                     console.log(error);
                     console.log(customer);
 
-                    const updatecliente = await pool.quer('Update users_ set id_client = ? where id = ?', [customer.iduserid]);
-
+                    const updatecliente = await pool.quer('Update USERS_ set id_client = ? where id = ?', [customer.iduserid]);
                     res.redirect('auth/signin', 200, req.flash('message', 'Ya es usted cliente y puede sucribirse.'));
 
                 });
@@ -1011,6 +1006,7 @@ router.get('/checkcharges-conditions/:id_user'), async (req,res)=>{
                 //insert into badelist id_badge, id_user
 
                 //return show badge 
+                
             }
             else{
                 return res.json({});

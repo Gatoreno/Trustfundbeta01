@@ -33,7 +33,7 @@ router.get('/byowner/:id', async (req, res) => {
   const {
     id
   } = req.params;
-  const project = await pool.query('SELECT * FROM projects_ where id_owner = ?', [id]);
+  const project = await pool.query('SELECT * FROM PROJECTS_ where id_owner = ?', [id]);
 
   console.log(project);
   res.json(project);
@@ -204,7 +204,7 @@ router.get('/get-projects/', async (req, res) => {
 
   const current_page = 1;
 
-  console.log(current_page)
+  //console.log(current_page)
 
   const items_per_page = 3;
   const start_index = (current_page - 1) * items_per_page;
@@ -212,25 +212,31 @@ router.get('/get-projects/', async (req, res) => {
   const query_projects = await pool.query('SELECT count(id) count FROM PROJECTS_');
   const total_items = query_projects[0].count;
 
-  console.log();
+  console.log(query_projects[0].count)
 
-  const total_pages = total_items / items_per_page;
+  if(query_projects[0].count < 6){
 
-  const projects = await pool.query('SELECT *  from PROJECTS_ LIMIT  ? , ? ', [start_index, total_pages]);
+    const projects = await pool.query('SELECT * from PROJECTS_ ');
 
-  //console.log(projects);
+    let total_pages = 1;
+    let current_page = 1;
+    res.render('projects/projects', {
+      projects,
+      total_pages,
+      current_page
+    });
+  }else{
+    const total_pages = total_items / items_per_page;
+    console.log(start_index, total_pages);
+      const projects = await pool.query('SELECT * from PROJECTS_ LIMIT  ? , ? ', [start_index, total_pages]);
+        
+      res.render('projects/projects', {
+        projects,
+        total_pages,
+        current_page
+      });
+  }
 
-
-  res.render('projects/projects', {
-    projects,
-    total_pages,
-    current_page
-  });
-
-  /*const projects = await pool.query('SELECT * FROM PROJECTS_ ');
-    console.log(projects);
-    res.render('projects/projects', {projects});
-*/
 
 });
 
@@ -250,22 +256,32 @@ router.get('/get-projects/:current_page', async (req, res) => {
   const query_projects = await pool.query('SELECT count(id) count FROM PROJECTS_');
   const total_items = query_projects[0].count;
 
+  console.log(query_projects[0].count)
 
-  const total_pages = total_items / items_per_page;
+  if(query_projects[0].count < 6){
 
-  const projects = await pool.query('SELECT * from PROJECTS_ LIMIT  ? , ? ', [start_index, total_pages]);
+    const projects = await pool.query('SELECT * from PROJECTS_ ');
 
-  // console.log(projects,total_pages);
+    let total_pages = 1;
+    let current_page = 1;
+    res.render('projects/projects', {
+      projects,
+      total_pages,
+      current_page
+    });
+  }else{
+    const total_pages = total_items / items_per_page;
+    console.log(start_index, total_pages);
+      const projects = await pool.query('SELECT * from PROJECTS_ LIMIT  ? , ? ', [start_index, total_pages]);
+        
+      res.render('projects/projects', {
+        projects,
+        total_pages,
+        current_page
+      });
+  }
 
 
-
-
-
-  res.render('projects/projects', {
-    projects,
-    total_pages,
-    current_page
-  });
 
 
 });
@@ -407,7 +423,12 @@ router.get('/get-all', (req, res) => {
 
 });
 
+router.get('/json-project-info/:id', async (req,res)=>{
+  const {id} = req.params;
+  const proyect = await pool.query('SELECT * FROM PROJECTS_ where id = ?',[id]);
 
+  res.json(proyect);
+});
 
 
 module.exports = router;
