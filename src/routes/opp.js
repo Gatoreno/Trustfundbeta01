@@ -25,11 +25,6 @@ var openpay = new Openpay(
 
 router.post('/buy-wcard/',(req,res)=>{
 
-
-
-
-
-
     const {id_card,id_client,amount,device_session_id,
         token_id,
     name,lastnameM,phone,mail} = req.body;
@@ -44,7 +39,7 @@ router.post('/buy-wcard/',(req,res)=>{
         'currency' : 'MXN',
         'description' : 'Compra',
         'order_id' : 'oid-00051',
-        'device_session_id' : device_session_id}
+        'device_session_id' : device_session_id};
         /*'customer' : {
              'name' : name,
              'last_name' : lastnameM,
@@ -984,37 +979,84 @@ router.get('/buyUnit/Test/', (req, res) => {
 
 });
 
-router.get('/checkcharges-conditions/:id_user'), async (req,res)=>{
 
-        //check if object have ncharges
-        /*
-        id_user
-        ask charges count
-        */  
-        const { id_user } = req.params;
-        const charges = await pool.query('Select count from user_unitCounter where id_user = ?',[id_user]); 
+var request = require('request');
 
-        if(charges = 0 || charges == null){
-            return res.json({});
-        }else{
+router.post('/check-conditions/', async (req,res)=>{
 
-            //Check condition
-            const condition = await pool.query('Select * from conditions_ where ncharges = ?',[charges]); 
-            if (condition){
-                // insert badge yo y todo lo concecuente
+    const {ncharges,nsubscriptions,nusedunits,nprojects,id} = req.body;
+    
+    console.log('variables : \n charges: '+ncharges+'\n subs: '+nsubscriptions+'\n used: '+nusedunits+'\n projects: '+nprojects);
+    
+    const idB_nsubscriptions = await pool.query('SELECT id_badge from conditions_ where nsubscriptions =  ?',[nsubscriptions]);
+    const idB_ncharges = await pool.query('SELECT id_badge from conditions_ where ncharges = ?',[ncharges]);
+    
+    const idBFullCondition = "";
+    const idB_nprojects = await pool.query('SELECT id_badge from conditions_ where nprojects = ?',[nprojects]);
+    const idB_nuseduntis = await pool.query('SELECT id_badge from conditions_ where nusedunits = ?',[nusedunits]);
 
-                //insert into badelist id_badge, id_user
+   
+    console.log('subs: '+idB_nsubscriptions[0]+'\n',
+                'charg: '+idB_nprojects[0]+'\n',
+                'proj: '+idB_ncharges[0]+'\n',
+                'used: '+idB_nuseduntis[0]+'\n',
+                );
+    
+    
+    /*
+    const user = await pool.query('select * from USERS_ where id = ? ', [id]);
+    const id_client = user[0].id_client;
+    
+    const usertc_count = await pool.query('Select count(id) from  tc_u where id_client = ?',[id_client]);
+    const userproject_count = await pool.query('Select distinct id_project  from  tc_u where id_project is not null && id_client = ?',[id_client]);
+    
 
-                //return show badge 
-                
-            }
-            else{
-                return res.json({});
-            }
 
-        }
+    var subsn = 'https://trustfundapp.herokuapp.com/get-client-subscription/'+id_client;
 
-};
+    (async () => {
+
+        const checknsubs = await new Promise((resolve, reject) => {
+            request(subsn, function (error, response, body) {
+                //resolve(response);
+                resolve(JSON.parse(body).length) 
+            });
+        });
+    
+        console.log(checknsubs);
+    
+    })();
+
+    console.log(checknsubs);*/
+    //userproject_count.length
+
+    //https://trustfundapp.herokuapp.com/get-client-subscription/
+    /*
+    var subsn = 'https://trustfundapp.herokuapp.com/get-client-subscription/'+id_client;
+    const checknsubs =  request(subsn, function (error, response, body) {
+        
+        //console.log('error:', error); // Print the error if one occurred
+        //console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
+        //console.log('body:', body); // Print the HTML for the Google homepage.
+        
+        var obj = JSON.parse(body);
+       //console.log(obj.length);
+       var objln = obj.length;
+       console.log(objln);
+       return objln;
+    });*/
+   
+    //const userConditions = await pool.query('');
+    
+   //console.log(checknsubs);
+
+});
+
+router.get('/check-conditions/',(req,res)=>{
+
+
+    res.render('public/conditions');
+});
 
 
 module.exports = router;

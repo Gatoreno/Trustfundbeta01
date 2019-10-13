@@ -1,3 +1,5 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
 <div class="container my-element fadeIn delay-2s">
     <div class="row">
 
@@ -49,16 +51,23 @@
             <div>
                     <div>
                                     <label id="lblncharges" for="">lblncharges</label><br>
-                                    <spam id="ncharges"> 0</spam><br></div>
+                                    <spam id="ncharges"> </spam><br></div>
 
                     <div>
                         <label id="lblnsubscriptions" for="">lblnsubscriptions</label><br>
-                                    <spam id="nsubscriptions">0 </spam><br>
+                                    <spam id="nsubscriptions"> </spam><br>
                     </div>
                     <div>
 
                     <label id="lblnusedunits" for="">lblnusedunits</label><br>
-                                    <spam id="nuseduntis"> 0</spam><br>
+                                    <spam id="nuseduntis"> </spam><br>
+                    </div>
+
+
+                     <div>
+
+                    <label id="lblprojectsCounter" for="">lblprojectsCounter</label><br>
+                                    <spam id="nprojects"> </spam><br>
                     </div>
                     <div>
                     
@@ -68,31 +77,99 @@
                         //check all
 
                         function getchares(id){
-                            alert(id);
-                        }getchares('{{user.id_client}}');
-
-
-                        function getsubscriptions(id){
-                            alert(id);
-
-                        }getsubscriptions('{{user.id_client}}');
-
-                        function getusedunits(id){
-                                $.ajax({
+                           // alert(id);
+                           $.ajax({
                                     type: 'GET',
-                                    url: `/counttcunit/${id}`,
+                                    url: `/charges/${id}`,
                                     dataType: 'json',
                                     success:(response)=>{
-                                        alert(response)
-                                        var data = response;
-                                        document.getElementById('nuseduntis').innerHTML = '';
+                                      //  alert(response);
+                                        console.log(response);
+                                        var data = response.length;
+                                        document.getElementById('ncharges').innerHTML = data;
                                     },
                                     fail: (err)=>{
                                             alert(err)
                                     }
+                                     });
+                                }getchares('{{user.id_client}}');
 
-                                });
-                        }getusedunits('{{user.id_client}}');
+
+                        function getsubscriptions(id){
+                            //alert(id);
+                            //get-client-subscription
+
+                          
+                                $.ajax({
+                                    type: 'GET',
+                                    url: `/get-client-subscription/${id}`,
+                                    dataType: 'json',
+                                    success:(response)=>{
+                                      //  alert(response);
+                                        
+                                        var data = response.length;
+                                        console.log(data);
+                                        document.getElementById('nsubscriptions').innerHTML = data;
+                                    },
+                                    fail: (err)=>{
+                                                    alert(err)
+                                            }
+
+                                    });
+                                    }getsubscriptions('{{user.id_client}}');
+
+                                    function getusedunits(id){
+                                        alert(id)
+                                            $.ajax({
+                                                type: 'GET',
+                                                url: `/counttcunit/${id}`,
+                                                dataType: 'json',
+                                                success:(response)=>{
+                                                // alert(response);
+                                                    var data = response;
+                                                    console.log(data);
+
+                                                    document.getElementById('nuseduntis').innerHTML = ''+response[0].count;
+                                                },
+                                                fail: (err)=>{
+                                                        alert(err)
+                                                }
+
+                                            });
+                                    }getusedunits('{{user.id_client}}');
+
+
+
+
+
+   function getprojectCount(id){
+                            //alert(id);
+                            //get-client-subscription
+
+                          
+                                $.ajax({
+                                    type: 'GET',
+                                    url: `/projects-userinfo-json/${id}`,
+                                    dataType: 'json',
+                                    success:(response)=>{
+                                      //  alert(response);
+                                        
+                                        var data = response.length;
+                                        console.log(data);
+                                        document.getElementById('nprojects').innerHTML = data;
+                                    },
+                                    fail: (err)=>{
+                                                    alert(err)
+                                            }
+
+                                    });
+                                    
+                                    }
+                                    getprojectCount('{{user.id_client}}');
+
+
+
+
                         
                     </script>
 

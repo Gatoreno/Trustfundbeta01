@@ -1,4 +1,4 @@
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
 
 
 <div class="container">
@@ -12,7 +12,7 @@
 
         {{#if tc}}
 
-
+AQUI
     <div id="responseJson"></div>
     <input type="submit" value="Obtener" onclick="trygetcount();">
 
@@ -24,6 +24,7 @@
         dataType: 'json',
         success: (data) => {
             alert(data[0].count);
+            console.log(data[0].count);
 
         },
         fail: (err)=>{
@@ -39,6 +40,7 @@ function trygetcount(){
         dataType: 'json',
         success: (data) => {
             alert(data[0].count);
+            console.log(data[0].count);
 
         },
         fail: (err)=>{

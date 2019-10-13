@@ -14,6 +14,7 @@ const request = require('request');
 
 
 
+
 const {
     isLoggedIn,
     isNotLoggedIn
@@ -879,19 +880,56 @@ router.get('/counttcunit/:id',async (req,res)=>{
 
 });
 
-router.post('/check-conditions/', async (req,res)=>{
 
-    const {ncharges,nsubscriptions,nuseduntis} = req.body;
-    const conditions = {};
-    const checkquery = await pool.query('select * froms conditions_');
+
+router.get('/error_tc/',(req,res)=>{
+
+});
+
+router.post('/insert_error_tc/', async (req,res)=>{
+
+    const img1 = req.files[0];
+    const nimg1 = img1.location;
+    const {status,message} = req.body;
+
+    const newError = {
+        message : message,
+        status : status ,
+        img : nimg1
+    };
+    console.log(newError);
+    const user = await pool.query('INSERT INTO ERRORT_ set ?',[newError]);
+
+   if(user[0]){
+        try {
+            req.flash('success', 'Handle de error generado con éxito');
+            res.redirect('dashboard/dashboard');
+        } catch (err) {
+            console.log(err)
+        }
+    }
+});
+
+router.get('/WinBadge/:id',async(req,res)=>{
+
+    const {id} = req.params;
+
+    try{
+        const badgequ = await pool.query('Select * from BADGES_ where id = ? ',[id]);
+        
+
+        let badge = badgequ[0];
+        console.log(badge);
+
+        res.render('public/SparkBG',{badge});
+
+    }catch(e){
+        console.log(e)
+    }
 
 
 });
 
-
-router.get('/donate/:id/',(req,res)=>{
-
-});
 
 module.exports = router;
 

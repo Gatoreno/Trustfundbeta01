@@ -45,6 +45,7 @@
     "passport-local": "^1.0.0",
     "pdf-to-base64": "^1.0.2",
     "prompt": "1.0.0",
+    "request-promise": "^4.2.4",
     "s3fs": "^2.5.0",
     "sendgrid": "^5.2.3",
     "socket.io": "^2.2.0",

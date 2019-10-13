@@ -30,6 +30,7 @@
                     <li><a data-toggle="tab" href="#menu3">Proyectos</a></li>
                     <li><a data-toggle="tab" href="#menu4">Medallas</a></li>
                     <li><a data-toggle="tab" href="#menu5">Actividades</a></li>
+                    <li><a data-toggle="tab" href="#menu6">Manejo de errores</a></li>
                     <li><a href="/costumers/">TrustCoins</a></li>
 
                 </ul>
@@ -465,8 +466,51 @@
                         <h3>Actividades</h3>
                         <h3>Esta será la aúltima parte</h3>
 
+                        
+                        {{! termina menu 5}}
+                    </div>
 
-                        {{! termina menu 4}}
+                    <div id="menu6" class="tab-pane fade p3">
+                             
+                                <div class="col-lg-6 col-md-6">
+                                    <h3>Agregar handle de error</h3>
+                                    <br>    
+                                    <form action="/insert_error_tc" enctype="multipart/form-data"
+                                            method="POST">
+                                        <input name="fx"  type="file" enctype="multipart/form-data" />
+                                        <br>
+                                        <label for="">Mensaje:</label>
+                                        <br>
+                                        <input type="text" name="message" required class="form-control">
+                                        <label for="">Status</label>  
+                                        <br>
+                                        <input type="text" name="status" required class="form-control">
+
+                                        <br>
+                                        <input type="submit" value="Agregar" class="btn btn-default">
+                                    </form>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                      <table class="table table-hover">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">Titulo</th>
+                                                    <th scope="col">Proyecto</th>
+                                                    <th scope="col">Editar</th>
+                                                    <th>Acción</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody id="projectsT">
+
+                                            </tbody>
+                                        </table>
+                                </div>
+
+                             <script>
+
+                             </script>
+                             {{! termina menu 6}}
                     </div>
 
                 </div>

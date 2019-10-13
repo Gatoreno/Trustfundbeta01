@@ -53,23 +53,6 @@ var uploads3 = multer({
   })
 });
 
-
-//local storage
-/*const multer = require('multer');
-
-const storage = multer.diskStorage({
-  destination: 'public/uploads',
-  filename: (req, file, cb) => {
-    let customFileName = crypto.randomBytes(18).toString('hex');
-    fileExtension = file.originalname.split('.')[1]; // get file extension from original file name
-    cb(null, customFileName + '.' + fileExtension);
-  }
-});
-*/
-
-
-
-
 app.enable('trust proxy');
 
 // Middleware
@@ -107,6 +90,23 @@ app.use(multer({
 
 
 
+//Sockets
+
+const SocketIO= require('socket.io');
+
+
+const serverx = app.listen(app.get('port'), () => {
+  console.log(`App listening on port ${app.get('port')}`);
+  //console.log(hostname)
+});
+
+const io = SocketIO(serverx);
+
+
+
+io.on('connection',()=>{ 
+  console.log('Connection');
+});
 // flash middle-ware
 app.use(flash());
 
