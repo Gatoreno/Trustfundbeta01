@@ -3,28 +3,36 @@
 
 {{#if user.id_client}}
 
-<div class="row">
-    <div class="col-lg-12">
+<div class="container">
+    <div class="row">
+    <div class="col-lg-12" align="center">
 
 
         <div>
-
-
+            
+            <form action=""
+                method="POST">
             <label for="">unidades usadas
-                <input type="text" id="unitsUsed">
+                <input type="text" id="unitsUsed" 
+                required
+                name="nusedunits">
             </label>
-
+                <br>
             <label for="">proyectos apoyados
-                <input type="text" id="nprojects">
+                <input required type="text" id="nprojects" name="nprojects">
             </label>
-
+<br>
             <label for="">unidades compradas 
-                <input type="text" id="unitsbought">
+                <input required type="text" id="unitsbought" name="ncharges">
             </label>
-
+<br>
             <label for="">subscripciones 
-                <input type="text" id="nsubs">
+                <input required type="text" id="nsubs" name="nsubscriptions">
             </label>
+<br>
+                <input type="submit" value="try">
+            </form>
+
 
         </div>
 
@@ -107,6 +115,7 @@
     </div>
 </div>
 
+</div>
 {{else}}
 
 <div class="row">
