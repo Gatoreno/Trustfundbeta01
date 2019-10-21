@@ -65,7 +65,7 @@ router.post('/m/ensureToken', ensureToken, (req, res) => {
 router.post('/m/confirm-pass', (req, res) => {
     const {username,pass} = req.body;
 
-    const quer = pool.query('Select * from users_ where username = ?',[username]);
+    const quer = pool.query('Select * from USERS_ where username = ?',[username]);
 
     quer.then(async(resp)=>{
         if (resp.length > 0){
