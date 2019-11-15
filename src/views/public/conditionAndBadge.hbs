@@ -1,3 +1,5 @@
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
 <style>
 
 .glowMe {
@@ -58,46 +60,111 @@ html, body {
 }
 </style>
 
-<div class="row">
+<a href="/profile">
+<div class="row" id="fullholder" >
     <div class="col-lg-12  animated fadeInDown" align="center" >
 
-        {{#if badge}}
 
-                <script>
-                console.log({{badge.id}}); 
-                </script>
+<h1 class="glowMe">Felicidades</h1>
+<h3   class="glowMe" style="color:#ffeb99;"> Ganaste</h3>
+<div id="holder"></div>
 
-             <h3 class="glowMe" style="color:#ffeb99;">Felicidades Medalla  </h3>
-                <!--
-                <img class="top10 animated  infinite tada " src="https://trustfundendtoend.s3.amazonaws.com/2e09e6fbf1a7bfe92c53c767108c848dd337.png" width="120px">
-                -->
-                  <img class="top10 animated  infinite tada " src="{{badge.img}}" width="120px">
+   <script>
+      // alert("{{badges.charges}}");
+      var subs = "{{badges.subs}}";
+      var charges= "{{badges.charges}}";
+      var projects = "{{badges.projects}}";
+      var used = "{{badges.used}}";
+      var full = "{{badges.full}}";
 
-                <br>
-                    <label id="messageBadge "style="color:#ffeb99;" for="">Ganaste una medalla Rocka</label>
-                <br>
+      //console.log(subs,charges,projects,used,full);
+      const bd = [subs,charges,projects,used,full];
+      console.log(bd);
 
-        {{else}}
-           <h3 class="glowMe" style="color:#ffeb99;">Error</h3>
-              <img class="top10 animated  infinite tada " src="https://trustfundendtoend.s3.amazonaws.com/fa57be5b50074b1715a67b919ee097146245.png" width="120px">
-            
-                <br>
-                    <label id="messageBadge "style="color:#ffeb99;" for="">Tuvimos un error con la medalla. No te preocupes tus no serás afectado</label>
-                <br>
+    //remove repeated
+    for (let i = bd.length - 1; i > 0; i--) {
+        let elem = bd[i];
+        for(let j = i-1; j >= 0; j--){
+            if(elem == bd[j]){
+                bd.splice(j,1);
 
-        
-        {{/if}}
+            }
+        }           
+    }
+
+ console.log(bd);
+
+  bd.forEach((item)=>{
 
       
-    </div>
-</div>
+    
 
+      $.ajax({
+        url: "/badgejson/"+item,
+        type: "GET",
+        //dataType: "json",
+        success: function (response) {
+           console.log(response);
+           let badge = response.badge;
+           
+          
+          const row = `<div class="col-lg-4" align="center">
+                        
+                    
+                    <h2 style="color:#ffeb99;" class="">${ badge[0].name}</h2>
+                      <img src="${ badge[0].img}" animated  infinite tada" height="100" width="120" alt=""></br>
+                        <a class=" " href="#/${ badge[0].id}" role="button">Saber más</a>
+
+
+                    </div>`;
+                        $('#holder').append(row);
+
+                   }
+                   ,
+        error: function (jqXHR, textStatus, err) {
+            //$('#myModalLabel').append(`error: - ${err}`);
+            console.log(jqXHR);
+            console.log(textStatus);
+            console.log(err);
+            alert(err + ': Error INfo');
+            } 
+        }).then(); // termina ajax
+
+           
+            
+
+});
+    //alert(bd);
+   
+
+
+
+     //lista de medallas existentes
+       
+      
+      </script>
+      
+    </div>
+
+     
+</div>
+</a>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
 
 
 <script>
-    $('#footerTC').hide();
+    $('.page-footer').hide();
+    $('.navbar').hide();
+   /* $('.animated').hover(
+        function () {
+            $(this).addClass('infinite');
+        }, 
+        function () {
+            $(this).removeClass('infinite');
+        }
+        );
+    */
 </script>
 <script>
 

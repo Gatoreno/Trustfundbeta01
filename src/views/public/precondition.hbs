@@ -1,0 +1,62 @@
+
+
+<div class="row">
+    <div class="col-lg-12  animated fadeInDown" align="center" >
+
+
+        {{#if badges}}
+
+
+
+
+      <script>
+      // alert("{{badges.charges}}");
+      var subs = "{{badges.subs}}";
+      var charges= "{{badges.charges}}";
+      var projects = "{{badges.projects}}";
+      var used = "{{badges.used}}";
+      var full = "{{badges.full}}";
+
+      console.log(subs,charges,projects,used,full);
+
+     //lista de medallas existentes
+       
+      
+      </script>
+
+
+             <h3 >Gracias a tí este proyecto sigue adelante!!!{{badges.charges}} {{badges.subs}} {{badges.projects}} {{badges.used}} {{badges.full}} </h3>
+                <!--
+                <img class="top10 animated  infinite tada " src="https://trustfundendtoend.s3.amazonaws.com/2e09e6fbf1a7bfe92c53c767108c848dd337.png" width="120px">
+                -->
+                  <img src="/img/logo512.png" class="top10 animated  infinite tada " src="" width="120px">
+                <br>
+                <br>
+
+                
+
+                  {{else}}
+        
+
+           <h3 class="glowMe" style="color:#ffeb99;">Error</h3>
+              <img class="top10 animated  infinite tada " src="https://trustfundendtoend.s3.amazonaws.com/fa57be5b50074b1715a67b919ee097146245.png" width="120px">
+            
+                <br>
+                    <label id="messageBadge "style="color:#ffeb99;" for="">Tuvimos un error con la medalla. No te preocupes tus no serás afectado</label>
+                <br>
+
+        
+  {{/if}}
+
+      
+    </div>
+</div>
+
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/latest/TweenMax.min.js"></script>
+
+
+<script>
+    $('#footerTC').hide();
+
+</script>

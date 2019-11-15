@@ -78,17 +78,33 @@
 
             <ul class="nav nav-tabs">
                 <li class="active"><a data-toggle="tab" href="#menu0_">Info Personal</a></li>
-                <li><a data-toggle="tab" href="#menu1_">Redes sociales</a></li>
+               <!-- <li><a data-toggle="tab" href="#menu1_">Redes sociales</a></li> -->
                 <li><a data-toggle="tab" href="#menu2_">Trustcoins</a></li>
                 <li><a data-toggle="tab" href="#menu3_">Mis proyectos</a></li>
 
             </ul>
             <div class="tab-content ">
 
-
                 {{!-- Pestañas --}}
                 <div id="menu0_" class="tab-pane fade in p3 active">
-
+                    <div id="bgHolder"></div>
+                    <script>
+                         $.ajax({
+                            
+                            type: "GET",  
+                            url: "/userbadgescount-Json/{{user.id}}",
+                            dataType:"json",
+                            success: function(response){  
+                                  console.log(response);
+                                  document.getElementById('bgHolder').innerHTML +='Medallas: '+ response;
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                            }       
+                        });
+                    </script>
+                    <br>  
+                
                     <p>
                         <h4><label for="">Información Personal</label></h4>
                     </p>

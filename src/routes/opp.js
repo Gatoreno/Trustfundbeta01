@@ -982,37 +982,127 @@ router.get('/buyUnit/Test/', (req, res) => {
 
 var request = require('request');
 
+
+router.get('/userbadgescount-Ids/:id',async (req,res)=>{
+
+    //select distinct (id_badge)  from `user_badgeList` where id_user = 8 and id_badge != 0;
+    const id = req.params.id;
+
+
+
+    try{
+        const badgequ = await pool.query
+        ('select distinct id_badge ids  from user_badgeList where id_user = ? and id_badge != 0;'
+        ,[id]);
+        
+
+        let badge = badgequ ;
+        console.log(badge);
+
+        res.json(badge);
+
+    }catch(e){
+        console.log(e)
+    }
+
+
+
+});
+
+router.get('/userbadgescount-Json/:id',async (req,res)=>{
+
+    //select distinct (id_badge)  from `user_badgeList` where id_user = 8 and id_badge != 0;
+    const id = req.params.id;
+
+
+
+    try{
+        const badgequ = await pool.query
+        ('select distinct id_badge countbadge  from user_badgeList where id_user = ? and id_badge != 0;'
+        ,[id]);
+        
+
+        let badge = badgequ.length ;
+        console.log(badge);
+
+        res.json(badge);
+
+    }catch(e){
+        console.log(e)
+    }
+
+
+
+});
+
 router.post('/check-conditions/', async (req,res)=>{
 
     const {ncharges,nsubscriptions,nusedunits,nprojects,id} = req.body;
     
    // console.log('variables : \n charges: '+ncharges+'\n subs: '+nsubscriptions+'\n used: '+nusedunits+'\n projects: '+nprojects);
     
-    const idB_nsubscriptions = await pool.query('SELECT id_badge from conditions_ where nsubscriptions =  ?',[nsubscriptions]);
-    const idB_ncharges = await pool.query('SELECT id_badge from conditions_ where ncharges = ?',[ncharges]);
-    const idBFullCondition = await pool.query
+    let idB_nsubscriptions = await pool.query('SELECT id_badge from conditions_ where nsubscriptions =  ?',[nsubscriptions]);
+    let idB_ncharges = await pool.query('SELECT id_badge from conditions_ where ncharges = ?',[ncharges]);
+    let idBFullCondition = await pool.query
     ('Select id_badge from conditions_ where  nsubscriptions = ? && ncharges = ? && nprojects = ? && nusedunits = ? ',
     [nsubscriptions,ncharges,nusedunits,nprojects]);
-    const idB_nprojects = await pool.query('SELECT id_badge from conditions_ where nprojects = ?',[nprojects]);
-    const idB_nuseduntis = await pool.query('SELECT id_badge from conditions_ where nusedunits = ?',[nusedunits]);
+    let idB_nprojects = await pool.query('SELECT id_badge from conditions_ where nprojects = ?',[nprojects]);
+    let idB_nuseduntis = await pool.query('SELECT id_badge from conditions_ where nusedunits = ?',[nusedunits]);
 
-   
+   if( typeof idB_nsubscriptions !== 'undefined' && idB_nsubscriptions.length > 0){
+    idB_nsubscriptions = idB_nsubscriptions[0].id_badge;
+    console.log(idB_nsubscriptions);
+   }else{
+    
+    idB_nsubscriptions = 0
+   }
+
+   if( typeof idB_nprojects !== 'undefined' && idB_nprojects.length > 0){
+    idB_nprojects = idB_nprojects[0].id_badge;
+   }else{
+    idB_nprojects = 0;
+   }
+
+
+   if(  typeof idB_ncharges !== 'undefined' && idB_ncharges.length > 0){
+    idB_ncharges = idB_ncharges[0].id_badge;
+  
+   }else{
+    idB_ncharges = 0;
+   }
+
+   if( typeof idB_nuseduntis !== 'undefined' && idB_nuseduntis.length > 0){
+    idB_nuseduntis = idB_nuseduntis[0].id_badge;   
+   }else{
+
+    idB_nuseduntis = 0;
+   }
+
+   if( typeof idBFullCondition !== 'undefined' && idBFullCondition.length > 0){
+    idBFullCondition = idBFullCondition[0].id_badge;
+   }else{
+    idBFullCondition = 0;
+
+   }
+   //ID'
    //ID's from badges
     console.log('medallas por condición: \n'+
-        'subs: '+idB_nsubscriptions[0].id_badge+'\n',
-                'proj: '+idB_nprojects[0].id_badge+'\n',
-                'charg: '+idB_ncharges[0].id_badge+'\n',
-                'used: '+idB_nuseduntis[0].id_badge+'\n',
-                'fullconditions: '+idBFullCondition[0].id_badge+'\n',
+        'subs: '+idB_nsubscriptions+'\n',
+                'proj: '+idB_nprojects+'\n',
+                'charg: '+idB_ncharges+'\n',
+                'used: '+idB_nuseduntis+'\n',
+                'fullconditions: '+idBFullCondition+'\n',
                 );
+
+
     // Checking id badeges from user badges list
   
         const bdids = checkbadgesInUserList(id,
-        idB_ncharges[0].id_badge,
-        idB_nprojects[0].id_badge,
-        idB_nsubscriptions[0].id_badge,
-        idB_nuseduntis[0].id_badge,
-        idBFullCondition[0].id_badge). then(async (resp)=>{
+        idB_ncharges,
+        idB_nprojects,
+        idB_nsubscriptions,
+        idB_nuseduntis,
+        idBFullCondition). then(async (resp)=>{
             console.log(resp.charges, resp.subs, resp.projects, resp.used, resp.full);
            console.log(ncharges,nsubscriptions,nusedunits,nprojects,id)
 
@@ -1034,18 +1124,18 @@ router.post('/check-conditions/', async (req,res)=>{
                     //select count
                     const getCount = await pool.query('Select count from user_badgeList where id_user = ?',[id]);
                     let count = getCount[0].count + 1; 
-                    console.log('medalla por charges: \n'+idB_ncharges[0].id_badge);
+                    console.log('medalla por charges: \n'+idB_ncharges);
                     //set badge to userbadgelist
                     let badgeInsert = {
                         id_user: parseInt(id) ,
-                        id_badge: parseInt(idB_ncharges[0].id_badge)
+                        id_badge: parseInt(idB_ncharges)
                     }
                     const insertIntoUserListBadge = await pool.query('INSERT INTO user_badgeList set ? ',[badgeInsert]);
                     //update count //update count
                     const updateuserListBadge = await pool.query('Update user_badgeList set count = ? where id = ?', [count, id]);
                     //add badge to response
                     console.log('medalla añadida a resp badges');
-                    badges.charges = idB_ncharges[0].id_badge;
+                    badges.charges = idB_ncharges ;
 
                 }else{
                     //if user have badges don't add to response
@@ -1055,18 +1145,18 @@ router.post('/check-conditions/', async (req,res)=>{
                 if(resp.subs.length == 0){
                     const getCount = await pool.query('Select count from user_badgeList where id_user = ?',[id]);
                     let count = getCount[0].count + 1; 
-                    console.log('medalla por subs: \n'+idB_nsubscriptions[0].id_badge);
+                    console.log('medalla por subs: \n'+idB_nsubscriptions);
 
                     const badgeInsert = {
                         id_user: id ,
-                        id_badge:idB_nsubscriptions[0].id_badge
+                        id_badge:idB_nsubscriptions 
                     }
                     const insertIntoUserListBadge = await pool.query('Insert into user_badgeList set  ? ',[badgeInsert]);
                     //update count
                     const updateuserListBadge = await pool.query('Update user_badgeList set count = ? where id = ?', [count, id]);
                     //add badge to response
                     console.log('medalla añadida a resp badges');
-                    badges.subs = idB_nsubscriptions[0].id_badge;
+                    badges.subs = idB_nsubscriptions ;
                 }
                 else{
                     badges.subs = 0;
@@ -1076,11 +1166,11 @@ router.post('/check-conditions/', async (req,res)=>{
                 if(resp.projects.length == 0){
                     const getCount = await pool.query('Select count from user_badgeList where id_user = ?',[id]);
                     let count = getCount[0].count + 1; 
-                    console.log('medalla por projects: \n'+idB_nprojects[0].id_badge);
+                    console.log('medalla por projects: \n'+idB_nprojects );
 
                     const badgeInsertProject = {
                         id_user: id ,
-                        id_badge:idB_nprojects[0].id_badge
+                        id_badge:idB_nprojects 
                     }
                     const insertIntoUserListBadge = await pool.query('Insert into user_badgeList set  ? '
                     ,[badgeInsertProject]);
@@ -1088,7 +1178,7 @@ router.post('/check-conditions/', async (req,res)=>{
                     const updateuserListBadge = await pool.query('Update user_badgeList set count = ? where id = ?', [count, id]);
                     //add badge to response
                     console.log('medalla añadida a resp badges');
-                    badges.projects = idB_nprojects[0].id_badge;
+                    badges.projects = idB_nprojects ;
                 }
                 else{
                     badges.projects = 0;
@@ -1099,11 +1189,10 @@ router.post('/check-conditions/', async (req,res)=>{
                     //idB_nuseduntis
                     const getCount = await pool.query('Select count from user_badgeList where id_user = ?',[id]);
                     let count = getCount[0].count + 1; 
-                    console.log('medalla por unidades usadas: \n'+idB_nuseduntis[0].id_badge);
+                    console.log('medalla por unidades usadas: \n'+idB_nuseduntis );
                     const badgeInsertUsed = {
                         id_user: id ,
-                        id_badge:idB_nuseduntis[0].id_badge
-                    }
+                        id_badge:idB_nuseduntis              }
                     const insertIntoUserListBadge = await pool.query('Insert into user_badgeList  set ? '
                     ,[badgeInsertUsed]);
 
@@ -1111,7 +1200,7 @@ router.post('/check-conditions/', async (req,res)=>{
                     const updateuserListBadge = await pool.query('Update user_badgeList set count = ? where id = ?', [count, id]);
                     //add badge to response
                     console.log('medalla añadida a resp badges');
-                    badges.used = idB_nuseduntis[0].id_badge;
+                    badges.used = idB_nuseduntis ;
                 }
                 else{
                     badges.used = 0;
@@ -1122,11 +1211,11 @@ router.post('/check-conditions/', async (req,res)=>{
                     //idBFullCondition
                     const getCount = await pool.query('Select count from user_badgeList where id_user = ?',[id]);
                     let count = getCount[0].count + 1; 
-                    console.log('medalla por unidades usadas: \n'+idBFullCondition[0].id_badge);
+                    console.log('medalla por unidades usadas: \n'+idBFullCondition );
 
                     const badgeInsertfull = {
                         id_user: id ,
-                        id_badge:idBFullCondition[0].id_badge
+                        id_badge:idBFullCondition 
                     }
                     const insertIntoUserListBadge = await pool.query('Insert into user_badgeList  set ? '
                     ,[badgeInsertfull]);
@@ -1134,7 +1223,7 @@ router.post('/check-conditions/', async (req,res)=>{
                     const updateuserListBadge = await pool.query('Update user_badgeList set count = ? where id = ?', [count, id]);
                     //add badge to response
                     console.log('medalla añadida a resp badges');
-                    badges.full = idBFullCondition[0].id_badge;
+                    badges.full = idBFullCondition;
                 }
                 else{
                     badges.full = 0;
@@ -1142,7 +1231,15 @@ router.post('/check-conditions/', async (req,res)=>{
                 // end full conditions
                 console.log(badges);
 
-                res.json(badges);
+                //res.json(badges);
+
+                if(badges.charges == 0 && badges.subs == 0 && badges.full == 0 && badges.used == 0 && badges.projects == 0){
+                    res.render('public/precondition',{badges});
+                }  else{
+                   console.log(badges);
+                  // res.json(badges);
+                res.render('public/conditionAndBadge',{badges});
+            }
               
         });
     

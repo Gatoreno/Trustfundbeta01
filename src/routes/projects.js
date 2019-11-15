@@ -431,4 +431,21 @@ router.get('/json-project-info/:id', async (req,res)=>{
 });
 
 
+router.get('/json-project-units/:id', async (req,res)=>{
+  const {id} = req.params;
+  const units = await pool.query('SELECT COUNT(id_unit) `units`  from project_unitList where id_project = ?',[id]);
+
+  res.json(units);
+});
+
+router.get('/json-project-amount/:id', async (req,res)=>{
+  const {id} = req.params;
+  const units = await pool.query('SELECT sum(amount) sum   from project_unitList where id_project = ?',[id]);
+
+  res.json(units);
+});
+
+
+
+
 module.exports = router;
