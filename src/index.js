@@ -90,23 +90,6 @@ app.use(multer({
 
 
 
-//Sockets
-
-const SocketIO= require('socket.io');
-
-
-const serverx = app.listen(app.get('port'), () => {
-  console.log(`App listening on port ${app.get('port')}`);
-  //console.log(hostname)
-});
-
-const io = SocketIO(serverx);
-
-
-
-io.on('connection',()=>{ 
-  console.log('Connection');
-});
 // flash middle-ware
 app.use(flash());
 

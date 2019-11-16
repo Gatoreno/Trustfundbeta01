@@ -85,6 +85,54 @@
             </ul>
             <div class="tab-content ">
 
+                <div id="badgesHolder" class="row"></div>
+                <script>
+                    ///userbadgescount-Ids/
+
+
+                            $.ajax({
+                            
+                            type: "GET",  
+                            url: "/userbadgescount-Ids/{{user.id}}",
+                            dataType:"json",
+                            success: function(response){  
+                                  console.log(response);
+                                //  document.getElementById('bgHolder').innerHTML +='Medallas: '+ response;
+                                    response.forEach((id)=>{
+                                            console.log(id);
+                                             $.ajax({
+                            
+                                                type: "GET",  
+                                                url: "/badgejson/"+id.ids,
+                                                dataType:"json",
+                                                success: function(x){  
+                                                    console.log(x);
+                                                   //badgesHolder
+                                                    let bd = x.badge[0];
+                                                   console.log(bd);
+                                               
+
+                                                    document.getElementById('bgHolder').innerHTML += `
+                                                        <div class="col-lg-3">
+                                                                <img src="${ bd.img}" width="50" />
+                                                            <div>
+                                                    `;
+
+                                                },
+                                                error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                                    alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                                                }       
+                                            });
+                                    });
+
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                            }       
+                        });
+                </script>
+
+
                 {{!-- Pestañas --}}
                 <div id="menu0_" class="tab-pane fade in p3 active">
                     <div id="bgHolder"></div>
@@ -102,7 +150,11 @@
                                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
                             }       
                         });
+
+
                     </script>
+
+
                     <br>  
                 
                     <p>
