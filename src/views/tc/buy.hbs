@@ -6,7 +6,6 @@
 
         {{#if charge}}
 
-{{user.id_client}}
 <div class="col-lg-12" id="badgediv">
 
 </div>
@@ -38,11 +37,13 @@
                 
             </div>
   <script>
-            var unit = {{{charge}}};
+           /* var unit = {{{charge}}};
             function   check(unit){
                 alert(check)
-            }
+            }*/
         </script>
+
+
         </div>
 
         <div class="col-md-6 col-xs-12 " id="my-element" style="">
@@ -174,6 +175,35 @@
                     </script>
 
             </div>
+            <hr>
+
+    
+            <div id="unitsholder"></div>
+
+            <script>
+                // /tc-info-plan-json_charge/
+
+
+                     $.ajax({
+                            
+                        type: "GET",  
+                        url: "/tc-info-plan-json_charge/{{{charge.id}}}",
+                        dataType:"json",
+                        success: function(response){  
+                            console.log(response);
+                        document.getElementById('unitsholder').innerHTML += ` 
+                                   <h3>Asignar unidad</h3>
+                                 <a href="/tc-unit/${ response[0].id }">asignar esta unidad a un proycto</a>
+                                     
+                        ` ;//';
+                        },
+                        error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                            alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                        }       
+                    });
+
+            </script>
+          
         </div>
 
      

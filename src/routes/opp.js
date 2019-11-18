@@ -873,6 +873,15 @@ router.get('/tc-info-plan-json/:id', async (req,res)=>{
     res.json(tc);
 });
 
+
+
+
+router.get('/tc-info-plan-json_charge/:id', async (req,res)=>{
+    const id = req.params.id;
+    const tc = await pool.query('SELECT * from tc_u  where id_charge = ?' ,[id]);
+    res.json(tc);
+});
+
 router.post('/getallwh',(req,response)=>{
 
     console.info('Received!'); // Log every time a WebHook is handled.

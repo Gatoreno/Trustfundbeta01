@@ -1,5 +1,5 @@
 <div class="container my-element">
-	<div class="row>
+	<div class="row">
         {{#if user}}
 
 
@@ -48,6 +48,55 @@
 
             <div class="container">
                 <div class="row">
+                    <div class="col-lg-12"
+                    >
+                                            <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb" id="">
+                             <li class="breadcrumb-item active" aria-current="page">
+                                                <span id="amountholder"></span>   
+                                                <span id="unitsholder"></span>   
+                                                <span id="usersholder"></span>   
+                                                </li>
+                                                </ol>
+                                            </nav>
+
+                                        <script>
+
+                                                $.ajax({
+                            
+                                                            type: "GET",  
+                                                            url: "/projects/json-project-amount/{{id}}",
+                                                            dataType:"json",
+                                                            success: function(response){  
+                                                                console.log(response);
+                                                            document.getElementById('amountholder').innerHTML += ` 
+                                                        
+                                                                    $ ${ response[0].sum } .00 - mx / ` ;//';
+                                                            },
+                                                            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                                                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                                                            }       
+                                                        });
+
+                                                         $.ajax({
+                            
+                                                            type: "GET",  
+                                                            url: "/projects/json-project-units/{{id}}",
+                                                            dataType:"json",
+                                                            success: function(response){  
+                                                                console.log(response);
+                                                            document.getElementById('unitsholder').innerHTML += ` 
+                                                                    Unidades asignaadas   
+                                                                     ${ response[0].units } /   
+                                                            ` ;//';
+                                                            },
+                                                            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                                                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                                                            }       
+                                                        });
+
+                                        </script>
+                    </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <table class="table table-hover ">
                             <thead>

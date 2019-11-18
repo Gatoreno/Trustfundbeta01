@@ -1,4 +1,5 @@
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css">
 
 
 {{#if user}}
@@ -85,8 +86,43 @@
             </ul>
             <div class="tab-content ">
 
-                <div id="badgesHolder" class="row"></div>
+              
+
+                {{!-- Pestañas --}}
+                <div id="menu0_" class="tab-pane fade in p3 active">
+                    <div class="row" >
+                        <div class="col-lg-12" id="bgHolder"></div>
+                    </div>
+                    <script>
+                         $.ajax({
+                            
+                            type: "GET",  
+                            url: "/userbadgescount-Json/{{user.id}}",
+                            dataType:"json",
+                            success: function(response){  
+                                  console.log(response);
+                            document.getElementById('bgHolder').innerHTML += ` 
+                            <nav aria-label="breadcrumb">
+                        <ol class="breadcrumb" id="">
+
+                                                                           <li class="breadcrumb-item active" aria-current="page">
+                                                    Medallas:  ${ response } 
+                                                </li>
+                                                </ol>
+                                            </nav>
+                            ` ;//';
+                            },
+                            error: function(XMLHttpRequest, textStatus, errorThrown) { 
+                                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
+                            }       
+                        });
+
+
+                    </script>
+
+                 <div id="badgesHolder" class="row"></div>
                 <script>
+                   
                     ///userbadgescount-Ids/
 
 
@@ -113,8 +149,12 @@
                                                
 
                                                     document.getElementById('bgHolder').innerHTML += `
-                                                        <div class="col-lg-3">
+                                                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-4">
+                                                            <a class="badgehover " href="/badge/${bd.id}">
                                                                 <img src="${ bd.img}" width="50" />
+                                                                   
+                                                                </a>
+                                                                 <p>${ bd.name}</p>
                                                             <div>
                                                     `;
 
@@ -130,29 +170,23 @@
                                 alert("Status: " + textStatus); alert("Error: " + errorThrown); 
                             }       
                         });
+
+
+                        
                 </script>
+                <script>    
+                    $(".badgehover").hover(
+                        function () {
+                            console.log('h');
+                            $(this).addClass('animated tada');
+                        }, 
+                        function () {
+                            $(this).removeClass('animated tada');
 
-
-                {{!-- Pestañas --}}
-                <div id="menu0_" class="tab-pane fade in p3 active">
-                    <div id="bgHolder"></div>
-                    <script>
-                         $.ajax({
-                            
-                            type: "GET",  
-                            url: "/userbadgescount-Json/{{user.id}}",
-                            dataType:"json",
-                            success: function(response){  
-                                  console.log(response);
-                                  document.getElementById('bgHolder').innerHTML +='Medallas: '+ response;
-                            },
-                            error: function(XMLHttpRequest, textStatus, errorThrown) { 
-                                alert("Status: " + textStatus); alert("Error: " + errorThrown); 
-                            }       
-                        });
-
-
-                    </script>
+                            console.log('hoff');
+                        }
+                        );
+                </script>
 
 
                     <br>  

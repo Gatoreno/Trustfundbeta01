@@ -7,14 +7,14 @@
         recibir y mandar
 
         id_tc , id_user , id_proyecto
-        
+        AQUI
+    <div id="responseJson"></div>
+    <input type="submit" value="Obtener" onclick="trygetcount();">
         --}}
 
         {{#if tc}}
 
-AQUI
-    <div id="responseJson"></div>
-    <input type="submit" value="Obtener" onclick="trygetcount();">
+
 
 <script>
     $.ajax({
@@ -23,8 +23,8 @@ AQUI
         url: '/counttcunit/{{user.id_client}}',
         dataType: 'json',
         success: (data) => {
-            alert(data[0].count);
-            console.log(data[0].count);
+           // alert(data[0].count);
+            console.log('counttcunit'+data[0].count);
 
         },
         fail: (err)=>{
